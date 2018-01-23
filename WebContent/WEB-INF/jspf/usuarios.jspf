@@ -1,0 +1,29 @@
+<%@ page pageEncoding="UTF-8" %>
+
+<div style="display: none">
+	 <div id="dlg_usuario_ins" title="Registar Usuario">
+	 	<form class="parainfo">
+	 		<table class="tabla">
+	 			<tr>
+	 				<td>Persona:</td>
+	 				<td>
+	 					<select id="persona_ins" style="width: 300px"></select>
+	 				</td>
+	 			</tr>
+	 			<tr>
+	 				<td>Usuario:</td>
+	 				<td>
+	 					<input type="text" id="nombre_ins" style="width: 300px"/>
+	 				</td>
+	 			</tr>
+	 			<tr>
+	 				<td>Password:</td>
+	 				<td>
+	 					<input type="text" id="password_ins" style="width: 300px"/>
+	 				</td>
+	 			</tr>
+	 		</table>
+	 	</form>
+	 	
+	 </div>
+</div>

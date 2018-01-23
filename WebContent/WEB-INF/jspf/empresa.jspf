@@ -1,0 +1,66 @@
+<%@ page pageEncoding="UTF-8" %>
+<div style = "display: none">
+	<div id="dlg_empresa_qry" title="Lista de Empresas" style="padding: 30px; padding-bottom: 10px">
+		<table class="parainfo" style="width: 100%">
+			<thead>
+				<tr>
+					<td>Nombres</td>
+					<td>Descripción</td>
+					<th class="crud"><a class="ins" href="#" onclick="empresaIns();"
+						title="Nuevo Registro"><span></span></a></th>
+					<th class="crud"><a class="del" href="#" onclick="empresaDel();"
+						title="Eliminar Registro"><span></span></a></th>
+					<th class="crud"><a class="upd" href="#" onclick="empresaUpd();"
+						title="Actualizar Registro"><span></span></a></th>
+				</tr>
+			</thead>
+			<tbody id="body_empresa"></tbody>
+		</table>
+		<div id="error_empresa_qry" class="msg_error ui-state-highlight ui-corner-all"></div>
+	</div>
+</div>
+
+<div style="display: none">
+    <div id="dlg_empresa_ins" title="Registar Empresa">
+        <form class="parainfo">
+            <table class="tabla">
+                <tr>
+                    <td>Nombre:</td>
+                    <td>
+                        <input type="text" id="nomempresa_ins" style="width: 300px"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Descripción:</td>
+                    <td>
+                        <input type="text" id="desempresa_ins" style="width: 300px"/>
+                    </td>
+                </tr>
+            </table>
+        </form>
+        <div id="error_empresa_ins" class="msg_error ui-state-highlight ui-corner-all"></div>
+    </div>
+</div>
+
+
+<div style="display: none">
+    <div id="dlg_empresa_upd" title="Actualizar Empresa">
+        <form class="parainfo">
+            <table class="tabla">
+                <tr>
+                    <td>Nombre:</td>
+                    <td>
+                        <input type="text" id="nomempresa_upd" style="width: 300px"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Descripción:</td>
+                    <td>
+                        <input type="text" id="desempresa_upd" style="width: 300px"/>
+                    </td>
+                </tr>
+            </table>
+        </form>
+        <div id="error_empresa_upd" class="msg_error ui-state-highlight ui-corner-all"></div>
+    </div>
+</div>

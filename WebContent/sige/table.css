@@ -1,0 +1,35 @@
+table.parainfo {
+    border-collapse: collapse;
+}
+
+table.parainfo thead td, table.parainfo thead th {
+    padding: 8px;
+}
+
+table.parainfo tbody td, table.parainfo tbody th {
+    padding: 4px 8px;
+}
+
+table.parainfo th.crud, table.parainfo td.crud {
+    width: 20px;
+}
+
+table.parainfo a img {
+    border: none;
+}
+
+table.parainfo td, table.parainfo th {
+    border: 1px solid #dddddd;
+}
+
+table.parainfo tbody tr:nth-of-type(odd) {
+    background-color: #fefefe;
+}
+
+table.parainfo tbody tr:nth-of-type(even) {
+    background-color: #eaf4fd;
+}
+
+table.parainfo tbody tr:hover {
+    background-color: #ffff80; 
+}

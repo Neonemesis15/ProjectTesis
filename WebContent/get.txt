@@ -1,0 +1,1 @@
+<data><msg></msg><idcita val="3"/><idpaciente val="4"/><idespecialidad val="2"/><idmedico val="3"/><diahora val="16/10/2015 03:30 PM"/></data>

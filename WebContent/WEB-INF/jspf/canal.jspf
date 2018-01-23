@@ -1,0 +1,21 @@
+<%@ page pageEncoding="UTF-8" %>
+<div style = "display: none">
+	<div id="dlg_canal_qry" title="Lista de Canales" style="padding: 30px; padding-bottom: 10px">
+		<table class="parainfo" style="width: 100%">
+			<thead>
+				<tr>
+					<td>Nombres</td>
+					<td>Descripción</td>
+					<th class="crud"><a class="ins" href="#" onclick="canalIns();"
+						title="Nuevo Registro"><span></span></a></th>
+					<th class="crud"><a class="del" href="#" onclick="canalDel();"
+						title="Eliminar Registro"><span></span></a></th>
+					<th class="crud"><a class="upd" href="#" onclick="canalUpd();"
+						title="Actualizar Registro"><span></span></a></th>
+				</tr>
+			</thead>
+			<tbody id="body_canal"></tbody>
+		</table>
+		<div id="error_canal_qry" class="msg_error ui-state-highlight ui-corner-all"></div>
+	</div>
+</div>

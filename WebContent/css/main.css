@@ -1,0 +1,37 @@
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 0.8em;
+    color: #444;
+}
+
+.msg_error {
+    margin: auto;
+    display: table;
+    margin-top: 20px;
+    padding: 8px 20px 8px 12px;
+    color: #534500;
+}
+
+#m_main {
+    width: 100%;
+    margin: auto;
+}
+
+#m_top {
+    width: 100%;
+    margin-top: 20px;
+    padding-right: 10px;
+    text-align: right;
+}
+
+#m_menu {
+    width: 100%;
+    margin-top: 5px;
+    margin-bottom: 20px;
+    align: center;
+}
+
+#m_body {
+    width: 100%;
+}
+

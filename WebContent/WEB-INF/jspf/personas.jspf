@@ -1,0 +1,31 @@
+<%@ page pageEncoding="UTF-8" %>
+<div style = "display: none">
+	<div id="dlg_personas_qry" title="Lista de Personas" style="padding: 30px; padding-bottom: 10px">
+		<table class="parainfo" style="width: 100%">
+			<thead>
+				<tr>
+					<td>Nombres</td>
+					<td>Primer Apellido</td>
+					<td>Segundo Apellido</td>
+					<td>Cumpleaños</td>
+					<td>Teléfono</td>
+					<th class="crud">
+						<a class="ins" href="#" onclick="personaIns();" title="Nuevo Registro">
+						<span></span></a>
+					</th>
+					<th>
+						<a class="del" href="#" onclick="personaDel();" title="Retirar Registros">
+						<span></span></a>
+					</th>
+					<th>
+						<a class="upd" href="#" onclick="personaUpd();" title="Actualizar Registros">
+						<span></span></a> 
+					</th>
+				</tr>
+			</thead>
+			<tbody id="body_personas"></tbody>
+		</table>
+		
+		<div id="error_personas_qry" class="msg_error ui-state-highlight ui-corner-all"></div>
+	</div>
+</div>

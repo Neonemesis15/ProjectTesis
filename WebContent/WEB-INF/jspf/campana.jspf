@@ -1,0 +1,93 @@
+<%@ page pageEncoding="UTF-8" %>
+<div style="display: none">
+    <div id="dlg_campana_ins" title="Nueva Campaña">
+        <form class="parainfo">
+        	<table class="tabla">
+                <tr>
+                    <td>Nombre:</td>
+                    <td>
+                        <input type="text" id="nombre_ins" style="width: 300px"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Descripción:</td>
+                    <td>
+                        <input type="text" id="descripcion_ins" style="width: 300px"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Fecha Inicio:</td>
+                    <td>
+                        <input type="text" id="fechaini_ins" style="width: 150px;margin-right: 2px"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Fecha Fin:</td>
+                    <td>
+                        <input type="text" id="fechafin_ins" style="width: 150px;margin-right: 2px"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Empresa:</td>
+                    <td>
+                        <select id="idempresa_ins" style="width: 310px"></select>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Canal:</td>
+                    <td>
+                        <select id="idcanal_ins" style="width: 310px"></select>
+                    </td>
+                </tr>                
+        	</table>
+        </form>
+        <div id="error_campana_ins" class="msg_error ui-state-highlight ui-corner-all"></div>
+    </div>
+</div>
+
+<div style="display: none">
+    <div id="dlg_campana_upd" title="Cambiar campana Médica">
+    	<form class="parainfo">
+    		<input type="hidden" id="idcampana_upd"/>
+        	<table class="tabla">
+                <tr>
+                    <td>Nombre:</td>
+                    <td>
+                        <input type="text" id="nombre_upd" style="width: 300px"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Descripción:</td>
+                    <td>
+                        <input type="text" id="descripcion_upd" style="width: 300px"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Fecha Inicio:</td>
+                    <td>
+                        <input type="text" id="fechaini_upd" style="width: 150px;margin-right: 2px"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Fecha Fin:</td>
+                    <td>
+                        <input type="text" id="fechafin_upd" style="width: 150px;margin-right: 2px"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Empresa:</td>
+                    <td>
+                        <select id="idempresa_upd" style="width: 310px"></select>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Canal:</td>
+                    <td>
+                        <select id="idcanal_upd" style="width: 310px"></select>
+                    </td>
+                </tr>                
+        	</table>
+    	</form>
+    	<div id="error_campana_upd" class="msg_error ui-state-highlight ui-corner-all"></div>
+    </div>
+</div>

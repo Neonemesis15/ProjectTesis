@@ -1,0 +1,23 @@
+<%@ page pageEncoding="UTF-8"%>
+<div style="display: none">
+	<div id="dlg_categoria_qry" title="Lista de Categorias"
+		style="padding: 30px; bottom-padding: 10px">
+		<table class="parainfo">
+			<thead class="default">
+				<tr>
+					<td>Nombre</td>
+					<td>Descripcion</td>
+					<th class="crud"><a class="ins" href="#"
+						onclick="categoriaIns" title="Nuevo Registro"><span></span></a></th>
+					<th class="crud"><a class="del" href="#"
+						onclick="categoriaDel" title="Eliminar Registro"><span></span></a></th>
+					<th class="crud"><a class="upd" href="#"
+						onclick="categoriaUpd" title="Actualizar Registro"><span></span></a></th>
+				</tr>
+			</thead>
+			<tbody id="body_categoria"></tbody>
+		</table>
+		<div id="error_categoria_qry"
+			class="msg_error ui-state-highlight ui-corner-all"></div>
+	</div>
+</div>

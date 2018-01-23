@@ -1,0 +1,64 @@
+<%@ page pageEncoding="UTF-8"%>
+<div style="display: none">
+	<div id="dlg_fabricante_qry" title="Lista de Fabricantes"
+		style="padding: 30px; bottom-padding: 10px">
+		<table class="parainfo" style="width: 100%">
+			<thead class="default">
+				<tr>
+					<td>Nombre</td>
+					<td>Descripcion</td>
+					<th class="crud"><a class="ins" href="#"
+						onclick="fabricanteIns" title="Nuevo Registro"><span></span></a></th>
+					<th class="crud"><a class="del" href="#"
+						onclick="fabricanteDel" title="Eliminar Registro"><span></span></a></th>
+					<th class="crud"><a class="upd" href="#"
+						onclick="fabricanteUpd" title="Actualizar Registro"><span></span></a></th>
+				</tr>
+			</thead>
+			<tbody id="body_fabricante"></tbody>
+		</table>
+		<div id="error_fabricante_qry"
+			class="msg_error ui-state-highlight ui-corner-all"></div>
+	</div>
+</div>
+
+<div style="display: none">
+	<div id="dlg_fabricante_ins" title="Registrar fabricante">
+		<form class="parainfo">
+			<table class="tabla">
+				<tr>
+					<td>Nombre</td>
+					<td><input type="text" id="nombre_ins" style="width: 300px" /></td>
+				</tr>
+				<tr>
+					<td>Descripcion</td>
+					<td><input type="text" id="descripcion_ins"
+						style="heigh: 100px; width: 300px"></td>
+				</tr>
+			</table>
+		</form>
+		<div id="error_fabricante_ins"
+			class="msg_error ui-state-highlight ui-corner-all"></div>
+	</div>
+</div>
+
+<div style="display: none">
+	<div id="dlg_fabricante_upd" title="Actualizar fabricante">
+		<form class="parainfo">
+			<table class="tabla">
+				<tr>
+					<td>Nombre</td>
+					<td><input type="text" id="nombre_upd" style="width: 300px" /></td>
+				</tr>
+				<tr>
+					<td>Descripcion</td>
+					<td><input type="text" id="descripcion_upd"
+						style="width: 300px; height: 100px" /></td>
+				</tr>
+			</table>
+		</form>
+		<div id="error_fabricante_upd"
+			class="msg_error ui-state-highlight ui-corner-all"></div>
+	</div>
+
+</div>

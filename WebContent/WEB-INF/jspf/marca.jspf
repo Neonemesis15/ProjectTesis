@@ -1,0 +1,22 @@
+<%@ page pageEncoding="UTF-8"%>
+<div style="display: none">
+	<div id="dlg_marca_qry" title="Lista de Marcas"
+		style="padding: 30px; bottom-padding: 10px">
+		<table class="parainfo" style="width: 100%">
+			<thead class="default">
+				<tr>
+					<td>Nombre</td>
+					<td>Descripcion</td>
+					<th class="crud"><a class="ins" href="#" onclick="marcaIns();"
+						title="Nuevo Registro"><span></span></a></th>
+					<th class="crud"><a class="del" href="#" onclick="marcaDel();"
+						title="Eliminar Registro"><span></span></a></th>
+					<th class="crud"><a class="upd" href="#" onclick="marcaUpd();"
+						title="Actualizar Registro"><span></span></a></th>
+				</tr>
+			</thead>
+			<tbody id="body_marca"></tbody>
+		</table>
+		<div id="error_marca_qry" class="msg_error ui-highlight ui-corner-all"></div>
+	</div>
+</div>
