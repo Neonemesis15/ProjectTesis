@@ -3,7 +3,7 @@
 	<div id="dlg_marca_qry" title="Lista de Marcas"
 		style="padding: 30px; bottom-padding: 10px">
 		<table class="parainfo" style="width: 100%">
-			<thead class="default">
+			<thead>
 				<tr>
 					<td>Nombre</td>
 					<td>Descripcion</td>
@@ -19,4 +19,49 @@
 		</table>
 		<div id="error_marca_qry" class="msg_error ui-highlight ui-corner-all"></div>
 	</div>
+</div>
+
+<div style="display: none">
+    <div id="dlg_marca_ins" title="Registar Marca">
+        <form class="parainfo">
+            <table class="tabla">
+                <tr>
+                    <td>Nombre:</td>
+                    <td>
+                        <input type="text" id="nommarca_ins" style="width: 300px"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Descripción:</td>
+                    <td>
+                        <input type="text" id="desmarca_ins" style="width: 300px"/>
+                    </td>
+                </tr>
+            </table>
+        </form>
+        <div id="error_marca_ins" class="msg_error ui-state-highlight ui-corner-all"></div>
+    </div>
+</div>
+
+
+<div style="display: none">
+    <div id="dlg_marca_upd" title="Actualizar Marca">
+        <form class="parainfo">
+            <table class="tabla">
+                <tr>
+                    <td>Nombre:</td>
+                    <td>
+                        <input type="text" id="nommarca_upd" style="width: 300px"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Descripción:</td>
+                    <td>
+                        <input type="text" id="desmarca_upd" style="width: 300px"/>
+                    </td>
+                </tr>
+            </table>
+        </form>
+        <div id="error_marca_upd" class="msg_error ui-state-highlight ui-corner-all"></div>
+    </div>
 </div>

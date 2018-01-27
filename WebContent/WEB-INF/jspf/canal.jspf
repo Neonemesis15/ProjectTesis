@@ -19,3 +19,47 @@
 		<div id="error_canal_qry" class="msg_error ui-state-highlight ui-corner-all"></div>
 	</div>
 </div>
+
+<div style="display: none">
+    <div id="dlg_canal_ins" title="Registar canal">
+        <form class="parainfo">
+            <table class="tabla">
+                <tr>
+                    <td>Nombre:</td>
+                    <td>
+                        <input type="text" id="nomcanal_ins" style="width: 300px"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Descripción:</td>
+                    <td>
+                        <input type="text" id="descanal_ins" style="width: 300px"/>
+                    </td>
+                </tr>
+            </table>
+        </form>
+        <div id="error_canal_ins" class="msg_error ui-state-highlight ui-corner-all"></div>
+    </div>
+</div>
+
+<div style="display: none">
+    <div id="dlg_canal_upd" title="Actualizar canal">
+        <form class="parainfo">
+            <table class="tabla">
+                <tr>
+                    <td>Nombre:</td>
+                    <td>
+                        <input type="text" id="nomcanal_upd" style="width: 300px"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Descripción:</td>
+                    <td>
+                        <input type="text" id="descanal_upd" style="width: 300px"/>
+                    </td>
+                </tr>
+            </table>
+        </form>
+        <div id="error_canal_upd" class="msg_error ui-state-highlight ui-corner-all"></div>
+    </div>
+</div>
