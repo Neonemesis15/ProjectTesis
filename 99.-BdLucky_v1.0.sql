@@ -1473,7 +1473,8 @@ CREATE TABLE `usuarios` (
 
 LOCK TABLES `usuarios` WRITE;
 /*!40000 ALTER TABLE `usuarios` DISABLE KEYS */;
-INSERT INTO `usuarios` (`idusuario`, `apellidos`, `nombres`, `usuario`, `password`, `autorizacion`) VALUES (1,'Balta Alva','Victor Manuel','vbalta','G¿_+Ü\Ìk\Ó”èñ\rÛ','ADMIN'),(2,'Vasquez Paragulla','Juan Julio','jvasquez','G¿_+Ü\Ìk\Ó”èñ\rÛ','CLIENT');
+INSERT INTO `usuarios` (`idusuario`, `apellidos`, `nombres`, `usuario`, `password`, `autorizacion`) VALUES (1,'Balta Alva','Victor Manuel','vbalta',AES_ENCRYPT(12345, 'parainfo') ,'ADMIN'),(2,'Vasquez Paragulla','Juan Julio','jvasquez',AES_ENCRYPT(12345, 'parainfo') ,'CLIENT');
+
 /*!40000 ALTER TABLE `usuarios` ENABLE KEYS */;
 UNLOCK TABLES;
 
