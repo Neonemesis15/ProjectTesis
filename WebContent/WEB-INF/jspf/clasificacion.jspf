@@ -1,0 +1,94 @@
+<%@ page pageEncoding="UTF-8" %>
+<div style = "display: none">
+	<div id="dlg_clasificacion_qry" title="Lista de Clasificaciones" style="padding: 30px; padding-bottom: 10px">
+		<table class="parainfo" style="width: 100%">
+			<thead>
+				<tr>
+                    <th class = "crud">
+                        <a class="qry" href="#" onclick="empresaQry()" title="Lista de Empresas">
+                            <span></span>
+                        </a>
+                    </th>
+                    <td>Empresa</td>
+                    <th class = "crud">
+                        <a class="qry" href="#" onclick="categoriaQry()" title="Lista de Categorias">
+                            <span></span>
+                        </a>
+                    </th>
+                    <td>Categoria</td>
+                    <th class = "crud">
+                        <a class="qry" href="#" onclick="marcaQry()" title="Lista de Marcas">
+                            <span></span>
+                        </a>
+                    </th>
+                    <td>Marca</td>
+					<th class="crud"><a class="ins" href="#" onclick="clasificacionIns();"
+						title="Nuevo Registro"><span></span></a></th>
+					<th class="crud"><a class="del" href="#" onclick="clasificacionDel();"
+						title="Eliminar Registro"><span></span></a></th>
+					<th class="crud"><a class="upd" href="#" onclick="clasificacionUpd();"
+						title="Actualizar Registro"><span></span></a></th>
+				</tr>
+			</thead>
+			<tbody id="body_clasificacion"></tbody>
+		</table>
+		<div id="error_clasificacion_qry" class="msg_error ui-state-highlight ui-corner-all"></div>
+	</div>
+</div>
+
+<div style="display: none">
+    <div id="dlg_clasificacion_ins" title="Registar Clasificacion">
+        <form class="parainfo">
+            <table class="tabla">
+                <tr>
+                    <td>Empresa:</td>
+                    <td>
+                        <select id="idempresa_ins" style="width: 310px"></select>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Categoria:</td>
+                    <td>
+                        <select id="idcategoria_ins" style="width: 310px"></select>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Marca:</td>
+                    <td>
+                        <select id="idmarca_ins" style="width: 310px"></select>
+                    </td>
+                </tr>
+            </table>
+        </form>
+        <div id="error_clasificacion_ins" class="msg_error ui-state-highlight ui-corner-all"></div>
+    </div>
+</div>
+
+
+<div style="display: none">
+    <div id="dlg_clasificacion_upd" title="Registar Clasificacion">
+        <form class="parainfo">
+            <table class="tabla">
+                <tr>
+                    <td>Empresa:</td>
+                    <td>
+                        <select id="idempresa_upd" style="width: 310px"></select>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Categoria:</td>
+                    <td>
+                        <select id="idcategoria_upd" style="width: 310px"></select>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Marca:</td>
+                    <td>
+                        <select id="idmarca_upd" style="width: 310px"></select>
+                    </td>
+                </tr>
+            </table>
+        </form>
+        <div id="error_clasificacion_upd" class="msg_error ui-state-highlight ui-corner-all"></div>
+    </div>
+</div>

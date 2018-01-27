@@ -1,0 +1,68 @@
+<%@ page pageEncoding="UTF-8" %>
+<div style="display: none">
+    <div id="dlg_producto_ins" title="Nueva Producto">
+        <form class="parainfo">
+			<table class="tabla">
+                <tr>
+                    <td>SKU:</td>
+                    <td>
+                        <input type="text" id="sku_ins" style="width: 300px"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Nombre:</td>
+                    <td>
+                        <input type="text" id="nombre_ins" style="width: 300px"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Descripcion:</td>
+                    <td>
+                        <input type="text" id="descripcion_ins" style="width: 150px;margin-right: 2px"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Clasificacion:</td>
+                    <td>
+                        <select id="idclasificacion_ins" style="width: 310px"></select>
+                    </td>
+                </tr> 
+			</table>
+        </form>
+        <div id="error_producto_ins" class="msg_error ui-state-highlight ui-corner-all"></div>
+    </div>
+</div>
+
+<div style="display: none">
+    <div id="dlg_producto_upd" title="Nueva Producto">
+        <form class="parainfo">
+			<table class="tabla">
+                <tr>
+                    <td>SKU:</td>
+                    <td>
+                        <input type="text" id="sku_upd" style="width: 300px"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Nombre:</td>
+                    <td>
+                        <input type="text" id="nombre_upd" style="width: 300px"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Descripcion:</td>
+                    <td>
+                        <input type="text" id="descripcion_upd" style="width: 150px;margin-right: 2px"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Clasificacion:</td>
+                    <td>
+                        <select id="idclasificacion_upd" style="width: 310px"></select>
+                    </td>
+                </tr> 
+			</table>
+        </form>
+        <div id="error_producto_upd" class="msg_error ui-state-highlight ui-corner-all"></div>
+    </div>
+</div>
