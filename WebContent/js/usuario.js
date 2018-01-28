@@ -1825,3 +1825,1682 @@ function marcaUpd(){
     }
 }
 
+// ==============================================================
+// Scripts Punto de Venta (PDV)
+// ==============================================================
+
+function pdvIns(){
+    // lectura para el combo 'Tipo de PDV'
+    $.ajax({
+        url: "combo.txt",
+        type: "post",
+        datatype: "txt",
+        data: {
+            accion: "CBO"
+        },
+        success: function (data) {
+            var msg = $(data).find('msg').text();
+
+            if ($.trim(msg).length !== 0) {
+                message("Data no Encontrada", msg);
+
+            } else {
+                var option = "";
+
+                $(data).find('op').each(function () {
+                    option += "<option value=\""
+                            + $(this).attr('id') + "\">"
+                            + $(this).text() + "</option>";
+                });
+
+                $("#idtippdv_ins").html(option);
+                // ---
+
+                // lectura para el combo canal
+                $.ajax({
+                    url: "combo.txt",
+                    type: "post",
+                    datatype: "txt",
+                    data: {
+                        accion: "CBO"
+                    },
+                    success: function (data) {
+                        var msg = $(data).find('msg').text();
+
+                        if ($.trim(msg).length !== 0) {
+                            message("Data no Encontrada", msg);
+
+                        } else {
+                            var option = "";
+
+                            $(data).find('op').each(function () {
+                                option += "<option value=\""
+                                        + $(this).attr('id') + "\">"
+                                        + $(this).text() + "</option>";
+                            });
+
+                            $("#idubigeo").html(option);
+                            // combos cargaron data
+                            $("#error_pdv_ins").html("").hide();
+
+
+                            $("#dlg_pdv_ins").dialog({
+                                modal: true,
+                                width: 480,
+                                buttons: {
+                                    "Cancelar": function () {
+                                        $(this).dialog("close");
+                                    },
+                                    "Enviar Datos": function () {
+                                        $.ajax({
+                                            url: "PDV",
+                                            type: "post",
+                                            data: {
+                                                accion: "INS",
+                                                razonsocial: $("#razon_ins").val(),
+                                                direccion: $("#direccion_ins").val(),
+                                                telefono: $("#telefono_ins").val(),
+                                                idtipopdv: $("#idtippdv_ins").val(),
+                                                idubigeo: $("#idubigeo").val()
+                                            },
+                                            success: function (error) {
+                                                if (error.length !== 0) {
+                                                    $("#error_pdv_ins").html(error).show();
+
+                                                } else {
+                                                    //window.location = "Citas?accion=QRY";
+                                                }
+                                            }
+                                        });
+                                    }
+                                }
+                            });
+
+                        }
+                    }
+                });
+            }
+        }
+    });
+}
+
+function pdvDel(){
+    var ids = [];
+    $("input[name='idpdv_del']:checked").each(function () {
+        ids.push($(this).val());
+    });
+    if (ids.length === 0) {
+        message("Advertencia", "Seleccione fila(s) a Retirar");
+    } else {
+        $("#p_message").html("¿Retirar registro(s)?");
+        $("#dlg_message").dialog({
+            modal: true,
+            width: 440,
+            buttons: {
+                "No": function () {
+                    $(this).dialog("close");
+                },
+                "Si": function () {
+                    $(this).dialog("close");
+
+                    $.ajax({
+                        url: "pdv",
+                        type: "post",
+                        data: {
+                            accion: "DEL",
+                            ids: ids.toString()
+                        },
+                        success: function (error) {
+                            if (error.length !== 0) {
+                                message("Error", error);
+
+                            } else {
+                                //window.location = "Citas?accion=QRY";
+                            }
+                        }
+                    });
+                }
+            }
+        });
+    }
+}
+
+function pdvUpd(){
+    var id = $("input[name='idpdv_upd']:checked").val();
+    if (isNaN(id)) {
+        message("Advertencia", "Seleccione Fila para Actualizar Datos");
+        }else{
+        // pidiendo datos de pdv
+        $.ajax({
+            url: "get.txt",
+            type: "post",
+            datatype: "txt",
+            data: {
+                accion: "GET",
+                idpdv: id
+            },
+            success: function (data) {
+                var msg = $(data).find('msg').text();
+
+                if ($.trim(msg).length !== 0) {
+                    message("Data no Encontrada", msg);
+
+                } else {
+                    var idpdv = $(data).find('id').attr('val');
+                    var razonsocial = $(data).find('razonsocial').attr('val');
+                    var direccion = $(data).find('direccion').attr('val');
+                    var telefono = $(data).find('telefono').attr('val');
+                    var idtippdv = $(data).find('idtippdv').attr('val');
+                    var idubigeo = $(data).find('idubigeo').attr('val');
+
+                    $("#razon_upd").val(razonsocial);
+                    $("#direccion_upd").val(direccion);
+                    $("#telefono_upd").val(telefono);
+                    $("#idtippdv_upd").val(idtippdv);
+                    $("#idubigeo").val(idubigeo);
+
+                    // lectura para el combo 'Tipo de PDV'
+                    $.ajax({
+                        url: "combo.txt",
+                        type: "post",
+                        datatype: "txt",
+                        data: {
+                            accion: "CBO"
+                        },
+                        success: function (data) {
+                            var msg = $(data).find('msg').text();
+
+                            if ($.trim(msg).length !== 0) {
+                                message("Data no Encontrada", msg);
+
+                            } else {
+                                var option = "";
+
+                                $(data).find('op').each(function () {
+                                    option += "<option value=\""
+                                            + $(this).attr('id') + "\">"
+                                            + $(this).text() + "</option>";
+                                });
+
+                                $("#idtippdv_upd").html(option);
+                                $("#idtippdv_upd").val(idtippdv);
+                                // ---
+                                // Lectura para el combo de canales
+                                $.ajax({
+                                    url: "combo.txt",
+                                    type: "post",
+                                    datatype: "txt",
+                                    data: {
+                                        accion: "CBO"
+                                    },
+                                    success: function (data) {
+                                        var msg = $(data).find('msg').text();
+
+                                        if ($.trim(msg).length !== 0) {
+                                            message("Data no Encontrada", msg);
+
+                                        } else {
+                                            var option = "";
+
+                                            $(data).find('op').each(function () {
+                                                option += "<option value=\""
+                                                        + $(this).attr('id') + "\">"
+                                                        + $(this).text() + "</option>";
+                                            });
+
+                                            $("#idubigeo").html(option);
+                                            $("#idubigeo").val(idubigeo);
+                                            // ---
+                                            // todo Ok
+                                            $("#error_pdv_upd").html("").hide();
+
+                                            $("#dlg_pdv_upd").dialog({
+                                                modal: true,
+                                                width: 480,
+                                                buttons: {
+                                                    "Cancelar": function () {
+                                                        $(this).dialog("close");
+                                                    },
+                                                    "Enviar Datos": function () {
+                                                        $.ajax({
+                                                            url: "pdv",
+                                                            type: "post",
+                                                            data: {
+                                                                accion: "UPD",
+                                                                idpdv: idpdv,
+                                                                razonsocial: $("#razon_upd").val(),
+                                                                direccion: $("#direccion_upd").val(),
+                                                                telefono: $("#telefono_upd").val(),
+                                                                idtippdv: $("#idtippdv_upd").val(),
+                                                                idubigeo: $("#idubigeo").val()
+                                                            },
+                                                            success: function (error) {
+                                                                if (error.length !== 0) {
+                                                                    $("#error_pdv_upd").html(error).show();
+
+                                                                } else {
+                                                                    //window.location = "Citas?accion=QRY";
+                                                                }
+                                                            }
+                                                        });
+                                                    }
+                                                }
+                                            });
+
+                                        }
+                                    }
+                                });
+                            }
+                        }
+                    });
+                
+                }
+            }
+        });
+    }
+}
+
+// ==============================================================
+// Scripts Tipo de PDV
+// ==============================================================
+
+function tippdvQry() {
+    $("#error_tippdv_qry").html("").hide();
+    // solicita data para grilla pacientes
+    $.ajax({
+        url: "empresa.txt",
+        type: "post",
+        datatype: "txt",
+        data: {
+            accion: "QRY"
+        },
+        success: function (data) {
+            var msg = $(data).find('msg').text();
+
+            if ($.trim(msg).length !== 0) {
+                message("Data no Encontrada", msg);
+
+            } else {
+                var body = "";
+
+                $(data).find('fil').each(function () {
+                    var idtippdv = $(this).find('col:eq(0)').text();
+                    var nombre = $(this).find('col:eq(1)').text();
+                    var descripcion = $(this).find('col:eq(2)').text();
+
+                    body += "<tr>"
+                            + "<td id=\"nombre_" + idtippdv + "\">" + nombre + "</td>"
+                            + "<td colspan=\"2\" id=\"descripcion_" + idtippdv + "\">" + descripcion + "</td>"
+                            + "<td><input type=\"checkbox\" name=\"idtippdv_del\" value=\"" + idtippdv + "\"/></td>"
+                            + "<td><input type=\"radio\" name=\"idtippdv_upd\" value=\"" + idtippdv + "\"/></td>"
+                            + "</tr>";
+                });
+
+                // pinta data en grilla tippdvs
+                $("#body_tippdv").html(body);
+
+                // muestra diálogo con grilla
+                $("#dlg_tippdv_qry").dialog({
+                    modal: true,
+                    width: 500,
+                    buttons: {
+                        "Cerrar": function () {
+                            $(this).dialog("close");
+                        }
+                    }
+                });
+            }
+        }
+    });
+}
+
+function tippdvIns(){
+    $("#error_tippdv_ins").html("").hide();
+    //
+
+    $("#dlg_tippdv_ins").dialog({
+        modal: true,
+        width: 480,
+        datatype: "xml",
+        buttons: {
+            "Cancelar": function () {
+                $(this).dialog("close");
+            },
+            "Enviar Datos": function () {
+                $.ajax({
+                    url: "tippdv",
+                    type: "post",
+                    datatype: "xml",
+                    data: {
+                        accion: "INS",
+                        nombre: $("#nomtippdv_ins").val(),
+                        descripcion: $("#destippdv_ins").val()
+                    },
+                    success: function (data) {
+                        var ctos = $(data).find("msg").size();
+
+                        if (ctos > 0) {
+                            var msg = "<ul>";
+                            $(data).find("msg").each(function () {
+                                msg += "<li>" + $(this).text() + "</li>";
+                            });
+                            msg += "</ul>";
+
+                            $("#error_tippdv_ins").html(msg).show();
+
+                        } else {
+                            $("#dlg_tippdv_ins").dialog("close");
+                            tippdvQry();
+                        }
+                    }
+                });
+            }
+        }
+    });
+}
+
+function tippdvDel(){
+    var ids = [];
+    $("input[name='idtippdv_del']:checked").each(function () {
+        ids.push($(this).val());
+    });
+    if (ids.length === 0) {
+        message("Advertencia", "Seleccione fila(s) a Retirar");
+    } else {
+        $("#p_message").html("¿Retirar registro(s)?");
+        $("#dlg_message").dialog({
+            modal: true,
+            width: 440,
+            buttons: {
+                "No": function () {
+                    $(this).dialog("close");
+                },
+                "Si": function () {
+                    $(this).dialog("close");
+
+                    $.ajax({
+                        url: "tippdv",
+                        type: "post",
+                        data: {
+                            accion: "DEL",
+                            ids: ids.toString()
+                        },
+                        success: function (error) {
+                            if (error.length !== 0) {
+                                message("Error", error);
+
+                            } else {
+                                //window.location = "Citas?accion=QRY";
+                            }
+                        }
+                    });
+                }
+            }
+        });
+    }
+}
+
+function tippdvUpd(){
+    var id = $("input[name='idtippdv_upd']:checked").val();
+    if (isNaN(id)) {
+        message("Advertencia", "Seleccione Fila para Actualizar Datos");
+    } else {
+        $.ajax({
+            url: "get.txt",
+            type: "post",
+            datatype: "txt",
+            data: {
+                accion: "GET",
+                idcita: id
+            },
+            success: function (data) {
+                var msg = $(data).find('msg').text();
+
+                if ($.trim(msg).length !== 0) {
+                    message("Data no Encontrada", msg);
+
+                } else {
+                    var idtippdv = $(data).find('id').attr('val');
+                    var nomtippdv = $(data).find('nombre').attr('val');
+                    var destippdv = $(data).find('descripcion').attr('val');
+
+
+                    $("#nomtippdv_upd").val(nomtippdv);
+                    $("#destippdv_upd").val(destippdv);
+
+                    $("#error_tippdv_upd").html("").hide();
+                    
+                    $("#dlg_tippdv_upd").dialog({
+                        modal: true,
+                        width: 480,
+                        datatype: "xml",
+                        buttons: {
+                            "Cancelar": function () {
+                                $(this).dialog("close");
+                            },
+                            "Enviar Datos": function () {
+                                $.ajax({
+                                    url: "tippdv",
+                                    type: "post",
+                                    datatype: "xml",
+                                    data: {
+                                        accion: "UPD",
+                                        id: idtippdv,
+                                        nombre: $("#nomtippdv").val(),
+                                        descripcion: $("#destippdv").val()
+                                    },
+                                    success: function (data) {
+                                        var ctos = $(data).find("msg").size();
+
+                                        if (ctos > 0) {
+                                            var msg = "<ul>";
+                                            $(data).find("msg").each(function () {
+                                                msg += "<li>" + $(this).text() + "</li>";
+                                            });
+                                            msg += "</ul>";
+
+                                            $("#error_tippdv_upd").html(msg).show();
+
+                                        } else {
+                                            $("#dlg_tippdv_upd").dialog("close");
+                                            tippdvQry();
+                                        }
+                                    }
+                                });
+                            }
+                        }
+                    });
+                }
+            }
+        });
+    }
+}
+
+
+// ==============================================================
+// Scripts Ubigeo
+// ==============================================================
+function ubigeoQry() {
+    $("#error_ubigeo_qry").html("").hide();
+    // solicita data para grilla pacientes
+    $.ajax({
+        url: "empresa.txt",
+        type: "post",
+        datatype: "txt",
+        data: {
+            accion: "QRY"
+        },
+        success: function (data) {
+            var msg = $(data).find('msg').text();
+
+            if ($.trim(msg).length !== 0) {
+                message("Data no Encontrada", msg);
+
+            } else {
+                var body = "";
+
+                $(data).find('fil').each(function () {
+                    var idubigeo        = $(this).find('col:eq(0)').text();
+                    var nomdepartamento = $(this).find('col:eq(1)').text();
+                    var nomprovincia    = $(this).find('col:eq(2)').text();
+                    var nomdistrito     = $(this).find('col:eq(3)').text();
+
+                    body += "<tr>"
+                            + "<td colspan=\"2\" id=\"nomdepartamento_" + idubigeo + "\">" + nomdepartamento + "</td>"
+                            + "<td colspan=\"2\" id=\"nomprovincia_" + idubigeo + "\">" + nomprovincia + "</td>"
+                            + "<td colspan=\"3\" id=\"nomdistrito_" + idubigeo + "\">" + nomdistrito + "</td>"
+                            + "<td><input type=\"checkbox\" name=\"idubigeo_del\" value=\"" + idubigeo + "\"/></td>"
+                            + "<td><input type=\"radio\" name=\"idubigeo_upd\" value=\"" + idubigeo + "\"/></td>"
+                            + "</tr>";
+                });
+
+                // pinta data en grilla ubigeos
+                $("#body_ubigeo").html(body);
+
+                // muestra diálogo con grilla
+                $("#dlg_ubigeo_qry").dialog({
+                    modal: true,
+                    width: 700,
+                    buttons: {
+                        "Cerrar": function () {
+                            $(this).dialog("close");
+                        }
+                    }
+                });
+            }
+        }
+    });
+}
+
+
+
+function ubigeoIns(){
+    // lectura para el combo Departamentos
+    $.ajax({
+        url: "combo.txt",
+        type: "post",
+        datatype: "txt",
+        data: {
+            accion: "CBO"
+        },
+        success: function (data) {
+            var msg = $(data).find('msg').text();
+
+            if ($.trim(msg).length !== 0) {
+                message("Data no Encontrada", msg);
+
+            } else {
+                var option = "";
+
+                $(data).find('op').each(function () {
+                    option += "<option value=\""
+                            + $(this).attr('id') + "\">"
+                            + $(this).text() + "</option>";
+                });
+
+                $("#iddepartamento_ins").html(option);
+                
+                // lectura para el combo de Provincia
+                $.ajax({
+                    url: "combo.txt",
+                    type: "post",
+                    datatype: "txt",
+                    data: {
+                        accion: "CBO"
+                    },
+                    success: function (data) {
+                        var msg = $(data).find('msg').text();
+
+                        if ($.trim(msg).length !== 0) {
+                            message("Data no Encontrada", msg);
+
+                        } else {
+                            var option = "";
+
+                            $(data).find('op').each(function () {
+                                option += "<option value=\""
+                                        + $(this).attr('id') + "\">"
+                                        + $(this).text() + "</option>";
+                            });
+
+                            $("#idprovincia_ins_ins").html(option);
+                            
+                            // lectura para el combo de Distritos
+                            $.ajax({
+                                url: "combo.txt",
+                                type: "post",
+                                datatype: "txt",
+                                data: {
+                                    accion: "CBO"
+                                },
+                                success: function (data) {
+                                    var msg = $(data).find('msg').text();
+
+                                    if ($.trim(msg).length !== 0) {
+                                        message("Data no Encontrada", msg);
+
+                                    } else {
+                                        var option = "";
+
+                                        $(data).find('op').each(function () {
+                                            option += "<option value=\""
+                                                    + $(this).attr('id') + "\">"
+                                                    + $(this).text() + "</option>";
+                                        });
+
+                                        $("#iddistrito_ins").html(option);
+                                        // ---
+                                        // combos cargaron data
+                                        $("#error_ubigeo_ins").html("").hide();
+
+                                        $("#dlg_ubigeo_ins").dialog({
+                                            modal: true,
+                                            width: 480,
+                                            buttons: {
+                                                "Cancelar": function () {
+                                                    $(this).dialog("close");
+                                                },
+                                                "Enviar Datos": function () {
+                                                    $.ajax({
+                                                        url: "ubigeo",
+                                                        type: "post",
+                                                        data: {
+                                                            accion: "INS",
+                                                            iddepartamento: $("#iddepartamento_ins").val(),
+                                                            idprovincia: $("#idprovincia_ins").val(),
+                                                            iddistrito: $("#iddistrito_ins").val()
+                                                        },
+                                                        success: function (error) {
+                                                            if (error.length !== 0) {
+                                                                $("#error_ubigeo_ins").html(error).show();
+
+                                                            } else {
+                                                                //window.location = "Citas?accion=QRY";
+                                                            }
+                                                        }
+                                                    });
+                                                }
+                                            }
+                                        });
+                                    }
+                                }
+                            });
+                        }
+                    }
+                });
+            }
+        }
+    });
+}
+
+
+function ubigeoUpd(){
+    var id = $("input[name='idubigeo_upd']:checked").val();
+    if (isNaN(id)) {
+        message("Advertencia", "Seleccione Fila para Actualizar Datos");
+    } else {
+        $.ajax({
+            url: "get.txt",
+            type: "post",
+            datatype: "txt",
+            data: {
+                accion: "GET",
+                idubigeo: id
+            },
+            success: function (data) {
+                var msg = $(data).find('msg').text();
+
+                if ($.trim(msg).length !== 0) {
+                    message("Data no Encontrada", msg);
+
+                } else {
+                    var ideubigeo        = $(data).find('id').attr('val');
+                    var idedepartamento  = $(data).find('iddepartamento').attr('val');
+                    var ideprovincia     = $(data).find('idprovincia').attr('val');
+                    var idedistrito      = $(data).find('iddistrito').attr('val');
+
+                    // Lectura para el combo de Departamento
+                    $.ajax({
+                        url: "combo.txt",
+                        type: "post",
+                        datatype: "txt",
+                        data: {
+                            accion: "CBO"
+                        },
+                        success: function (data) {
+                            var msg = $(data).find('msg').text();
+
+                            if ($.trim(msg).length !== 0) {
+                                message("Data no Encontrada", msg);
+
+                            } else {
+                                var option = "";
+
+                                $(data).find('op').each(function () {
+                                    option += "<option value=\""
+                                            + $(this).attr('id') + "\">"
+                                            + $(this).text() + "</option>";
+                                });
+
+                                $("#iddepartamento_upd").html(option);
+                                $("#iddepartamento_upd").val(idedepartamento);
+                                // ---
+                                // Lectura para el combo de Provincia
+                                $.ajax({
+                                    url: "combo.txt",
+                                    type: "post",
+                                    datatype: "txt",
+                                    data: {
+                                        accion: "CBO"
+                                    },
+                                    success: function (data) {
+                                        var msg = $(data).find('msg').text();
+
+                                        if ($.trim(msg).length !== 0) {
+                                            message("Data no Encontrada", msg);
+
+                                        } else {
+                                            var option = "";
+
+                                            $(data).find('op').each(function () {
+                                                option += "<option value=\""
+                                                        + $(this).attr('id') + "\">"
+                                                        + $(this).text() + "</option>";
+                                            });
+
+                                            $("#idprovincia_upd").html(option);
+                                            $("#idprovincia_upd").val(ideprovincia);
+                                            // ---
+                                            // Lectura para el combo de Distrito
+                                            $.ajax({
+                                                url: "combo.txt",
+                                                type: "post",
+                                                datatype: "txt",
+                                                data: {
+                                                    accion: "CBO"
+                                                },
+                                                success: function (data) {
+                                                    var msg = $(data).find('msg').text();
+
+                                                    if ($.trim(msg).length !== 0) {
+                                                        message("Data no Encontrada", msg);
+
+                                                    } else {
+                                                        var option = "";
+
+                                                        $(data).find('op').each(function () {
+                                                            option += "<option value=\""
+                                                                    + $(this).attr('id') + "\">"
+                                                                    + $(this).text() + "</option>";
+                                                        });
+
+                                                        $("#iddistrito_upd").html(option);
+                                                        $("#iddistrito_upd").val(idedistrito);
+                                                        // ---
+                                                        // ---
+                                                        // todo Ok
+                                                        $("#error_ubigeo_upd").html("").hide();
+
+                                                        $("#dlg_ubigeo_upd").dialog({
+                                                            modal: true,
+                                                            width: 480,
+                                                            buttons: {
+                                                                "Cancelar": function () {
+                                                                    $(this).dialog("close");
+                                                                },
+                                                                "Enviar Datos": function () {
+                                                                    $.ajax({
+                                                                        url: "ubigeo",
+                                                                        type: "post",
+                                                                        data: {
+                                                                            accion: "UPD",
+                                                                            id              : ideubigeo,
+                                                                            iddepartamento  : $("#iddepartamento_upd").val(),
+                                                                            idprovincia     : $("#idprovincia_upd").val(),
+                                                                            iddistrito      : $("#iddistrito_upd").val()
+                                                                        },
+                                                                        success: function (error) {
+                                                                            if (error.length !== 0) {
+                                                                                $("#error_ubigeo_upd").html(error).show();
+
+                                                                            } else {
+                                                                                //window.location = "Citas?accion=QRY";
+                                                                            }
+                                                                        }
+                                                                    });
+                                                                }
+                                                            }
+                                                        });
+                                                    }
+                                                }
+                                            });
+                                        }
+                                    }
+                                });
+
+                            }
+                        }
+                    });
+                }
+            }
+        });
+    }
+}
+
+function ubigeoDel(){
+    var ids = [];
+    $("input[name='idubigeo_del']:checked").each(function () {
+        ids.push($(this).val());
+    });
+    if (ids.length === 0) {
+        message("Advertencia", "Seleccione fila(s) a Retirar");
+    } else {
+        $("#p_message").html("¿Retirar registro(s)?");
+        $("#dlg_message").dialog({
+            modal: true,
+            width: 440,
+            buttons: {
+                "No": function () {
+                    $(this).dialog("close");
+                },
+                "Si": function () {
+                    $(this).dialog("close");
+
+                    $.ajax({
+                        url: "ubigeo",
+                        type: "post",
+                        data: {
+                            accion: "DEL",
+                            ids: ids.toString()
+                        },
+                        success: function (error) {
+                            if (error.length !== 0) {
+                                message("Error", error);
+
+                            } else {
+                                //window.location = "Citas?accion=QRY";
+                            }
+                        }
+                    });
+                }
+            }
+        });
+    }
+}
+
+// ==============================================================
+// Scripts Departamento
+// ==============================================================
+
+function departamentoQry() {
+    $("#error_departamento_qry").html("").hide();
+    // solicita data para grilla pacientes
+    $.ajax({
+        url: "empresa.txt",
+        type: "post",
+        datatype: "txt",
+        data: {
+            accion: "QRY"
+        },
+        success: function (data) {
+            var msg = $(data).find('msg').text();
+
+            if ($.trim(msg).length !== 0) {
+                message("Data no Encontrada", msg);
+
+            } else {
+                var body = "";
+
+                $(data).find('fil').each(function () {
+                    var iddepartamento = $(this).find('col:eq(0)').text();
+                    var nombre = $(this).find('col:eq(1)').text();
+                    var descripcion = $(this).find('col:eq(2)').text();
+
+                    body += "<tr>"
+                            + "<td id=\"nombre_" + iddepartamento + "\">" + nombre + "</td>"
+                            + "<td colspan=\"2\" id=\"descripcion_" + iddepartamento + "\">" + descripcion + "</td>"
+                            + "<td><input type=\"checkbox\" name=\"iddepartamento_del\" value=\"" + iddepartamento + "\"/></td>"
+                            + "<td><input type=\"radio\" name=\"iddepartamento_upd\" value=\"" + iddepartamento + "\"/></td>"
+                            + "</tr>";
+                });
+
+                // pinta data en grilla departamentos
+                $("#body_departamento").html(body);
+
+                // muestra diálogo con grilla
+                $("#dlg_departamento_qry").dialog({
+                    modal: true,
+                    width: 500,
+                    buttons: {
+                        "Cerrar": function () {
+                            $(this).dialog("close");
+                        }
+                    }
+                });
+            }
+        }
+    });
+}
+
+function departamentoIns(){
+    $("#error_departamento_ins").html("").hide();
+    //
+
+    $("#dlg_departamento_ins").dialog({
+        modal: true,
+        width: 480,
+        datatype: "xml",
+        buttons: {
+            "Cancelar": function () {
+                $(this).dialog("close");
+            },
+            "Enviar Datos": function () {
+                $.ajax({
+                    url: "departamento",
+                    type: "post",
+                    datatype: "xml",
+                    data: {
+                        accion: "INS",
+                        nombre: $("#nomdepartamento_ins").val(),
+                        descripcion: $("#desdepartamento_ins").val()
+                    },
+                    success: function (data) {
+                        var ctos = $(data).find("msg").size();
+
+                        if (ctos > 0) {
+                            var msg = "<ul>";
+                            $(data).find("msg").each(function () {
+                                msg += "<li>" + $(this).text() + "</li>";
+                            });
+                            msg += "</ul>";
+
+                            $("#error_departamento_ins").html(msg).show();
+
+                        } else {
+                            $("#dlg_departamento_ins").dialog("close");
+                            departamentoQry();
+                        }
+                    }
+                });
+            }
+        }
+    });
+}
+
+function departamentoDel(){
+    var ids = [];
+    $("input[name='iddepartamento_del']:checked").each(function () {
+        ids.push($(this).val());
+    });
+    if (ids.length === 0) {
+        message("Advertencia", "Seleccione fila(s) a Retirar");
+    } else {
+        $("#p_message").html("¿Retirar registro(s)?");
+        $("#dlg_message").dialog({
+            modal: true,
+            width: 440,
+            buttons: {
+                "No": function () {
+                    $(this).dialog("close");
+                },
+                "Si": function () {
+                    $(this).dialog("close");
+
+                    $.ajax({
+                        url: "departamento",
+                        type: "post",
+                        data: {
+                            accion: "DEL",
+                            ids: ids.toString()
+                        },
+                        success: function (error) {
+                            if (error.length !== 0) {
+                                message("Error", error);
+
+                            } else {
+                                //window.location = "Citas?accion=QRY";
+                            }
+                        }
+                    });
+                }
+            }
+        });
+    }
+}
+
+function departamentoUpd(){
+    var id = $("input[name='iddepartamento_upd']:checked").val();
+    if (isNaN(id)) {
+        message("Advertencia", "Seleccione Fila para Actualizar Datos");
+    } else {
+        $.ajax({
+            url: "get.txt",
+            type: "post",
+            datatype: "txt",
+            data: {
+                accion: "GET",
+                iddepartamento: id
+            },
+            success: function (data) {
+                var msg = $(data).find('msg').text();
+
+                if ($.trim(msg).length !== 0) {
+                    message("Data no Encontrada", msg);
+
+                } else {
+                    var iddepartamento = $(data).find('id').attr('val');
+                    var nomdepartamento = $(data).find('nombre').attr('val');
+                    var desdepartamento = $(data).find('descripcion').attr('val');
+
+
+                    $("#nomdepartamento_upd").val(nomdepartamento);
+                    $("#desdepartamento_upd").val(desdepartamento);
+
+                    $("#error_departamento_upd").html("").hide();
+                    
+                    $("#dlg_departamento_upd").dialog({
+                        modal: true,
+                        width: 480,
+                        datatype: "xml",
+                        buttons: {
+                            "Cancelar": function () {
+                                $(this).dialog("close");
+                            },
+                            "Enviar Datos": function () {
+                                $.ajax({
+                                    url: "departamento",
+                                    type: "post",
+                                    datatype: "xml",
+                                    data: {
+                                        accion: "UPD",
+                                        id: iddepartamento,
+                                        nombre: $("#nomdepartamento_upd").val(),
+                                        descripcion: $("#desdepartamento_upd").val()
+                                    },
+                                    success: function (data) {
+                                        var ctos = $(data).find("msg").size();
+
+                                        if (ctos > 0) {
+                                            var msg = "<ul>";
+                                            $(data).find("msg").each(function () {
+                                                msg += "<li>" + $(this).text() + "</li>";
+                                            });
+                                            msg += "</ul>";
+
+                                            $("#error_departamento_upd").html(msg).show();
+
+                                        } else {
+                                            $("#dlg_departamento_upd").dialog("close");
+                                            departamentoQry();
+                                        }
+                                    }
+                                });
+                            }
+                        }
+                    });
+                }
+            }
+        });
+    }
+}
+
+
+// ==============================================================
+// Scripts Provincia
+// ==============================================================
+
+function provinciaQry() {
+    $("#error_provincia_qry").html("").hide();
+    // solicita data para grilla pacientes
+    $.ajax({
+        url: "empresa.txt",
+        type: "post",
+        datatype: "txt",
+        data: {
+            accion: "QRY"
+        },
+        success: function (data) {
+            var msg = $(data).find('msg').text();
+
+            if ($.trim(msg).length !== 0) {
+                message("Data no Encontrada", msg);
+
+            } else {
+                var body = "";
+
+                $(data).find('fil').each(function () {
+                    var idprovincia = $(this).find('col:eq(0)').text();
+                    var nomdepartamento = $(this).find('col:eq(1)').text();
+                    var nombre = $(this).find('col:eq(2)').text();
+                    var descripcion = $(this).find('col:eq(3)').text();
+
+                    body += "<tr>"
+                            + "<td colspan=\"2\" id=\"nomdepartamento_" + idprovincia + "\">" + nomdepartamento + "</td>"
+                            + "<td id=\"nombre_" + idprovincia + "\">" + nombre + "</td>"
+                            + "<td colspan=\"2\" id=\"descripcion_" + idprovincia + "\">" + descripcion + "</td>"
+                            + "<td><input type=\"checkbox\" name=\"idprovincia_del\" value=\"" + idprovincia + "\"/></td>"
+                            + "<td><input type=\"radio\" name=\"idprovincia_upd\" value=\"" + idprovincia + "\"/></td>"
+                            + "</tr>";
+                });
+
+                // pinta data en grilla provincias
+                $("#body_provincia").html(body);
+
+                // muestra diálogo con grilla
+                $("#dlg_provincia_qry").dialog({
+                    modal: true,
+                    width: 500,
+                    buttons: {
+                        "Cerrar": function () {
+                            $(this).dialog("close");
+                        }
+                    }
+                });
+            }
+        }
+    });
+}
+
+function provinciaIns(){
+    // lectura para el combo Departamentos
+    $.ajax({
+        url: "combo.txt",
+        type: "post",
+        datatype: "txt",
+        data: {
+            accion: "CBO"
+        },
+        success: function (data) {
+            var msg = $(data).find('msg').text();
+
+            if ($.trim(msg).length !== 0) {
+                message("Data no Encontrada", msg);
+
+            } else {
+                var option = "";
+
+                $(data).find('op').each(function () {
+                    option += "<option value=\""
+                            + $(this).attr('id') + "\">"
+                            + $(this).text() + "</option>";
+                });
+
+                $("#iddepartamento_ins").html(option);
+                
+                // ---
+                // combos cargaron data
+                $("#error_provincia_ins").html("").hide();
+
+                $("#dlg_provincia_ins").dialog({
+                    modal: true,
+                    width: 480,
+                    buttons: {
+                        "Cancelar": function () {
+                            $(this).dialog("close");
+                        },
+                        "Enviar Datos": function () {
+                            $.ajax({
+                                url: "provincia",
+                                type: "post",
+                                data: {
+                                    accion: "INS",
+                                    iddepartamento: $("#iddepartamento_ins").val(),
+                                    nombre: $("#nomprovincia_ins").val(),
+                                    descripcion: $("#desprovincia_ins").val()
+                                },
+                                success: function (error) {
+                                    if (error.length !== 0) {
+                                        $("#error_provincia_ins").html(error).show();
+
+                                    } else {
+                                        //window.location = "Citas?accion=QRY";
+                                    }
+                                }
+                            });
+                        }
+                    }
+                });
+            }
+        }
+    });
+}
+
+function provinciaDel(){
+    var ids = [];
+    $("input[name='idprovincia_del']:checked").each(function () {
+        ids.push($(this).val());
+    });
+    if (ids.length === 0) {
+        message("Advertencia", "Seleccione fila(s) a Retirar");
+    } else {
+        $("#p_message").html("¿Retirar registro(s)?");
+        $("#dlg_message").dialog({
+            modal: true,
+            width: 440,
+            buttons: {
+                "No": function () {
+                    $(this).dialog("close");
+                },
+                "Si": function () {
+                    $(this).dialog("close");
+
+                    $.ajax({
+                        url: "provincia",
+                        type: "post",
+                        data: {
+                            accion: "DEL",
+                            ids: ids.toString()
+                        },
+                        success: function (error) {
+                            if (error.length !== 0) {
+                                message("Error", error);
+
+                            } else {
+                                //window.location = "Citas?accion=QRY";
+                            }
+                        }
+                    });
+                }
+            }
+        });
+    }
+}
+
+function provinciaUpd(){
+    var id = $("input[name='idprovincia_upd']:checked").val();
+    if (isNaN(id)) {
+        message("Advertencia", "Seleccione Fila para Actualizar Datos");
+    } else {
+        $.ajax({
+            url: "get.txt",
+            type: "post",
+            datatype: "txt",
+            data: {
+                accion: "GET",
+                idprovincia: id
+            },
+            success: function (data) {
+                var msg = $(data).find('msg').text();
+
+                if ($.trim(msg).length !== 0) {
+                    message("Data no Encontrada", msg);
+
+                } else {
+                    var idprovincia = $(data).find('id').attr('val');
+                    var nomprovincia = $(data).find('nombre').attr('val');
+                    var desprovincia = $(data).find('descripcion').attr('val');
+                    var iddepartamento = $(data).find('iddepartamento').attr('val');
+
+                    $("#nomprovincia_upd").val(nomprovincia);
+                    $("#desprovincia_upd").val(desprovincia);
+
+                    // lectura para el combo Departamento
+                    $.ajax({
+                        url: "combo.txt",
+                        type: "post",
+                        datatype: "txt",
+                        data: {
+                            accion: "CBO"
+                        },
+                        success: function (data) {
+                            var msg = $(data).find('msg').text();
+
+                            if ($.trim(msg).length !== 0) {
+                                message("Data no Encontrada", msg);
+
+                            } else {
+                                var option = "";
+
+                                $(data).find('op').each(function () {
+                                    option += "<option value=\""
+                                            + $(this).attr('id') + "\">"
+                                            + $(this).text() + "</option>";
+                                });
+
+                                $("#iddepartamento_upd").html(option);
+                                $("#iddepartamento_upd").val(iddepartamento);
+
+                                // ----
+                                $("#error_provincia_upd").html("").hide();
+                                
+                                $("#dlg_provincia_upd").dialog({
+                                    modal: true,
+                                    width: 480,
+                                    datatype: "xml",
+                                    buttons: {
+                                        "Cancelar": function () {
+                                            $(this).dialog("close");
+                                        },
+                                        "Enviar Datos": function () {
+                                            $.ajax({
+                                                url: "provincia",
+                                                type: "post",
+                                                datatype: "xml",
+                                                data: {
+                                                    accion: "UPD",
+                                                    id: idprovincia,
+                                                    iddepartamento: $("#iddepartamento_upd").val(),
+                                                    nombre: $("#nomprovincia_upd").val(),
+                                                    descripcion: $("#desprovincia_upd").val()
+                                                },
+                                                success: function (data) {
+                                                    var ctos = $(data).find("msg").size();
+
+                                                    if (ctos > 0) {
+                                                        var msg = "<ul>";
+                                                        $(data).find("msg").each(function () {
+                                                            msg += "<li>" + $(this).text() + "</li>";
+                                                        });
+                                                        msg += "</ul>";
+
+                                                        $("#error_provincia_upd").html(msg).show();
+
+                                                    } else {
+                                                        $("#dlg_provincia_upd").dialog("close");
+                                                        provinciaQry();
+                                                    }
+                                                }
+                                            });
+                                        }
+                                    }
+                                });
+                            }
+                        }
+                    });
+                }
+            }
+        });
+    }
+}
+
+// ==============================================================
+// Scripts Distrito
+// ==============================================================
+
+function distritoQry() {
+    $("#error_distrito_qry").html("").hide();
+    // solicita data para grilla pacientes
+    $.ajax({
+        url: "empresa.txt",
+        type: "post",
+        datatype: "txt",
+        data: {
+            accion: "QRY"
+        },
+        success: function (data) {
+            var msg = $(data).find('msg').text();
+
+            if ($.trim(msg).length !== 0) {
+                message("Data no Encontrada", msg);
+
+            } else {
+                var body = "";
+
+                $(data).find('fil').each(function () {
+                    var iddistrito = $(this).find('col:eq(0)').text();
+                    var nomdepartamento = $(this).find('col:eq(1)').text();
+                    var nomprovincia = $(this).find('col:eq(2)').text();
+                    var nombre = $(this).find('col:eq(3)').text();
+                    var descripcion = $(this).find('col:eq(4)').text();
+
+                    body += "<tr>"
+                            + "<td colspan=\"2\" id=\"nomdepartamento_" + iddistrito + "\">" + nomdepartamento + "</td>"
+                            + "<td colspan=\"2\" id=\"nomprovincia_" + iddistrito + "\">" + nomprovincia + "</td>"
+                            + "<td id=\"nombre_" + iddistrito + "\">" + nombre + "</td>"
+                            + "<td colspan=\"2\" id=\"descripcion_" + iddistrito + "\">" + descripcion + "</td>"
+                            + "<td><input type=\"checkbox\" name=\"iddistrito_del\" value=\"" + iddistrito + "\"/></td>"
+                            + "<td><input type=\"radio\" name=\"iddistrito_upd\" value=\"" + iddistrito + "\"/></td>"
+                            + "</tr>";
+                });
+
+                // pinta data en grilla distritos
+                $("#body_distrito").html(body);
+
+                // muestra diálogo con grilla
+                $("#dlg_distrito_qry").dialog({
+                    modal: true,
+                    width: 700,
+                    buttons: {
+                        "Cerrar": function () {
+                            $(this).dialog("close");
+                        }
+                    }
+                });
+            }
+        }
+    });
+}
+
+function distritoIns(){
+    // lectura para el combo Departamentos
+    $.ajax({
+        url: "combo.txt",
+        type: "post",
+        datatype: "txt",
+        data: {
+            accion: "CBO"
+        },
+        success: function (data) {
+            var msg = $(data).find('msg').text();
+
+            if ($.trim(msg).length !== 0) {
+                message("Data no Encontrada", msg);
+
+            } else {
+                var option = "";
+
+                $(data).find('op').each(function () {
+                    option += "<option value=\""
+                            + $(this).attr('id') + "\">"
+                            + $(this).text() + "</option>";
+                });
+
+                $("#iddepartamento_ins").html(option);
+                
+                // lectura para el combo Provincias
+                $.ajax({
+                    url: "combo.txt",
+                    type: "post",
+                    datatype: "txt",
+                    data: {
+                        accion: "CBO"
+                    },
+                    success: function (data) {
+                        var msg = $(data).find('msg').text();
+
+                        if ($.trim(msg).length !== 0) {
+                            message("Data no Encontrada", msg);
+
+                        } else {
+                            var option = "";
+
+                            $(data).find('op').each(function () {
+                                option += "<option value=\""
+                                        + $(this).attr('id') + "\">"
+                                        + $(this).text() + "</option>";
+                            });
+
+                            $("#idprovincia_ins").html(option);
+                            
+                            // ---
+                            // combos cargaron data
+                            $("#error_distrito_ins").html("").hide();
+
+                            $("#dlg_distrito_ins").dialog({
+                                modal: true,
+                                width: 480,
+                                buttons: {
+                                    "Cancelar": function () {
+                                        $(this).dialog("close");
+                                    },
+                                    "Enviar Datos": function () {
+                                        $.ajax({
+                                            url: "distrito",
+                                            type: "post",
+                                            data: {
+                                                accion: "INS",
+                                                iddepartamento: $("#iddepartamento_ins").val(),
+                                                idprovincia: $("#idprovincia_ins").val(),
+                                                nombre: $("#nomdistrito_ins").val(),
+                                                descripcion: $("#desdistrito_ins").val()
+                                            },
+                                            success: function (error) {
+                                                if (error.length !== 0) {
+                                                    $("#error_distrito_ins").html(error).show();
+
+                                                } else {
+                                                    //window.location = "Citas?accion=QRY";
+                                                }
+                                            }
+                                        });
+                                    }
+                                }
+                            });
+                        }
+                    }
+                });
+            }
+        }
+    });
+}
+
+function distritoDel(){
+    var ids = [];
+    $("input[name='iddistrito_del']:checked").each(function () {
+        ids.push($(this).val());
+    });
+    if (ids.length === 0) {
+        message("Advertencia", "Seleccione fila(s) a Retirar");
+    } else {
+        $("#p_message").html("¿Retirar registro(s)?");
+        $("#dlg_message").dialog({
+            modal: true,
+            width: 440,
+            buttons: {
+                "No": function () {
+                    $(this).dialog("close");
+                },
+                "Si": function () {
+                    $(this).dialog("close");
+
+                    $.ajax({
+                        url: "distrito",
+                        type: "post",
+                        data: {
+                            accion: "DEL",
+                            ids: ids.toString()
+                        },
+                        success: function (error) {
+                            if (error.length !== 0) {
+                                message("Error", error);
+
+                            } else {
+                                //window.location = "Citas?accion=QRY";
+                            }
+                        }
+                    });
+                }
+            }
+        });
+    }
+}
+
+function distritoUpd(){
+    var id = $("input[name='iddistrito_upd']:checked").val();
+    if (isNaN(id)) {
+        message("Advertencia", "Seleccione Fila para Actualizar Datos");
+    } else {
+        $.ajax({
+            url: "get.txt",
+            type: "post",
+            datatype: "txt",
+            data: {
+                accion: "GET",
+                iddistrito: id
+            },
+            success: function (data) {
+                var msg = $(data).find('msg').text();
+
+                if ($.trim(msg).length !== 0) {
+                    message("Data no Encontrada", msg);
+
+                } else {
+                    var iddistrito = $(data).find('id').attr('val');
+                    var nomdistrito = $(data).find('nombre').attr('val');
+                    var desdistrito = $(data).find('descripcion').attr('val');
+                    var iddepartamento = $(data).find('iddepartamento').attr('val');
+                    var idprovincia = $(data).find('idprovincia').attr('val');
+
+                    $("#nomdistrito_upd").val(nomdistrito);
+                    $("#desdistrito_upd").val(desdistrito);
+
+                    // lectura para el combo Departamento
+                    $.ajax({
+                        url: "combo.txt",
+                        type: "post",
+                        datatype: "txt",
+                        data: {
+                            accion: "CBO"
+                        },
+                        success: function (data) {
+                            var msg = $(data).find('msg').text();
+
+                            if ($.trim(msg).length !== 0) {
+                                message("Data no Encontrada", msg);
+
+                            } else {
+                                var option = "";
+
+                                $(data).find('op').each(function () {
+                                    option += "<option value=\""
+                                            + $(this).attr('id') + "\">"
+                                            + $(this).text() + "</option>";
+                                });
+
+                                $("#iddepartamento_upd").html(option);
+                                $("#iddepartamento_upd").val(iddepartamento);
+
+                                // lectura para el combo de Provincia
+                                $.ajax({
+                                    url: "combo.txt",
+                                    type: "post",
+                                    datatype: "txt",
+                                    data: {
+                                        accion: "CBO"
+                                    },
+                                    success: function (data) {
+                                        var msg = $(data).find('msg').text();
+
+                                        if ($.trim(msg).length !== 0) {
+                                            message("Data no Encontrada", msg);
+
+                                        } else {
+                                            var option = "";
+
+                                            $(data).find('op').each(function () {
+                                                option += "<option value=\""
+                                                        + $(this).attr('id') + "\">"
+                                                        + $(this).text() + "</option>";
+                                            });
+
+                                            $("#idprovincia_upd").html(option);
+                                            $("#idprovincia_upd").val(idprovincia);
+
+                                            // Combos Ok
+                                            // ----
+                                            $("#error_distrito_upd").html("").hide();
+                                            
+                                            $("#dlg_distrito_upd").dialog({
+                                                modal: true,
+                                                width: 480,
+                                                datatype: "xml",
+                                                buttons: {
+                                                    "Cancelar": function () {
+                                                        $(this).dialog("close");
+                                                    },
+                                                    "Enviar Datos": function () {
+                                                        $.ajax({
+                                                            url: "distrito",
+                                                            type: "post",
+                                                            datatype: "xml",
+                                                            data: {
+                                                                accion: "UPD",
+                                                                id: iddistrito,
+                                                                iddepartamento: $("#iddepartamento_upd").val(),
+                                                                idprovincia: $("#idprovincia_upd").val(),
+                                                                nombre: $("#nomdistrito_upd").val(),
+                                                                descripcion: $("#desdistrito_upd").val()
+                                                            },
+                                                            success: function (data) {
+                                                                var ctos = $(data).find("msg").size();
+
+                                                                if (ctos > 0) {
+                                                                    var msg = "<ul>";
+                                                                    $(data).find("msg").each(function () {
+                                                                        msg += "<li>" + $(this).text() + "</li>";
+                                                                    });
+                                                                    msg += "</ul>";
+
+                                                                    $("#error_distrito_upd").html(msg).show();
+
+                                                                } else {
+                                                                    $("#dlg_distrito_upd").dialog("close");
+                                                                    distritoQry();
+                                                                }
+                                                            }
+                                                        });
+                                                    }
+                                                }
+                                            });
+                                        }
+                                    }
+                                });
+
+                            }
+                        }
+                    });
+                }
+            }
+        });
+    }
+}

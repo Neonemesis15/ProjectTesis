@@ -1,0 +1,94 @@
+<%@ page pageEncoding="UTF-8" %>
+<div style = "display: none">
+	<div id="dlg_ubigeo_qry" title="Lista de ubigeo" style="padding: 30px; padding-bottom: 10px">
+		<table class="parainfo" style="width: 100%">
+			<thead>
+				<tr>
+                    <th class = "crud">
+                        <a class="qry" href="#" onclick="departamentoQry()" title="Lista de Empresas">
+                            <span></span>
+                        </a>
+                    </th>
+                    <td>Departamento</td>
+                    <th class = "crud">
+                        <a class="qry" href="#" onclick="provinciaQry()" title="Lista de Categorias">
+                            <span></span>
+                        </a>
+                    </th>
+                    <td>Provincia</td>
+                    <th class = "crud">
+                        <a class="qry" href="#" onclick="distritoQry()" title="Lista de Marcas">
+                            <span></span>
+                        </a>
+                    </th>
+                    <td>Distrito</td>
+					<th class="crud"><a class="ins" href="#" onclick="ubigeoIns();"
+						title="Nuevo Registro"><span></span></a></th>
+					<th class="crud"><a class="del" href="#" onclick="ubigeoDel();"
+						title="Eliminar Registro"><span></span></a></th>
+					<th class="crud"><a class="upd" href="#" onclick="ubigeoUpd();"
+						title="Actualizar Registro"><span></span></a></th>
+				</tr>
+			</thead>
+			<tbody id="body_ubigeo"></tbody>
+		</table>
+		<div id="error_ubigeo_qry" class="msg_error ui-state-highlight ui-corner-all"></div>
+	</div>
+</div>
+
+<div style="display: none">
+    <div id="dlg_ubigeo_ins" title="Registar ubigeo">
+        <form class="parainfo">
+            <table class="tabla">
+                <tr>
+                    <td>Departamento:</td>
+                    <td>
+                        <select id="iddepartamento_ins" style="width: 310px"></select>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Provincia:</td>
+                    <td>
+                        <select id="idprovincia_ins" style="width: 310px"></select>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Distrito:</td>
+                    <td>
+                        <select id="iddistrito_ins" style="width: 310px"></select>
+                    </td>
+                </tr>
+            </table>
+        </form>
+        <div id="error_ubigeo_ins" class="msg_error ui-state-highlight ui-corner-all"></div>
+    </div>
+</div>
+
+
+<div style="display: none">
+    <div id="dlg_ubigeo_upd" title="Registar ubigeo">
+        <form class="parainfo">
+            <table class="tabla">
+                <tr>
+                    <td>Departamento:</td>
+                    <td>
+                        <select id="iddepartamento_upd" style="width: 310px"></select>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Categoria:</td>
+                    <td>
+                        <select id="idprovincia_upd" style="width: 310px"></select>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Marca:</td>
+                    <td>
+                        <select id="iddistrito_upd" style="width: 310px"></select>
+                    </td>
+                </tr>
+            </table>
+        </form>
+        <div id="error_ubigeo_upd" class="msg_error ui-state-highlight ui-corner-all"></div>
+    </div>
+</div>

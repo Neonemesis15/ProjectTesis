@@ -4,17 +4,17 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
 <head>
-	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-	<title>Gestion de usuarios</title>
-	<link href="css/main.css" type="text/css" rel="stylesheet"/>
-	<link href="js/menu/menu.css" rel="stylesheet" type="text/css"/>
-	<link href="js/jquery-ui.min.css" type="text/css" rel="stylesheet"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>Gestion de Puntos de Venta</title>
+    <link href="css/main.css" type="text/css" rel="stylesheet"/>
+    <link href="js/menu/menu.css" rel="stylesheet" type="text/css"/>
+    <link href="js/jquery-ui.min.css" type="text/css" rel="stylesheet"/>
     <link href="sige/table.css" type="text/css" rel="stylesheet"/>
     <link href="sige/form.css" type="text/css" rel="stylesheet"/>
     <link href="sige/message.css" type="text/css" rel="stylesheet"/>
     <link href="js/timepicker/jquery-ui-timepicker-addon.css" rel="stylesheet" type="text/css"/>
 
-   	<script src="js/jquery-2.1.4.min.js" type="text/javascript"></script>
+    <script src="js/jquery-2.1.4.min.js" type="text/javascript"></script>
     <script src="js/jquery-ui.min.js" type="text/javascript"></script>
     <script src="sige/table.js" type="text/javascript"></script>
     <script src="sige/form.js" type="text/javascript"></script>
@@ -33,16 +33,68 @@
             <%@ include file="menu2.jsp"%>
         </div>
         <div id="m_body">
-
+            <table class="parainfo" style="margin: auto;width: 800px">
+                <thead>
+                    <tr>
+                        <th class = "crud">
+                            <a class="upd" href="#" onclick="pdvUpd();" title="Actualizar Registro">
+                                <span></span>
+                            </a>
+                        </th>
+                        <th class = "crud">
+                            <a class="del" href="#" onclick="pdvDel();" title="Eliminar Registro">
+                                <span></span>
+                            </a>
+                        </th>
+                        <th class = "crud">
+                            <a class="ins" href="#" onclick="pdvIns();" title="Agregar Registro">
+                                <span></span>
+                            </a>
+                        </th>
+                        <td>Razon Social</td>
+                        <td>Direccion</td>
+                        <td>Telefono</td>
+                        <th class = "crud">
+                            <a class="qry" href="#" onclick="tippdvQry()" title="Lista de Tipos de PDV">
+                                <span></span>
+                            </a>
+                        </th>
+                        <td>Tipo de PDV</td>
+                        <th class = "crud">
+                            <a class="qry" href="#" onclick="ubigeoQry()" title="Lista de Ubigeo">
+                                <span></span>
+                            </a>
+                        </th>
+                        <td>Ubigeo</td>
+                    </tr>
+                </thead>
+                <tbody>
+                    <c:forEach var="reg" items="${list}">
+                        <tr>
+                            <th>
+                                <input type="radio" name="idpdv_upd" value="${reg[0]}"/>
+                            </th>
+                            <th>
+                                <input type="checkbox" name="idpdv_del" value="${reg[0]}"/>
+                            </th>
+                            <td colspan="2">${reg[1]}</td>
+                            <td>${reg[2]}</td>
+                            <td>${reg[3]}</td>
+                            <td colspan="2">${reg[4]}</td>
+                            <td colspan="2">${reg[5]}</td>
+                        </tr>
+                    </c:forEach>   
+                </tbody>
+            </table>
         </div>
         <%-- diálogos de edición--%>
-        <%-- <%@include file="WEB-INF/jspf/tpdv.jspf" %> --%>
-        <%-- <%@include file="WEB-INF/jspf/ubigeo.jspf" %> --%>
-        <%-- <%@include file="WEB-INF/jspf/departamento.jspf" %> --%>
-        <%-- <%@include file="WEB-INF/jspf/provincia.jspf" %> --%>
-        <%-- <%@include file="WEB-INF/jspf/distrito.jspf" %> --%>
-
-        <%-- <%@include file="WEB-INF/jspf/pdv.jspf" %> --%>
+        <%@include file="WEB-INF/jspf/tippdv.jspf" %> 
+        <%@include file="WEB-INF/jspf/ubigeo.jspf" %> 
+        <%@include file="WEB-INF/jspf/departamento.jspf" %> 
+        <%@include file="WEB-INF/jspf/provincia.jspf" %> 
+        <%@include file="WEB-INF/jspf/distrito.jspf" %> 
+        
+        <%@include file="WEB-INF/jspf/pdv.jspf" %>
 
         <%-- mensajes del servidor --%>
         <c:if test="${msg != null}">

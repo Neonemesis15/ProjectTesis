@@ -1,0 +1,81 @@
+<%@ page pageEncoding="UTF-8" %>
+<div style="display: none">
+    <div id="dlg_pdv_ins" title="Nuevo Punto de Venta">
+        <form class="parainfo">
+        	<table class="tabla">
+                <tr>
+                    <td>Razón Social:</td>
+                    <td>
+                        <input type="text" id="razon_ins" style="width: 300px"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Direccion:</td>
+                    <td>
+                        <input type="text" id="direccion_ins" style="width: 300px"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Telefono:</td>
+                    <td>
+                        <input type="text" id="telefono_ins" style="width: 300px;margin-right: 2px"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Tipo de PDV:</td>
+                    <td>
+                        <select id="idtippdv_ins" style="width: 310px"></select>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Ubigeo:</td>
+                    <td>
+                        <select id="idubigeo" style="width: 310px"></select>
+                    </td>
+                </tr>                
+        	</table>
+        </form>
+        <div id="error_pdv_ins" class="msg_error ui-state-highlight ui-corner-all"></div>
+    </div>
+</div>
+
+<div style="display: none">
+    <div id="dlg_pdv_upd" title="Cambiar pdv">
+    	<form class="parainfo">
+    		<input type="hidden" id="idpdv_upd"/>
+        	<table class="tabla">
+                <tr>
+                    <td>Razón Social:</td>
+                    <td>
+                        <input type="text" id="razon_upd" style="width: 300px"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Direccion:</td>
+                    <td>
+                        <input type="text" id="direccion_upd" style="width: 300px"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Telefono:</td>
+                    <td>
+                        <input type="text" id="telefono_upd" style="width: 300px;margin-right: 2px"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Tipo de PDV:</td>
+                    <td>
+                        <select id="idtippdv_upd" style="width: 310px"></select>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Ubigeo:</td>
+                    <td>
+                        <select id="idubigeo" style="width: 310px"></select>
+                    </td>
+                </tr>                 
+        	</table>
+    	</form>
+    	<div id="error_pdv_upd" class="msg_error ui-state-highlight ui-corner-all"></div>
+    </div>
+</div>
