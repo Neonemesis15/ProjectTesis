@@ -1,0 +1,84 @@
+<%@ page pageEncoding="UTF-8" %>
+<div style = "display: none">
+	<div id="dlg_provincia_qry" title="Lista de provincias" style="padding: 30px; padding-bottom: 10px">
+		<table class="parainfo" style="width: 100%">
+			<thead>
+				<tr>
+                    <th class = "crud">
+                        <a class="qry" href="#" onclick="departamentoQry()" title="Lista de Departamento">
+                            <span></span>
+                        </a>
+                    </th>
+                    <td>Departamento</td>
+					<td>Nombres</td>
+					<td>Descripción</td>
+					<th class="crud"><a class="ins" href="#" onclick="provinciaIns();"
+						title="Nuevo Registro"><span></span></a></th>
+					<th class="crud"><a class="del" href="#" onclick="provinciaDel();"
+						title="Eliminar Registro"><span></span></a></th>
+					<th class="crud"><a class="upd" href="#" onclick="provinciaUpd();"
+						title="Actualizar Registro"><span></span></a></th>
+				</tr>
+			</thead>
+			<tbody id="body_provincia"></tbody>
+		</table>
+		<div id="error_provincia_qry" class="msg_error ui-state-highlight ui-corner-all"></div>
+	</div>
+</div>
+
+<div style="display: none">
+    <div id="dlg_provincia_ins" title="Registar provincia">
+        <form class="parainfo">
+            <table class="tabla">
+                <tr>
+                    <td>Departamento:</td>
+                    <td>
+                        <select id="iddepartamento_ins" style="width: 310px"></select>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Nombre:</td>
+                    <td>
+                        <input type="text" id="nomprovincia_ins" style="width: 300px"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Descripción:</td>
+                    <td>
+                        <input type="text" id="desprovincia_ins" style="width: 300px"/>
+                    </td>
+                </tr>
+            </table>
+        </form>
+        <div id="error_provincia_ins" class="msg_error ui-state-highlight ui-corner-all"></div>
+    </div>
+</div>
+
+
+<div style="display: none">
+    <div id="dlg_provincia_upd" title="Actualizar provincia">
+        <form class="parainfo">
+            <table class="tabla">
+                <tr>
+                    <td>Departamento:</td>
+                    <td>
+                        <select id="iddepartamento_upd" style="width: 310px"></select>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Nombre:</td>
+                    <td>
+                        <input type="text" id="nomprovincia_upd" style="width: 300px"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Descripción:</td>
+                    <td>
+                        <input type="text" id="desprovincia_upd" style="width: 300px"/>
+                    </td>
+                </tr>
+            </table>
+        </form>
+        <div id="error_provincia_upd" class="msg_error ui-state-highlight ui-corner-all"></div>
+    </div>
+</div>
