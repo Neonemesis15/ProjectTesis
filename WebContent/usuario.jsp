@@ -24,6 +24,7 @@
 </head>
 <body>
 	<div id="m_main">
+		
 		<div id="m_top">
 		    Usuario: ${usuarios.nombres} ${usuarios.apellidos}
 		</div>

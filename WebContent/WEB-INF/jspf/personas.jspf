@@ -1,6 +1,6 @@
 <%@ page pageEncoding="UTF-8" %>
 <div style = "display: none">
-	<div id="dlg_personas_qry" title="Lista de Personas" style="padding: 30px; padding-bottom: 10px">
+	<div id="dlg_persona_qry" title="Lista de Personas" style="padding: 30px; padding-bottom: 10px">
 		<table class="parainfo" style="width: 100%">
 			<thead>
 				<tr>
@@ -8,7 +8,7 @@
 					<td>Primer Apellido</td>
 					<td>Segundo Apellido</td>
 					<td>Cumpleaños</td>
-					<td>Teléfono</td>
+					<td>Telefono</td>
 					<th class="crud">
 						<a class="ins" href="#" onclick="personaIns();" title="Nuevo Registro">
 						<span></span></a>
@@ -28,4 +28,96 @@
 		
 		<div id="error_personas_qry" class="msg_error ui-state-highlight ui-corner-all"></div>
 	</div>
+</div>
+
+<div style="display: none">
+    <div id="dlg_persona_ins" title="Registar persona">
+        <form class="parainfo">
+            <table class="tabla">
+                <tr>
+                    <td>Nombre:</td>
+                    <td>
+                        <input type="text" id="nompersona_ins" style="width: 300px"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Primer Apellido:</td>
+                    <td>
+                        <input type="text" id="apepaterno_ins" style="width: 300px"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Segundo Apellido:</td>
+                    <td>
+                        <input type="text" id="apematerno_ins" style="width: 300px"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Cumpleaños:</td>
+                    <td>
+                        <input type="text" id="birthday_ins" style="width: 300px"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Celular:</td>
+                    <td>
+                        <input type="text" id="phone_ins" style="width: 300px"/>
+                    </td>
+                </tr>
+            </table>
+        </form>
+        <div id="error_persona_ins" class="msg_error ui-state-highlight ui-corner-all"></div>
+    </div>
+</div>
+
+<div style="display: none">
+    <div id="dlg_persona_upd" title="Registar persona">
+        <form class="parainfo">
+            <table class="tabla">
+                <tr>
+                    <td>Nombre:</td>
+                    <td>
+                        <input type="text" id="nompersona_upd" style="width: 300px"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Primer Apellido:</td>
+                    <td>
+                        <input type="text" id="apepaterno_upd" style="width: 300px"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Segundo Apellido:</td>
+                    <td>
+                        <input type="text" id="apematerno_upd" style="width: 300px"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Cumpleaños:</td>
+                    <td>
+                        <input type="text" id="birthday_upd" style="width: 300px"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Celular:</td>
+                    <td>
+                        <input type="text" id="phone_upd" style="width: 300px"/>
+                    </td>
+                </tr>
+            </table>
+        </form>
+        <div id="error_persona_upd" class="msg_error ui-state-highlight ui-corner-all"></div>
+    </div>
+</div>
+
+
+<%-- diálogos --%>
+<div style="display: none">
+    <div id="dlg_persona_find" title="Seleccione Persona">
+        <div id="personaLst" style="height: 200px;overflow: auto">
+            <p style="text-align: center">
+                <img src="images/ajax.gif" alt=""/>
+            </p>
+        </div>
+    </div>
 </div>

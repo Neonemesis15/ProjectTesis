@@ -3,13 +3,17 @@
 <div style="display: none">
 	 <div id="dlg_usuario_ins" title="Registar Usuario">
 	 	<form class="parainfo">
+	 		<input type="hidden" id="idpersona" name="idpersona"/>
 	 		<table class="tabla">
-	 			<tr>
-	 				<td>Persona:</td>
-	 				<td>
-	 					<select id="persona_ins" style="width: 300px"></select>
-	 				</td>
-	 			</tr>
+                <tr>
+                    <td>Persona:</td>
+                    <td colspan="2">
+                        <input id="persona_ins" readonly="readonly" type="text" style="width: 300px"/>
+                    </td>
+                    <th class="crud">
+                        <a href="#" onclick="personaFind();" class="find"><span></span></a>
+                    </th>
+                </tr>
 	 			<tr>
 	 				<td>Usuario:</td>
 	 				<td>

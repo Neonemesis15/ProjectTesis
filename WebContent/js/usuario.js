@@ -1,3 +1,7 @@
+// ================================================
+// Script Usuarios
+// ================================================
+
 function usuarioIns(){
 	// lectura del combo de personas
 	$.ajax({
@@ -55,6 +59,290 @@ function usuarioIns(){
 		}
 	});
 }
+
+
+// ==============================================================
+// Script Persona
+// ==============================================================
+
+function personaFind() {
+    $("#dlg_persona_find").dialog({
+        modal: true,
+        width: 360,
+        height: 330,
+        buttons: {
+            "Cerrar": function () {
+                $(this).dialog("close");
+            }
+        }
+    });
+
+    $.ajax({
+        url: "persona.txt",
+        type: "post",
+        datatype: "txt",
+        data: {
+            accion: "QRY"
+        },
+        success: function (data) {
+            var msg = $(data).find('msg').text();
+
+            if ($.trim(msg).length !== 0) {
+                message("Data no Encontrada", msg);
+
+            } else {
+                var lista = "<table class=\"parainfo\" style=\"width:100%\"><tbody>";
+
+                $(data).find('fil').each(function () {
+                    var idpersona = $(this).find('col:eq(0)').text();
+                    var persona = $(this).find('col:eq(1)').text();
+
+                    lista += "<tr><td>"
+                            + "<a class=\"parainfo\" href=\"#\" onclick=\"personaPinta('" + idpersona + "','" + persona + "');\">"
+                            + persona
+                            + "</a>"
+                            + "</td></tr>";
+                });
+
+                lista += "</tbody></table>";
+
+                // pinta lista de personas
+                $("#personaLst").html(lista);
+            }
+        }
+    });
+}
+
+function personaPinta(idpersona, persona) {
+    $("#idpersona").val(idpersona);
+    $("#persona_ins").val(persona);
+
+    // cierra dialogo
+    $("#dlg_persona_find").dialog("close");
+}
+
+function personaQry() {
+    $("#error_persona_qry").html("").hide();
+    // solicita data para grilla pacientes
+    $.ajax({
+        url: "empresa.txt",
+        type: "post",
+        datatype: "txt",
+        data: {
+            accion: "QRY"
+        },
+        success: function (data) {
+            var msg = $(data).find('msg').text();
+
+            if ($.trim(msg).length !== 0) {
+                message("Data no Encontrada", msg);
+
+            } else {
+                var body = "";
+
+                $(data).find('fil').each(function () {
+                    var idpersona = $(this).find('col:eq(0)').text();
+                    var nompersona = $(this).find('col:eq(1)').text();
+                    var apepatpersona = $(this).find('col:eq(2)').text();
+                    var apematpersona = $(this).find('col:eq(3)').text();
+                    var birpersona = $(this).find('col:eq(4)').text();
+                    var celpersona = $(this).find('col:eq(5)').text();
+
+                    body += "<tr>"
+                            + "<td id=\"nompersona_" + idpersona + "\">" + nompersona + "</td>"
+                            + "<td id=\"apepatpersona_" + idpersona + "\">" + apepatpersona + "</td>"
+                            + "<td id=\"apematpersona_" + idpersona + "\">" + apematpersona + "</td>"
+                            + "<td id=\"birpersona_" + idpersona + "\">" + birpersona + "</td>"
+                            + "<td colspan=\"2\" id=\"celpersona_" + idpersona + "\">" + celpersona + "</td>"
+                            + "<td><input type=\"checkbox\" name=\"idpersona_del\" value=\"" + idpersona + "\"/></td>"
+                            + "<td><input type=\"radio\" name=\"idpersona_upd\" value=\"" + idpersona + "\"/></td>"
+                            + "</tr>";
+                });
+
+                // pinta data en grilla personas
+                $("#body_persona").html(body);
+
+                // muestra diálogo con grilla
+                $("#dlg_persona_qry").dialog({
+                    modal: true,
+                    width: 500,
+                    buttons: {
+                        "Cerrar": function () {
+                            $(this).dialog("close");
+                        }
+                    }
+                });
+            }
+        }
+    });
+}
+
+function personaIns(){
+    $("#error_persona_ins").html("").hide();
+    //
+
+    $("#dlg_persona_ins").dialog({
+        modal: true,
+        width: 480,
+        datatype: "xml",
+        buttons: {
+            "Cancelar": function () {
+                $(this).dialog("close");
+            },
+            "Enviar Datos": function () {
+                $.ajax({
+                    url: "persona",
+                    type: "post",
+                    datatype: "xml",
+                    data: {
+                        accion: "INS",
+                        nombre: $("#nompersona_ins").val(),
+                        apepaterno: $("#apepaterno_ins").val(),
+                        apematerno: $("#apematerno_ins").val(),
+                        birthday: $("#birthday_ins").val(),
+                        phone: $("#phone_ins").val()
+                    },
+                    success: function (data) {
+                        var ctos = $(data).find("msg").size();
+
+                        if (ctos > 0) {
+                            var msg = "<ul>";
+                            $(data).find("msg").each(function () {
+                                msg += "<li>" + $(this).text() + "</li>";
+                            });
+                            msg += "</ul>";
+
+                            $("#error_persona_ins").html(msg).show();
+
+                        } else {
+                            $("#dlg_persona_ins").dialog("close");
+                            personaQry();
+                        }
+                    }
+                });
+            }
+        }
+    });
+}
+
+function personaDel(){
+    var ids = [];
+    $("input[name='idpersona_del']:checked").each(function () {
+        ids.push($(this).val());
+    });
+    if (ids.length === 0) {
+        message("Advertencia", "Seleccione fila(s) a Retirar");
+    } else {
+        $("#p_message").html("¿Retirar registro(s)?");
+        $("#dlg_message").dialog({
+            modal: true,
+            width: 440,
+            buttons: {
+                "No": function () {
+                    $(this).dialog("close");
+                },
+                "Si": function () {
+                    $(this).dialog("close");
+
+                    $.ajax({
+                        url: "persona",
+                        type: "post",
+                        data: {
+                            accion: "DEL",
+                            ids: ids.toString()
+                        },
+                        success: function (error) {
+                            if (error.length !== 0) {
+                                message("Error", error);
+
+                            } else {
+                                //window.location = "Citas?accion=QRY";
+                            }
+                        }
+                    });
+                }
+            }
+        });
+    }
+}
+
+function personaUpd(){
+    var id = $("input[name='idpersona_upd']:checked").val();
+    if (isNaN(id)) {
+        message("Advertencia", "Seleccione Fila para Actualizar Datos");
+    } else {
+        $.ajax({
+            url: "get.txt",
+            type: "post",
+            datatype: "txt",
+            data: {
+                accion: "GET",
+                idcita: id
+            },
+            success: function (data) {
+                var msg = $(data).find('msg').text();
+
+                if ($.trim(msg).length !== 0) {
+                    message("Data no Encontrada", msg);
+
+                } else {
+                    var idpersona = $(data).find('idpersona').attr('val');
+                    var nompersona = $(data).find('nombre').attr('val');
+                    var despersona = $(data).find('descripcion').attr('val');
+
+
+                    $("#nompersona_upd").val(nompersona);
+                    $("#despersona_upd").val(despersona);
+
+                    $("#error_persona_upd").html("").hide();
+                    
+                    $("#dlg_persona_upd").dialog({
+                        modal: true,
+                        width: 480,
+                        datatype: "xml",
+                        buttons: {
+                            "Cancelar": function () {
+                                $(this).dialog("close");
+                            },
+                            "Enviar Datos": function () {
+                                $.ajax({
+                                    url: "persona",
+                                    type: "post",
+                                    datatype: "xml",
+                                    data: {
+                                        accion: "UPD",
+                                        idmedico: id,
+                                        idespecialidad: $("#medico_idespecialidad_upd").val(),
+                                        nombre: $("#medico_upd").val()
+                                    },
+                                    success: function (data) {
+                                        var ctos = $(data).find("msg").size();
+
+                                        if (ctos > 0) {
+                                            var msg = "<ul>";
+                                            $(data).find("msg").each(function () {
+                                                msg += "<li>" + $(this).text() + "</li>";
+                                            });
+                                            msg += "</ul>";
+
+                                            $("#error_persona_upd").html(msg).show();
+
+                                        } else {
+                                            $("#dlg_persona_upd").dialog("close");
+                                            personaQry();
+                                        }
+                                    }
+                                });
+                            }
+                        }
+                    });
+                }
+            }
+        });
+    }
+}
+
+
 
 // ==============================================================
 // Scripts Campaña
@@ -466,11 +754,11 @@ function empresaIns(){
                             });
                             msg += "</ul>";
 
-                            $("#error_medicos_ins").html(msg).show();
+                            $("#error_empresa_ins").html(msg).show();
 
                         } else {
-                            $("#dlg_medicos_ins").dialog("close");
-                            medicosQry();
+                            $("#dlg_empresa_ins").dialog("close");
+                            empresaQry();
                         }
                     }
                 });
@@ -681,11 +969,11 @@ function canalIns(){
                             });
                             msg += "</ul>";
 
-                            $("#error_medicos_ins").html(msg).show();
+                            $("#error_canal_ins").html(msg).show();
 
                         } else {
-                            $("#dlg_medicos_ins").dialog("close");
-                            medicosQry();
+                            $("#dlg_canal_ins").dialog("close");
+                            canalQry();
                         }
                     }
                 });
