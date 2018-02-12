@@ -85,6 +85,7 @@
 		<%-- diálogos de edición usuarios--%>
 		<%@include file="WEB-INF/jspf/usuarios.jspf" %>
 		<%@include file="WEB-INF/jspf/personas.jspf" %>
+		<%@include file="WEB-INF/jspf/perfil.jspf" %>
 		
 		<%-- mensajes del servidor --%>
         <c:if test="${msg != null}">

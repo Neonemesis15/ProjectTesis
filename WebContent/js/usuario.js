@@ -60,6 +60,180 @@ function usuarioIns(){
 	});
 }
 
+function usuarioDel(){
+    var ids = [];
+    $("input[name='idusuario_del']:checked").each(function () {
+        ids.push($(this).val());
+    });
+    if (ids.length === 0) {
+        message("Advertencia", "Seleccione fila(s) a Retirar");
+    } else {
+        $("#p_message").html("¿Retirar registro(s)?");
+        $("#dlg_message").dialog({
+            modal: true,
+            width: 440,
+            buttons: {
+                "No": function () {
+                    $(this).dialog("close");
+                },
+                "Si": function () {
+                    $(this).dialog("close");
+
+                    $.ajax({
+                        url: "usuario",
+                        type: "post",
+                        data: {
+                            accion: "DEL",
+                            ids: ids.toString()
+                        },
+                        success: function (error) {
+                            if (error.length !== 0) {
+                                message("Error", error);
+
+                            } else {
+                                //window.location = "Citas?accion=QRY";
+                            }
+                        }
+                    });
+                }
+            }
+        });
+    }
+}
+
+function usuarioUpd(){
+    var id = $("input[name='idusuario_upd']:checked").val();
+    if (isNaN(id)) {
+        message("Advertencia", "Seleccione Fila para Actualizar Datos");
+        }else{
+        // pidiendo datos de usuario
+        $.ajax({
+            url: "combo.txt",
+            type: "post",
+            datatype: "txt",
+            data: {
+                accion: "POST",
+                idcita: id
+            },
+            success: function (data) {
+                var msg = $(data).find('msg').text();
+
+                if ($.trim(msg).length !== 0) {
+                    message("Data no Encontrada", msg);
+
+                } else {
+                    var idcampana = $(data).find('idcampana').attr('val');
+                    var nomcampana = $(data).find('nombre').attr('val');
+                    var descampana = $(data).find('descripcion').attr('val');
+                    var fecinicampana = $(data).find('fechaini').attr('val');
+                    var fecfincampana = $(data).find('fechafin').attr('val');
+                    var idempresa = $(data).find('idempresa').attr('val');
+                    var idcanal = $(data).find('idcanal').attr('val');
+
+                    $("#idcampana_upd").val(idcampana);
+                    $("#nombre_upd").val(nomcampana);
+                    $("#descripcion_upd").val(descampana);
+                    $("#fechaini_upd").val(fecinicampana);
+                    $("#fechafin_upd").val(fecfincampana);
+
+                    // lectura para el combo empresas
+                    $.ajax({
+                        url: "combo.txt",
+                        type: "post",
+                        datatype: "txt",
+                        data: {
+                            accion: "CBO"
+                        },
+                        success: function (data) {
+                            var msg = $(data).find('msg').text();
+
+                            if ($.trim(msg).length !== 0) {
+                                message("Data no Encontrada", msg);
+
+                            } else {
+                                var option = "";
+
+                                $(data).find('op').each(function () {
+                                    option += "<option value=\""
+                                            + $(this).attr('id') + "\">"
+                                            + $(this).text() + "</option>";
+                                });
+
+                                $("#idempresa_upd").html(option);
+                                $("#idempresa_upd").val(idempresa);
+                                // ---
+                                // Lectura para el combo de canales
+                                $.ajax({
+                                    url: "combo.txt",
+                                    type: "post",
+                                    datatype: "txt",
+                                    data: {
+                                        accion: "CBO"
+                                    },
+                                    success: function (data) {
+                                        var msg = $(data).find('msg').text();
+
+                                        if ($.trim(msg).length !== 0) {
+                                            message("Data no Encontrada", msg);
+
+                                        } else {
+                                            var option = "";
+
+                                            $(data).find('op').each(function () {
+                                                option += "<option value=\""
+                                                        + $(this).attr('id') + "\">"
+                                                        + $(this).text() + "</option>";
+                                            });
+
+                                            $("#idcanal_upd").html(option);
+                                            $("#idcanal_upd").val(idcanal);
+                                            // ---
+                                            // todo Ok
+                                            $("#error_usuario_upd").html("").hide();
+
+                                            $("#dlg_usuario_upd").dialog({
+                                                modal: true,
+                                                width: 480,
+                                                buttons: {
+                                                    "Cancelar": function () {
+                                                        $(this).dialog("close");
+                                                    },
+                                                    "Enviar Datos": function () {
+                                                        $.ajax({
+                                                            url: "usuario",
+                                                            type: "post",
+                                                            data: {
+                                                                accion: "UPD",
+                                                                idcita: idcita,
+                                                                idpaciente: $("#idpaciente_upd").val(),
+                                                                idmedico: $("#idmedico_upd").val(),
+                                                                diahora: $("#diahora_upd").val()
+                                                            },
+                                                            success: function (error) {
+                                                                if (error.length !== 0) {
+                                                                    $("#error_citas_upd").html(error).show();
+
+                                                                } else {
+                                                                    //window.location = "Citas?accion=QRY";
+                                                                }
+                                                            }
+                                                        });
+                                                    }
+                                                }
+                                            });
+
+                                        }
+                                    }
+                                });
+                            }
+                        }
+                    });
+                
+                }
+            }
+        });
+    }
+}
 
 // ==============================================================
 // Script Persona
@@ -132,6 +306,7 @@ function personaQry() {
             accion: "QRY"
         },
         success: function (data) {
+            console.log(data);
             var msg = $(data).find('msg').text();
 
             if ($.trim(msg).length !== 0) {
@@ -165,7 +340,7 @@ function personaQry() {
                 // muestra diálogo con grilla
                 $("#dlg_persona_qry").dialog({
                     modal: true,
-                    width: 500,
+                    width: 800,
                     buttons: {
                         "Cerrar": function () {
                             $(this).dialog("close");
@@ -690,7 +865,7 @@ function empresaQry() {
 
             } else {
                 var body = "";
-
+                console.log(data);
                 $(data).find('fil').each(function () {
                     var idempresa = $(this).find('col:eq(0)').text();
                     var nombre = $(this).find('col:eq(1)').text();
@@ -883,6 +1058,223 @@ function empresaUpd(){
         });
     }
 }
+
+// ==============================================================
+// Scripts Perfil
+// ==============================================================
+
+function perfilQry() {
+    $("#error_perfil_qry").html("").hide();
+    // solicita data para grilla pacientes
+    $.ajax({
+        url: "empresa.txt",
+        type: "post",
+        datatype: "txt",
+        data: {
+            accion: "QRY"
+        },
+        success: function (data) {
+            var msg = $(data).find('msg').text();
+
+            if ($.trim(msg).length !== 0) {
+                message("Data no Encontrada", msg);
+
+            } else {
+                var body = "";
+                console.log(data);
+                $(data).find('fil').each(function () {
+                    var idperfil = $(this).find('col:eq(0)').text();
+                    var nombre = $(this).find('col:eq(1)').text();
+                    var descripcion = $(this).find('col:eq(2)').text();
+
+                    body += "<tr>"
+                            + "<td id=\"perfil_" + idperfil + "\">" + nombre + "</td>"
+                            + "<td colspan=\"2\" id=\"nacimiento_" + idperfil + "\">" + descripcion + "</td>"
+                            + "<td><input type=\"checkbox\" name=\"idperfil_del\" value=\"" + idperfil + "\"/></td>"
+                            + "<td><input type=\"radio\" name=\"idperfil_upd\" value=\"" + idperfil + "\"/></td>"
+                            + "</tr>";
+                });
+
+                // pinta data en grilla perfils
+                $("#body_perfil").html(body);
+
+                // muestra diálogo con grilla
+                $("#dlg_perfil_qry").dialog({
+                    modal: true,
+                    width: 500,
+                    buttons: {
+                        "Cerrar": function () {
+                            $(this).dialog("close");
+                        }
+                    }
+                });
+            }
+        }
+    });
+}
+
+function perfilIns(){
+    $("#error_perfil_ins").html("").hide();
+    //
+
+    $("#dlg_perfil_ins").dialog({
+        modal: true,
+        width: 480,
+        datatype: "xml",
+        buttons: {
+            "Cancelar": function () {
+                $(this).dialog("close");
+            },
+            "Enviar Datos": function () {
+                $.ajax({
+                    url: "perfil",
+                    type: "post",
+                    datatype: "xml",
+                    data: {
+                        accion: "INS",
+                        idespecialidad: $("#medico_idespecialidad_ins").val(),
+                        nombre: $("#medico_ins").val()
+                    },
+                    success: function (data) {
+                        var ctos = $(data).find("msg").size();
+
+                        if (ctos > 0) {
+                            var msg = "<ul>";
+                            $(data).find("msg").each(function () {
+                                msg += "<li>" + $(this).text() + "</li>";
+                            });
+                            msg += "</ul>";
+
+                            $("#error_perfil_ins").html(msg).show();
+
+                        } else {
+                            $("#dlg_perfil_ins").dialog("close");
+                            perfilQry();
+                        }
+                    }
+                });
+            }
+        }
+    });
+}
+
+function perfilDel(){
+    var ids = [];
+    $("input[name='idperfil_del']:checked").each(function () {
+        ids.push($(this).val());
+    });
+    if (ids.length === 0) {
+        message("Advertencia", "Seleccione fila(s) a Retirar");
+    } else {
+        $("#p_message").html("¿Retirar registro(s)?");
+        $("#dlg_message").dialog({
+            modal: true,
+            width: 440,
+            buttons: {
+                "No": function () {
+                    $(this).dialog("close");
+                },
+                "Si": function () {
+                    $(this).dialog("close");
+
+                    $.ajax({
+                        url: "perfil",
+                        type: "post",
+                        data: {
+                            accion: "DEL",
+                            ids: ids.toString()
+                        },
+                        success: function (error) {
+                            if (error.length !== 0) {
+                                message("Error", error);
+
+                            } else {
+                                //window.location = "Citas?accion=QRY";
+                            }
+                        }
+                    });
+                }
+            }
+        });
+    }
+}
+
+function perfilUpd(){
+    var id = $("input[name='idperfil_upd']:checked").val();
+    if (isNaN(id)) {
+        message("Advertencia", "Seleccione Fila para Actualizar Datos");
+    } else {
+        $.ajax({
+            url: "get.txt",
+            type: "post",
+            datatype: "txt",
+            data: {
+                accion: "GET",
+                idcita: id
+            },
+            success: function (data) {
+                var msg = $(data).find('msg').text();
+
+                if ($.trim(msg).length !== 0) {
+                    message("Data no Encontrada", msg);
+
+                } else {
+                    var idperfil = $(data).find('idperfil').attr('val');
+                    var nomperfil = $(data).find('nombre').attr('val');
+                    var desperfil = $(data).find('descripcion').attr('val');
+
+
+                    $("#nomperfil_upd").val(nomperfil);
+                    $("#desperfil_upd").val(desperfil);
+
+                    $("#error_perfil_upd").html("").hide();
+                    
+                    $("#dlg_perfil_upd").dialog({
+                        modal: true,
+                        width: 480,
+                        datatype: "xml",
+                        buttons: {
+                            "Cancelar": function () {
+                                $(this).dialog("close");
+                            },
+                            "Enviar Datos": function () {
+                                $.ajax({
+                                    url: "perfil",
+                                    type: "post",
+                                    datatype: "xml",
+                                    data: {
+                                        accion: "UPD",
+                                        idmedico: id,
+                                        idespecialidad: $("#medico_idespecialidad_upd").val(),
+                                        nombre: $("#medico_upd").val()
+                                    },
+                                    success: function (data) {
+                                        var ctos = $(data).find("msg").size();
+
+                                        if (ctos > 0) {
+                                            var msg = "<ul>";
+                                            $(data).find("msg").each(function () {
+                                                msg += "<li>" + $(this).text() + "</li>";
+                                            });
+                                            msg += "</ul>";
+
+                                            $("#error_perfil_upd").html(msg).show();
+
+                                        } else {
+                                            $("#dlg_perfil_upd").dialog("close");
+                                            perfilQry();
+                                        }
+                                    }
+                                });
+                            }
+                        }
+                    });
+                }
+            }
+        });
+    }
+}
+
 // ==============================================================
 // Scripts Canal
 // ==============================================================

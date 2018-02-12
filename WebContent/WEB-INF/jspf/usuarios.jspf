@@ -3,7 +3,7 @@
 <div style="display: none">
 	 <div id="dlg_usuario_ins" title="Registar Usuario">
 	 	<form class="parainfo">
-	 		<input type="hidden" id="idpersona" name="idpersona"/>
+	 		<input type="hidden" id="idpersona_ins" name="idpersona_ins"/>
 	 		<table class="tabla">
                 <tr>
                     <td>Persona:</td>
@@ -11,23 +11,38 @@
                         <input id="persona_ins" readonly="readonly" type="text" style="width: 300px"/>
                     </td>
                     <th class="crud">
-                        <a href="#" onclick="personaFind();" class="find"><span></span></a>
+                        <a href="#" onclick="personaFind()" class="find"><span></span></a>
                     </th>
                 </tr>
-	 			<tr>
-	 				<td>Usuario:</td>
-	 				<td>
-	 					<input type="text" id="nombre_ins" style="width: 300px"/>
-	 				</td>
-	 			</tr>
-	 			<tr>
-	 				<td>Password:</td>
-	 				<td>
-	 					<input type="text" id="password_ins" style="width: 300px"/>
-	 				</td>
-	 			</tr>
+                <tr>
+                	<td>Perfil:</td>
+                	<td><select id="idperfil_ins" style="width:300px"></select></td>
+                </tr>
 	 		</table>
 	 	</form>
 	 	
 	 </div>
+</div>
+
+<div style="display:none">
+	<div id="dlg_usuario_upd" title="Actualizar Usuario">
+		<form class="parainfo">
+			<input type="hidden" id="idpersona_upd" name="idpersona_upd"/>
+			<table>
+				<tr>
+					<td>Persona:</td>
+					<td colspan="2">
+						<input id="persona_upd" type="text" readonly="readonly" style="width: 300px"/>
+					</td>
+					<th class="crud">
+						<a href="#" onclick="personaFind()" class="find"><span></span></a>
+					</th>
+				</tr>
+				<tr>
+					<td>Perfil:</td>
+					<td><select id="idperfil_upd" style="width:300px"></select></td>
+				</tr>
+			</table>
+		</form>
+	</div>	
 </div>

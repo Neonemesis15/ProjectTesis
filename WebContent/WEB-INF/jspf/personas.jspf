@@ -13,20 +13,20 @@
 						<a class="ins" href="#" onclick="personaIns();" title="Nuevo Registro">
 						<span></span></a>
 					</th>
-					<th>
+					<th class="crud">
 						<a class="del" href="#" onclick="personaDel();" title="Retirar Registros">
 						<span></span></a>
 					</th>
-					<th>
+					<th class="crud">
 						<a class="upd" href="#" onclick="personaUpd();" title="Actualizar Registros">
 						<span></span></a> 
 					</th>
 				</tr>
 			</thead>
-			<tbody id="body_personas"></tbody>
+			<tbody id="body_persona"></tbody>
 		</table>
 		
-		<div id="error_personas_qry" class="msg_error ui-state-highlight ui-corner-all"></div>
+		<div id="error_persona_qry" class="msg_error ui-state-highlight ui-corner-all"></div>
 	</div>
 </div>
 
@@ -71,7 +71,7 @@
 </div>
 
 <div style="display: none">
-    <div id="dlg_persona_upd" title="Registar persona">
+    <div id="dlg_persona_upd" title="Actualizar persona">
         <form class="parainfo">
             <table class="tabla">
                 <tr>
