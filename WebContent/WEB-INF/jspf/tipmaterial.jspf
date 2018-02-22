@@ -1,0 +1,66 @@
+<%@ page pageEncoding="UTF-8" %>
+<div style = "display: none">
+	<div id="dlg_tipmaterial_qry" title="Lista de Tipos de Material" style="padding: 30px; padding-bottom: 10px">
+		<table class="parainfo" style="width: 100%">
+			<thead>
+				<tr>
+					<td>Nombres</td>
+					<td>Descripción</td>
+					<th class="crud"><a class="ins" href="#" onclick="tipmaterialIns();"
+						title="Nuevo Registro"><span></span></a></th>
+					<th class="crud"><a class="del" href="#" onclick="tipmaterialDel();"
+						title="Eliminar Registro"><span></span></a></th>
+					<th class="crud"><a class="upd" href="#" onclick="tipmaterialUpd();"
+						title="Actualizar Registro"><span></span></a></th>
+				</tr>
+			</thead>
+			<tbody id="body_tipmaterial"></tbody>
+		</table>
+		<div id="error_tipmaterial_qry" class="msg_error ui-state-highlight ui-corner-all"></div>
+	</div>
+</div>
+
+<div style="display: none">
+    <div id="dlg_tipmaterial_ins" title="Registar Tipo de Material">
+        <form class="parainfo">
+            <table class="tabla">
+                <tr>
+                    <td>Nombre:</td>
+                    <td>
+                        <input type="text" id="nomtipmaterial_ins" style="width: 300px"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Descripción:</td>
+                    <td>
+                        <input type="text" id="destipmaterial_ins" style="width: 300px"/>
+                    </td>
+                </tr>
+            </table>
+        </form>
+        <div id="error_tipmaterial_ins" class="msg_error ui-state-highlight ui-corner-all"></div>
+    </div>
+</div>
+
+
+<div style="display: none">
+    <div id="dlg_tipmaterial_upd" title="Actualizar Tipo de Material">
+        <form class="parainfo">
+            <table class="tabla">
+                <tr>
+                    <td>Nombre:</td>
+                    <td>
+                        <input type="text" id="nomtipmaterial_upd" style="width: 300px"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Descripción:</td>
+                    <td>
+                        <input type="text" id="destipmaterial_upd" style="width: 300px"/>
+                    </td>
+                </tr>
+            </table>
+        </form>
+        <div id="error_tipmaterial_upd" class="msg_error ui-state-highlight ui-corner-all"></div>
+    </div>
+</div>

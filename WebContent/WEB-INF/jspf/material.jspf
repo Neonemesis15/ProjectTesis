@@ -4,29 +4,18 @@
         <form class="parainfo">
 			<table class="tabla">
                 <tr>
-                    <td>SKU:</td>
-                    <td>
-                        <input type="text" id="sku_ins" style="width: 300px"/>
-                    </td>
-                </tr>
-                <tr>
-                    <td>Nombre:</td>
-                    <td>
-                        <input type="text" id="nombre_ins" style="width: 300px"/>
-                    </td>
-                </tr>
-                <tr>
-                    <td>Descripcion:</td>
-                    <td>
-                        <input type="text" id="descripcion_ins" style="width: 150px;margin-right: 2px"/>
-                    </td>
+                    <td>Tipo de Material:</td>
+                    <td><select id="idtipmaterial_ins" style="width:300px"></select></td>
                 </tr>
                 <tr>
                     <td>Clasificacion:</td>
-                    <td>
-                        <select id="idclasificacion_ins" style="width: 310px"></select>
+                    <td colspan="2">
+                        <input id="idclasificacion_ins" readonly="readonly" type="text" style="width: 300px"/>
                     </td>
-                </tr> 
+                    <th class="crud">
+                        <a href="#" onclick="idclasificacionFind()" class="find"><span></span></a>
+                    </th>
+                </tr>
 			</table>
         </form>
         <div id="error_material_ins" class="msg_error ui-state-highlight ui-corner-all"></div>
@@ -36,32 +25,21 @@
 <div style="display: none">
     <div id="dlg_material_upd" title="Nuevo Material">
         <form class="parainfo">
-			<table class="tabla">
+            <table class="tabla">
                 <tr>
-                    <td>SKU:</td>
-                    <td>
-                        <input type="text" id="sku_upd" style="width: 300px"/>
-                    </td>
-                </tr>
-                <tr>
-                    <td>Nombre:</td>
-                    <td>
-                        <input type="text" id="nombre_upd" style="width: 300px"/>
-                    </td>
-                </tr>
-                <tr>
-                    <td>Descripcion:</td>
-                    <td>
-                        <input type="text" id="descripcion_upd" style="width: 150px;margin-right: 2px"/>
-                    </td>
+                    <td>Tipo de Material:</td>
+                    <td><select id="idtipmaterial_upd" style="width:300px"></select></td>
                 </tr>
                 <tr>
                     <td>Clasificacion:</td>
-                    <td>
-                        <select id="idclasificacion_upd" style="width: 310px"></select>
+                    <td colspan="2">
+                        <input id="idclasificacion_upd" readonly="readonly" type="text" style="width: 300px"/>
                     </td>
-                </tr> 
-			</table>
+                    <th class="crud">
+                        <a href="#" onclick="idclasificacionFind()" class="find"><span></span></a>
+                    </th>
+                </tr>
+            </table>
         </form>
         <div id="error_material_upd" class="msg_error ui-state-highlight ui-corner-all"></div>
     </div>

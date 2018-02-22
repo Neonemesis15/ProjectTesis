@@ -4184,3 +4184,239 @@ function distritoUpd(){
         });
     }
 }
+
+
+// ==============================================================
+// Scripts Material (material)
+// ==============================================================
+
+
+function materialIns(){
+    // Cargar Combo de 'Tipo de Material'
+    $.ajax({
+        url: "Persona",
+        type: "post",
+        datatype: "xml",
+        data : {
+            accion: "CBO"
+        },
+        success: function(data){
+            var msg = $(data).find('msg').text();
+            if ($.trim(msg).length !== 0) {
+                message("Data no Encontrada", msg);
+            }else{
+                var option = "";
+                $(data).find('op').each(function(){
+                    option += "<option value=\""
+                        + $(this).attr('id') + "\">"
+                        + $(this).text() + "</option>";
+                });
+                //Llenar combo tipo
+                $("#idtipmaterial_ins").html(option);
+                
+                $("#dlg_material_ins").dialog({
+                    modal: true,
+                    width: 480,
+                    buttons: {
+                        "Cancelar": function () {
+                            $(this).dialog("close");
+                        },
+                        "Enviar Datos": function () {
+                            /*$.ajax({
+                                url: "Citas",
+                                type: "post",
+                                data: {
+                                    accion: "INS",
+                                    idpaciente: $("#idpaciente_ins").val(),
+                                    idespecialidad: $("#idespecialidad_ins").val(),
+                                    idmedico: $("#idmedico_ins").val(),
+                                    diahora: $("#diahora_ins").val()
+                                },
+                                success: function (error) {
+                                    if (error.length !== 0) {
+                                        $("#error_citas_ins").html(error).show();
+
+                                    } else {
+                                        window.location = "Citas?accion=QRY";
+                                    }
+                                }
+                            });*/
+                        }
+                    }
+                });
+            }
+        }
+    });
+}
+
+function materialDel(){
+    var ids = [];
+    $("input[name='idmaterial_del']:checked").each(function () {
+        ids.push($(this).val());
+    });
+    if (ids.length === 0) {
+        message("Advertencia", "Seleccione fila(s) a Retirar");
+    } else {
+        $("#p_message").html("¿Retirar registro(s)?");
+        $("#dlg_message").dialog({
+            modal: true,
+            width: 440,
+            buttons: {
+                "No": function () {
+                    $(this).dialog("close");
+                },
+                "Si": function () {
+                    $(this).dialog("close");
+
+                    $.ajax({
+                        url: "material",
+                        type: "post",
+                        data: {
+                            accion: "DEL",
+                            ids: ids.toString()
+                        },
+                        success: function (error) {
+                            if (error.length !== 0) {
+                                message("Error", error);
+
+                            } else {
+                                //window.location = "Citas?accion=QRY";
+                            }
+                        }
+                    });
+                }
+            }
+        });
+    }
+}
+
+function materialUpd(){
+    var id = $("input[name='idmaterial_upd']:checked").val();
+    if (isNaN(id)) {
+        message("Advertencia", "Seleccione Fila para Actualizar Datos");
+        }else{
+        // Obtener Datos del Material por 'Id'
+        $.ajax({
+            url: "combo.txt",
+            type: "post",
+            datatype: "txt",
+            data: {
+                accion: "POST",
+                idcita: id
+            },
+            success: function (data) {
+                var msg = $(data).find('msg').text();
+
+                if ($.trim(msg).length !== 0) {
+                    message("Data no Encontrada", msg);
+
+                } else {
+                    var idtipmaterial = $(data).find('idtipmaterial').attr('val');
+                    var idclasificacion = $(data).find('idclasificacion').attr('val');
+
+                    $("#idmaterial_upd").val(idcampana);
+                    $("#idmaterial_del").val(nomcampana);
+
+                    // lectura para el combo 'Tipo de Material'
+                    $.ajax({
+                        url: "combo.txt",
+                        type: "post",
+                        datatype: "txt",
+                        data: {
+                            accion: "CBO"
+                        },
+                        success: function (data) {
+                            var msg = $(data).find('msg').text();
+
+                            if ($.trim(msg).length !== 0) {
+                                message("Data no Encontrada", msg);
+
+                            } else {
+                                var option = "";
+
+                                $(data).find('op').each(function () {
+                                    option += "<option value=\""
+                                            + $(this).attr('id') + "\">"
+                                            + $(this).text() + "</option>";
+                                });
+
+                                $("#idtipmaterial_upd").html(option);
+                                $("#idtipmaterial_upd").val(idtipmaterial);
+                                // ---
+                                // Lectura para el combo 'Clasificaion'
+                                $.ajax({
+                                    url: "combo.txt",
+                                    type: "post",
+                                    datatype: "txt",
+                                    data: {
+                                        accion: "CBO"
+                                    },
+                                    success: function (data) {
+                                        var msg = $(data).find('msg').text();
+
+                                        if ($.trim(msg).length !== 0) {
+                                            message("Data no Encontrada", msg);
+
+                                        } else {
+                                            var option = "";
+
+                                            $(data).find('op').each(function () {
+                                                option += "<option value=\""
+                                                        + $(this).attr('id') + "\">"
+                                                        + $(this).text() + "</option>";
+                                            });
+
+                                            $("#idclasificacion_upd").html(option);
+                                            $("#idclasificacion_upd").val(idcanal);
+                                            // ---
+                                            // todo Ok
+                                            $("#error_material_upd").html("").hide();
+
+                                            $("#dlg_material_upd").dialog({
+                                                modal: true,
+                                                width: 480,
+                                                buttons: {
+                                                    "Cancelar": function () {
+                                                        $(this).dialog("close");
+                                                    },
+                                                    "Enviar Datos": function () {
+                                                        $.ajax({
+                                                            url: "material",
+                                                            type: "post",
+                                                            data: {
+                                                                accion: "UPD",
+                                                                idcita: idcita,
+                                                                idpaciente: $("#idpaciente_upd").val(),
+                                                                idmedico: $("#idmedico_upd").val(),
+                                                                diahora: $("#diahora_upd").val()
+                                                            },
+                                                            success: function (error) {
+                                                                if (error.length !== 0) {
+                                                                    $("#error_material_upd").html(error).show();
+
+                                                                } else {
+                                                                    //window.location = "Citas?accion=QRY";
+                                                                }
+                                                            }
+                                                        });
+                                                    }
+                                                }
+                                            });
+
+                                        }
+                                    }
+                                });
+                            }
+                        }
+                    });
+                
+                }
+            }
+        });
+    }
+}
+
+
+// ==============================================================
+// Scripts Tipo de Material (tipmaterial)
+// ==============================================================
