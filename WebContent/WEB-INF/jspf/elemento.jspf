@@ -1,0 +1,52 @@
+<%@ page pageEncoding="UTF-8" %>
+<div style="display: none">
+    <div id="dlg_elemento_ins" title="Nuevo Elemento">
+        <form class="parainfo">
+			<table class="tabla">
+                <tr>
+                    <td>Cuestionario:</td>
+                    <td><select id="idcuestionario_ins" style="width:300px"></select></td>
+                </tr>
+                <tr>
+                    <td>Nombre:</td>
+                    <td colspan="2">
+                        <input id="nomelemento_ins" type="text" style="width: 300px"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Descripcion:</td>
+                    <td colspan="2">
+                        <input id="deselemento_ins" type="text" style="width: 300px"/>
+                    </td>
+                </tr>
+			</table>
+        </form>
+        <div id="error_elemento_ins" class="msg_error ui-state-highlight ui-corner-all"></div>
+    </div>
+</div>
+
+<div style="display: none">
+    <div id="dlg_elemento_upd" title="Nuevo Elemento">
+        <form class="parainfo">
+            <table class="tabla">
+                <tr>
+                    <td>Cuestionario:</td>
+                    <td><select id="idcuestionario_upd" style="width:300px"></select></td>
+                </tr>
+                <tr>
+                    <td>Nombre:</td>
+                    <td colspan="2">
+                        <input id="nomelemento_upd" type="text" style="width: 300px"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Descripcion:</td>
+                    <td colspan="2">
+                        <input id="deselemento_upd" type="text" style="width: 300px"/>
+                    </td>
+                </tr>
+            </table>
+        </form>
+        <div id="error_elemento_upd" class="msg_error ui-state-highlight ui-corner-all"></div>
+    </div>
+</div>

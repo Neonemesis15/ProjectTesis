@@ -5,7 +5,7 @@
 <html>
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-	<title>Gestion de Materiales</title>
+	<title>Gestion de Elementos</title>
 	<link href="css/main.css" type="text/css" rel="stylesheet"/>
 	<link href="js/menu/menu.css" rel="stylesheet" type="text/css"/>
 	<link href="js/jquery-ui.min.css" type="text/css" rel="stylesheet"/>
@@ -38,42 +38,37 @@
                 <thead>
                     <tr>
                         <th class = "crud">
-                            <a class="upd" href="#" onclick="materialUpd();" title="Actualizar Registro">
+                            <a class="upd" href="#" onclick="elementoUpd();" title="Actualizar Registro">
                                 <span></span>
                             </a>
                         </th>
                         <th class = "crud">
-                            <a class="del" href="#" onclick="materialDel();" title="Eliminar Registro">
+                            <a class="del" href="#" onclick="elementoDel();" title="Eliminar Registro">
                                 <span></span>
                             </a>
                         </th>
                         <th class = "crud">
-                            <a class="ins" href="#" onclick="materialIns();" title="Agregar Registro">
+                            <a class="ins" href="#" onclick="elementoIns();" title="Agregar Registro">
                                 <span></span>
                             </a>
                         </th>
+                        <td>Elemento</td>
                         <th class = "crud">
-                            <a class="qry" href="#" onclick="tipmaterialQry()" title="Tipo de Material">
+                            <a class="qry" href="#" onclick="cuestionarioQry()" title="Lista de Cuestionarios">
                                 <span></span>
                             </a>
                         </th>
-                        <td>Tipo</td>
-                        <th class = "crud">
-                            <a class="qry" href="#" onclick="clasificacionQry()" title="Lista de Clasificaciones">
-                                <span></span>
-                            </a>
-                        </th>
-                        <td>Clasificacion</td>
+                        <td>Cuestionario</td>
                     </tr>
                 </thead>
                 <tbody>
                     <c:forEach var="reg" items="${list}">
                         <tr>
                             <th>
-                                <input type="radio" name="idmaterial_upd" value="${reg[0]}"/>
+                                <input type="radio" name="idelemento_upd" value="${reg[0]}"/>
                             </th>
                             <th>
-                                <input type="checkbox" name="idmaterial_del" value="${reg[0]}"/>
+                                <input type="checkbox" name="idelemento_del" value="${reg[0]}"/>
                             </th>
                             <td colspan="2">${reg[1]}</td>
                             <td colspan="2">${reg[2]}</td>
@@ -83,12 +78,8 @@
             </table>
         </div>
         <%-- diálogos de edición--%>
-        <%@include file="WEB-INF/jspf/tipmaterial.jspf" %> 
-        <%@include file="WEB-INF/jspf/clasificacion.jspf" %>
-        <%@include file="WEB-INF/jspf/empresa.jspf" %>
-        <%@include file="WEB-INF/jspf/categoria.jspf" %>
-        <%@include file="WEB-INF/jspf/marca.jspf" %>
-        <%@include file="WEB-INF/jspf/material.jspf" %>
+        <%@include file="WEB-INF/jspf/elemento.jspf" %> 
+        <%@include file="WEB-INF/jspf/cuestionario.jspf" %>
 
         <%-- mensajes del servidor --%>
         <c:if test="${msg != null}">

@@ -4420,3 +4420,629 @@ function materialUpd(){
 // ==============================================================
 // Scripts Tipo de Material (tipmaterial)
 // ==============================================================
+
+function tipmaterialQry() {
+    $("#error_tipmaterial_qry").html("").hide();
+    // solicita data para grilla pacientes
+    $.ajax({
+        url: "empresa.txt",
+        type: "post",
+        datatype: "txt",
+        data: {
+            accion: "QRY"
+        },
+        success: function (data) {
+            var msg = $(data).find('msg').text();
+
+            if ($.trim(msg).length !== 0) {
+                message("Data no Encontrada", msg);
+
+            } else {
+                var body = "";
+                console.log(data);
+                $(data).find('fil').each(function () {
+                    var idtipmaterial = $(this).find('col:eq(0)').text();
+                    var nombre = $(this).find('col:eq(1)').text();
+                    var descripcion = $(this).find('col:eq(2)').text();
+
+                    body += "<tr>"
+                            + "<td id=\"tipmaterial_" + idtipmaterial + "\">" + nombre + "</td>"
+                            + "<td colspan=\"2\" id=\"nacimiento_" + idtipmaterial + "\">" + descripcion + "</td>"
+                            + "<td><input type=\"checkbox\" name=\"idtipmaterial_del\" value=\"" + idtipmaterial + "\"/></td>"
+                            + "<td><input type=\"radio\" name=\"idtipmaterial_upd\" value=\"" + idtipmaterial + "\"/></td>"
+                            + "</tr>";
+                });
+
+                // pinta data en grilla tipmaterials
+                $("#body_tipmaterial").html(body);
+
+                // muestra diálogo con grilla
+                $("#dlg_tipmaterial_qry").dialog({
+                    modal: true,
+                    width: 500,
+                    buttons: {
+                        "Cerrar": function () {
+                            $(this).dialog("close");
+                        }
+                    }
+                });
+            }
+        }
+    });
+}
+
+function tipmaterialIns(){
+    $("#error_tipmaterial_ins").html("").hide();
+    //
+
+    $("#dlg_tipmaterial_ins").dialog({
+        modal: true,
+        width: 480,
+        datatype: "xml",
+        buttons: {
+            "Cancelar": function () {
+                $(this).dialog("close");
+            },
+            "Enviar Datos": function () {
+                $.ajax({
+                    url: "Empresa",
+                    type: "post",
+                    datatype: "xml",
+                    data: {
+                        accion: "INS",
+                        idespecialidad: $("#medico_idespecialidad_ins").val(),
+                        nombre: $("#medico_ins").val()
+                    },
+                    success: function (data) {
+                        var ctos = $(data).find("msg").size();
+
+                        if (ctos > 0) {
+                            var msg = "<ul>";
+                            $(data).find("msg").each(function () {
+                                msg += "<li>" + $(this).text() + "</li>";
+                            });
+                            msg += "</ul>";
+
+                            $("#error_tipmaterial_ins").html(msg).show();
+
+                        } else {
+                            $("#dlg_tipmaterial_ins").dialog("close");
+                            tipmaterialQry();
+                        }
+                    }
+                });
+            }
+        }
+    });
+}
+
+function tipmaterialDel(){
+    var ids = [];
+    $("input[name='idtipmaterial_del']:checked").each(function () {
+        ids.push($(this).val());
+    });
+    if (ids.length === 0) {
+        message("Advertencia", "Seleccione fila(s) a Retirar");
+    } else {
+        $("#p_message").html("¿Retirar registro(s)?");
+        $("#dlg_message").dialog({
+            modal: true,
+            width: 440,
+            buttons: {
+                "No": function () {
+                    $(this).dialog("close");
+                },
+                "Si": function () {
+                    $(this).dialog("close");
+
+                    $.ajax({
+                        url: "empresa",
+                        type: "post",
+                        data: {
+                            accion: "DEL",
+                            ids: ids.toString()
+                        },
+                        success: function (error) {
+                            if (error.length !== 0) {
+                                message("Error", error);
+
+                            } else {
+                                //window.location = "Citas?accion=QRY";
+                            }
+                        }
+                    });
+                }
+            }
+        });
+    }
+}
+
+function tipmaterialUpd(){
+    var id = $("input[name='idtipmaterial_upd']:checked").val();
+    if (isNaN(id)) {
+        message("Advertencia", "Seleccione Fila para Actualizar Datos");
+    } else {
+        $.ajax({
+            url: "get.txt",
+            type: "post",
+            datatype: "txt",
+            data: {
+                accion: "GET",
+                idcita: id
+            },
+            success: function (data) {
+                var msg = $(data).find('msg').text();
+
+                if ($.trim(msg).length !== 0) {
+                    message("Data no Encontrada", msg);
+
+                } else {
+                    var idtipmaterial = $(data).find('idtipmaterial').attr('val');
+                    var nomtipmaterial = $(data).find('nombre').attr('val');
+                    var destipmaterial = $(data).find('descripcion').attr('val');
+
+
+                    $("#nomtipmaterial_upd").val(nomtipmaterial);
+                    $("#destipmaterial_upd").val(destipmaterial);
+
+                    $("#error_tipmaterial_upd").html("").hide();
+                    
+                    $("#dlg_tipmaterial_upd").dialog({
+                        modal: true,
+                        width: 480,
+                        datatype: "xml",
+                        buttons: {
+                            "Cancelar": function () {
+                                $(this).dialog("close");
+                            },
+                            "Enviar Datos": function () {
+                                $.ajax({
+                                    url: "Empresa",
+                                    type: "post",
+                                    datatype: "xml",
+                                    data: {
+                                        accion: "UPD",
+                                        idmedico: id,
+                                        idespecialidad: $("#medico_idespecialidad_upd").val(),
+                                        nombre: $("#medico_upd").val()
+                                    },
+                                    success: function (data) {
+                                        var ctos = $(data).find("msg").size();
+
+                                        if (ctos > 0) {
+                                            var msg = "<ul>";
+                                            $(data).find("msg").each(function () {
+                                                msg += "<li>" + $(this).text() + "</li>";
+                                            });
+                                            msg += "</ul>";
+
+                                            $("#error_tipmaterial_upd").html(msg).show();
+
+                                        } else {
+                                            $("#dlg_tipmaterial_upd").dialog("close");
+                                            tipmaterialQry();
+                                        }
+                                    }
+                                });
+                            }
+                        }
+                    });
+                }
+            }
+        });
+    }
+}
+
+// ==============================================================
+// Scripts Elementos (Cuestionarios)
+// ==============================================================
+
+
+function elementoIns(){
+    // Cargar Combo de 'Cuestionario'
+    $.ajax({
+        url: "Persona",
+        type: "post",
+        datatype: "xml",
+        data : {
+            accion: "CBO"
+        },
+        success: function(data){
+            var msg = $(data).find('msg').text();
+            if ($.trim(msg).length !== 0) {
+                message("Data no Encontrada", msg);
+            }else{
+                var option = "";
+                $(data).find('op').each(function(){
+                    option += "<option value=\""
+                        + $(this).attr('id') + "\">"
+                        + $(this).text() + "</option>";
+                });
+                //Llenar combo tipo
+                $("#idcuestionario_ins").html(option);
+                
+                $("#dlg_elemento_ins").dialog({
+                    modal: true,
+                    width: 480,
+                    buttons: {
+                        "Cancelar": function () {
+                            $(this).dialog("close");
+                        },
+                        "Enviar Datos": function () {
+                            /*$.ajax({
+                                url: "Citas",
+                                type: "post",
+                                data: {
+                                    accion: "INS",
+                                    idpaciente: $("#idpaciente_ins").val(),
+                                    idespecialidad: $("#idespecialidad_ins").val(),
+                                    idmedico: $("#idmedico_ins").val(),
+                                    diahora: $("#diahora_ins").val()
+                                },
+                                success: function (error) {
+                                    if (error.length !== 0) {
+                                        $("#error_citas_ins").html(error).show();
+
+                                    } else {
+                                        window.location = "Citas?accion=QRY";
+                                    }
+                                }
+                            });*/
+                        }
+                    }
+                });
+            }
+        }
+    });
+}
+
+function elementoDel(){
+    var ids = [];
+    $("input[name='idelemento_del']:checked").each(function () {
+        ids.push($(this).val());
+    });
+    if (ids.length === 0) {
+        message("Advertencia", "Seleccione fila(s) a Retirar");
+    } else {
+        $("#p_message").html("¿Retirar registro(s)?");
+        $("#dlg_message").dialog({
+            modal: true,
+            width: 440,
+            buttons: {
+                "No": function () {
+                    $(this).dialog("close");
+                },
+                "Si": function () {
+                    $(this).dialog("close");
+
+                    $.ajax({
+                        url: "elemento",
+                        type: "post",
+                        data: {
+                            accion: "DEL",
+                            ids: ids.toString()
+                        },
+                        success: function (error) {
+                            if (error.length !== 0) {
+                                message("Error", error);
+
+                            } else {
+                                //window.location = "Citas?accion=QRY";
+                            }
+                        }
+                    });
+                }
+            }
+        });
+    }
+}
+
+function elementoUpd(){
+    var id = $("input[name='idelemento_upd']:checked").val();
+    if (isNaN(id)) {
+        message("Advertencia", "Seleccione Fila para Actualizar Datos");
+        }else{
+        // Obtener Datos del Elemento
+        $.ajax({
+            url: "combo.txt",
+            type: "post",
+            datatype: "txt",
+            data: {
+                accion: "POST",
+                idcita: id
+            },
+            success: function (data) {
+                var msg = $(data).find('msg').text();
+
+                if ($.trim(msg).length !== 0) {
+                    message("Data no Encontrada", msg);
+
+                } else {
+                    var idcuestionario = $(data).find('idcuestionario').attr('val');
+                    var nomelemento = $(data).find('nomelemento').attr('val');
+                    var deselemento = $(data).find('deselemento').attr('val');
+
+                // Obtener el listado de 'Cuestionario'
+                $.ajax({
+                    url: "combo.txt",
+                    type: "post",
+                    datatype: "txt",
+                    data: {
+                        accion: "CBO"
+                    },
+                    success: function (data) {
+                        var msg = $(data).find('msg').text();
+
+                        if ($.trim(msg).length !== 0) {
+                            message("Data no Encontrada", msg);
+
+                        } else {
+                            var option = "";
+
+                            $(data).find('op').each(function () {
+                                option += "<option value=\""
+                                        + $(this).attr('id') + "\">"
+                                        + $(this).text() + "</option>";
+                            });
+
+                            $("#idcuestionario_upd").html(option);
+                            $("#idcuestionario_upd").val(idcuestionario);
+                            // ---
+                            // todo Ok
+                            $("#error_elemento_upd").html("").hide();
+                            
+                            $("#dlg_elemento_upd").dialog({
+                                modal: true,
+                                width: 480,
+                                buttons: {
+                                    "Cancelar": function () {
+                                        $(this).dialog("close");
+                                    },
+                                    "Enviar Datos": function () {
+                                        $.ajax({
+                                            url: "elemento",
+                                            type: "post",
+                                            data: {
+                                                accion: "UPD",
+                                                idcita: idcita,
+                                                idpaciente: $("#idpaciente_upd").val(),
+                                                idmedico: $("#idmedico_upd").val(),
+                                                diahora: $("#diahora_upd").val()
+                                            },
+                                            success: function (error) {
+                                                if (error.length !== 0) {
+                                                    $("#error_elemento_upd").html(error).show();
+
+                                                } else {
+                                                    //window.location = "Citas?accion=QRY";
+                                                }
+                                            }
+                                        });
+                                    }
+                                }
+                            });
+
+                        }
+                    }
+                });
+                }
+            }
+        });
+    }
+}
+
+// ==============================================================
+// Scripts Cuestionario
+// ==============================================================
+
+function cuestionarioQry() {
+    $("#error_cuestionario_qry").html("").hide();
+    // solicita data para grilla pacientes
+    $.ajax({
+        url: "empresa.txt",
+        type: "post",
+        datatype: "txt",
+        data: {
+            accion: "QRY"
+        },
+        success: function (data) {
+            var msg = $(data).find('msg').text();
+
+            if ($.trim(msg).length !== 0) {
+                message("Data no Encontrada", msg);
+
+            } else {
+                var body = "";
+                console.log(data);
+                $(data).find('fil').each(function () {
+                    var idcuestionario = $(this).find('col:eq(0)').text();
+                    var nombre = $(this).find('col:eq(1)').text();
+                    var descripcion = $(this).find('col:eq(2)').text();
+
+                    body += "<tr>"
+                            + "<td id=\"cuestionario_" + idcuestionario + "\">" + nombre + "</td>"
+                            + "<td colspan=\"2\" id=\"nacimiento_" + idcuestionario + "\">" + descripcion + "</td>"
+                            + "<td><input type=\"checkbox\" name=\"idcuestionario_del\" value=\"" + idcuestionario + "\"/></td>"
+                            + "<td><input type=\"radio\" name=\"idcuestionario_upd\" value=\"" + idcuestionario + "\"/></td>"
+                            + "</tr>";
+                });
+
+                // pinta data en grilla empresas
+                $("#body_cuestionario").html(body);
+
+                // muestra diálogo con grilla
+                $("#dlg_cuestionario_qry").dialog({
+                    modal: true,
+                    width: 500,
+                    buttons: {
+                        "Cerrar": function () {
+                            $(this).dialog("close");
+                        }
+                    }
+                });
+            }
+        }
+    });
+}
+
+function cuestionarioIns(){
+    $("#error_cuestionario_ins").html("").hide();
+    //
+
+    $("#dlg_cuestionario_ins").dialog({
+        modal: true,
+        width: 480,
+        datatype: "xml",
+        buttons: {
+            "Cancelar": function () {
+                $(this).dialog("close");
+            },
+            "Enviar Datos": function () {
+                $.ajax({
+                    url: "Empresa",
+                    type: "post",
+                    datatype: "xml",
+                    data: {
+                        accion: "INS",
+                        idespecialidad: $("#medico_idespecialidad_ins").val(),
+                        nombre: $("#medico_ins").val()
+                    },
+                    success: function (data) {
+                        var ctos = $(data).find("msg").size();
+
+                        if (ctos > 0) {
+                            var msg = "<ul>";
+                            $(data).find("msg").each(function () {
+                                msg += "<li>" + $(this).text() + "</li>";
+                            });
+                            msg += "</ul>";
+
+                            $("#error_cuestionario_ins").html(msg).show();
+
+                        } else {
+                            $("#dlg_cuestionario_ins").dialog("close");
+                            cuestionarioQry();
+                        }
+                    }
+                });
+            }
+        }
+    });
+}
+
+function cuestionarioDel(){
+    var ids = [];
+    $("input[name='idcuestionario_del']:checked").each(function () {
+        ids.push($(this).val());
+    });
+    if (ids.length === 0) {
+        message("Advertencia", "Seleccione fila(s) a Retirar");
+    } else {
+        $("#p_message").html("¿Retirar registro(s)?");
+        $("#dlg_message").dialog({
+            modal: true,
+            width: 440,
+            buttons: {
+                "No": function () {
+                    $(this).dialog("close");
+                },
+                "Si": function () {
+                    $(this).dialog("close");
+
+                    $.ajax({
+                        url: "empresa",
+                        type: "post",
+                        data: {
+                            accion: "DEL",
+                            ids: ids.toString()
+                        },
+                        success: function (error) {
+                            if (error.length !== 0) {
+                                message("Error", error);
+
+                            } else {
+                                //window.location = "Citas?accion=QRY";
+                            }
+                        }
+                    });
+                }
+            }
+        });
+    }
+}
+
+function cuestionarioUpd(){
+    var id = $("input[name='idcuestionario_upd']:checked").val();
+    if (isNaN(id)) {
+        message("Advertencia", "Seleccione Fila para Actualizar Datos");
+    } else {
+        $.ajax({
+            url: "get.txt",
+            type: "post",
+            datatype: "txt",
+            data: {
+                accion: "GET",
+                idcita: id
+            },
+            success: function (data) {
+                var msg = $(data).find('msg').text();
+
+                if ($.trim(msg).length !== 0) {
+                    message("Data no Encontrada", msg);
+
+                } else {
+                    var idcuestionario = $(data).find('idcuestionario').attr('val');
+                    var nomcuestionario = $(data).find('nombre').attr('val');
+                    var descuestionario = $(data).find('descripcion').attr('val');
+
+
+                    $("#nomcuestionario_upd").val(nomcuestionario);
+                    $("#descuestionario_upd").val(descuestionario);
+
+                    $("#error_cuestionario_upd").html("").hide();
+                    
+                    $("#dlg_cuestionario_upd").dialog({
+                        modal: true,
+                        width: 480,
+                        datatype: "xml",
+                        buttons: {
+                            "Cancelar": function () {
+                                $(this).dialog("close");
+                            },
+                            "Enviar Datos": function () {
+                                $.ajax({
+                                    url: "Empresa",
+                                    type: "post",
+                                    datatype: "xml",
+                                    data: {
+                                        accion: "UPD",
+                                        idmedico: id,
+                                        idespecialidad: $("#medico_idespecialidad_upd").val(),
+                                        nombre: $("#medico_upd").val()
+                                    },
+                                    success: function (data) {
+                                        var ctos = $(data).find("msg").size();
+
+                                        if (ctos > 0) {
+                                            var msg = "<ul>";
+                                            $(data).find("msg").each(function () {
+                                                msg += "<li>" + $(this).text() + "</li>";
+                                            });
+                                            msg += "</ul>";
+
+                                            $("#error_cuestionario_upd").html(msg).show();
+
+                                        } else {
+                                            $("#dlg_cuestionario_upd").dialog("close");
+                                            cuestionarioQry();
+                                        }
+                                    }
+                                });
+                            }
+                        }
+                    });
+                }
+            }
+        });
+    }
+}

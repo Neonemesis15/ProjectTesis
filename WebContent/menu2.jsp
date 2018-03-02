@@ -22,7 +22,7 @@
                     <li><a href="campana.jsp"><span>Campañas</span></a></li>
                     <li><a href="pdv.jsp"><span>Puntos de Venta</span></a></li>
 					<li><a href="producto.jsp"><span>Productos</span></a></li>
-					<li><a href="#"><span>Materiales</span></a></li>
+					<li><a href="material.jsp"><span>Materiales</span></a></li>
                     <li><a href="Usuario?accion=QRY"><span>Usuarios</span></a></li>
                     <li><a href="#"><span>Cuestionarios</span></a></li>
                 </ul>
