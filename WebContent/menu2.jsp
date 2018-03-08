@@ -24,7 +24,7 @@
 					<li><a href="producto.jsp"><span>Productos</span></a></li>
 					<li><a href="material.jsp"><span>Materiales</span></a></li>
                     <li><a href="Usuario?accion=QRY"><span>Usuarios</span></a></li>
-                    <li><a href="#"><span>Cuestionarios</span></a></li>
+                    <li><a href="elemento.jsp"><span>Cuestionarios</span></a></li>
                 </ul>
             </div>
         </li>
