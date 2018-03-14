@@ -38,9 +38,10 @@
         <div id="m_body">
         </div>
         	<div class="center">
-        	<h2> Maestro de Campanias Publicitarias <i class="fas fa-camera-retro" style="font-size:2em; color:Tomato"></i></h2>
+        	<h2> <i class="fas fa-camera-retro" style="font-size:1.5em; color:Tomato"></i> Maestro de Campanias Publicitarias </h2>
         	</div>
             <table class="parainfo" style="margin: auto; width: 80%">
+            <hr><br/>
                 <thead>
                     <tr>
                         <th class = "crud">
