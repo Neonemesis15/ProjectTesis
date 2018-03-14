@@ -13,10 +13,9 @@ public class CampaniaPublicitariaValidator {
 	public CampaniaPublicitariaValidator(){	
 	}
 	
-	public List<String> valida (HttpServletRequest request,
-			CampaniaPublicitaria campaniaPublicitaria, boolean upd){
+	public String valida(HttpServletRequest request, CampaniaPublicitaria campaniaPublicitaria, boolean upd){
 		
-		List<String> list = new LinkedList<>();
+		StringBuilder sb = new StringBuilder("<ul>");
 		
 		Integer id = DeString.aInteger(request.getParameter("id"));
 		String nombre = request.getParameter("nombre");
@@ -27,31 +26,38 @@ public class CampaniaPublicitariaValidator {
 		Integer idCanal = DeString.aInteger(request.getParameter("idCanal"));
 		
 		if(upd && (id == null)){
-			list.add("ID Incorrecto");
+			//list.add("ID Incorrecto");
+			sb.append("<li>Id Campania Publicitaria incorrecto</li>");
 		}
 		
 		if((nombre == null) && (nombre.trim().length() == 0)){
-			list.add("Ingrese el nombre de la Campania Publicitaria");
+			//list.add("Ingrese el nombre de la Campania Publicitaria");
+			sb.append("<li>Ingrese el nombre de la campania publicita</li>");
 		}
 		
 		if((descripcion == null)){
-			list.add("Ingrese una descripcion para la Campania Publicitaria");
+			//list.add("Ingrese una descripcion para la Campania Publicitaria");
+			sb.append("<li>Ingrese una descripcion para la Campania Publicitaria</li>");
 		}
 		
 		if(fechaInicio == null){
-			list.add("Ingrese una Fecha de Inicio para la Campania Publicitaria");
+			//list.add("Ingrese una Fecha de Inicio para la Campania Publicitaria");
+			sb.append("<li>Ingrese una Fecha de Inicio para la Campania Publicitaria</li>");
 		}
 		
 		if(fechaFin == null){
-			list.add("Ingrese una Fecha de Fin para la Campania Publicitaria");
+			//list.add("Ingrese una Fecha de Fin para la Campania Publicitaria");
+			sb.append("<li>Ingrese una Fecha de Fin para la Campania Publicitaria</li>");
 		}
 		
 		if(idFabricante == null){
-			list.add("Seleccione un fabricante para la Campania Publicitaria");
+			//list.add("Seleccione un fabricante para la Campania Publicitaria");
+			sb.append("<li>Seleccione un fabricante para la Campania Publicitaria</li>");
 		}
 		
 		if(idCanal == null){
-			list.add("Seleccione un Canal para la Campania Publicitaria");
+			//list.add("Seleccione un Canal para la Campania Publicitaria");
+			sb.append("<li>Seleccione un Canal para la Campania Publicitaria</li>");
 		}
 		
 		campaniaPublicitaria.setId(id);
@@ -62,7 +68,10 @@ public class CampaniaPublicitariaValidator {
 		campaniaPublicitaria.fabricante.setId(idFabricante);
 		campaniaPublicitaria.canal.setId(idCanal);
 		
-		return list;
+		String result = (sb.length() != 4) ? sb.append("</ul>").toString() : null;
+		
+		return result;
 		
 	}
+	
 }

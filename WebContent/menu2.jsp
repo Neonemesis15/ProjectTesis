@@ -19,7 +19,7 @@
             <a href="#" class="parent"><span>Maestros</span></a>
             <div>
                 <ul>
-                    <li><a href="campana.jsp"><span>Campañas</span></a></li>
+                    <li><a href="CampaniaPublicitaria?accion=QRY"><span>Campañas</span></a></li>
                     <li><a href="pdv.jsp"><span>Puntos de Venta</span></a></li>
 					<li><a href="producto.jsp"><span>Productos</span></a></li>
 					<li><a href="material.jsp"><span>Materiales</span></a></li>

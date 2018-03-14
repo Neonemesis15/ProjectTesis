@@ -6,6 +6,7 @@
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 	<title>Gestion de usuarios</title>
+	<link href="fontawesome/css/fontawesome-all.min.css" type="text/css" rel="stylesheet" />
 	<link href="css/main.css" type="text/css" rel="stylesheet"/>
 	<link href="js/menu/menu.css" rel="stylesheet" type="text/css"/>
 	<link href="js/jquery-ui.min.css" type="text/css" rel="stylesheet"/>
@@ -13,6 +14,8 @@
     <link href="sige/form.css" type="text/css" rel="stylesheet"/>
     <link href="sige/message.css" type="text/css" rel="stylesheet"/>
     <link href="js/timepicker/jquery-ui-timepicker-addon.css" rel="stylesheet" type="text/css"/>
+    
+    
 
    	<script src="js/jquery-2.1.4.min.js" type="text/javascript"></script>
     <script src="js/jquery-ui.min.js" type="text/javascript"></script>
@@ -33,7 +36,11 @@
             <%@ include file="menu2.jsp"%>
         </div>
         <div id="m_body">
-            <table class="parainfo" style="margin: auto;width: 800px">
+        </div>
+        	<div class="center">
+        	<h2> Maestro de Campanias Publicitarias <i class="fas fa-camera-retro" style="font-size:2em; color:Tomato"></i></h2>
+        	</div>
+            <table class="parainfo" style="margin: auto; width: 80%">
                 <thead>
                     <tr>
                         <th class = "crud">
@@ -51,22 +58,22 @@
                                 <span></span>
                             </a>
                         </th>
-                        <td>Nombre</td>
-                        <td>Descripcion</td>
-                        <td>Fecha Inicio</td>
-                        <td>Fecha Fin</td>
+                        <td style="width: 200px">Nombre</td>
+                        <td style="width: 200px">Descripcion</td>
+                        <td style="width: 100px">Fecha Inicio</td>
+                        <td style="width: 100px">Fecha Fin</td>
                         <th class = "crud">
                             <a class="qry" href="#" onclick="empresaQry()" title="Lista de Empresas">
                                 <span></span>
                             </a>
                         </th>
-                        <td>Empresa</td>
+                        <td style="width: 100px">Empresa</td>
                         <th class = "crud">
                             <a class="qry" href="#" onclick="canalQry()" title="Lista de Canales">
                                 <span></span>
                             </a>
                         </th>
-                        <td>Canal</td>
+                        <td style="width: 100px">Canal</td>
                     </tr>
                 </thead>
                 <tbody>

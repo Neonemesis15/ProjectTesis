@@ -29,6 +29,7 @@ public class DaoCampaniaPublicitariaImpl implements DaoCampaniaPublicitaria {
 		List<Object[]> list = null;
 		
 		sql.append("SELECT ")
+		.append("cp.id, ")
 		.append("CONCAT(SUBSTRING(cp.nombre,1,30),'...') nombre, ")
 		.append("CONCAT(SUBSTRING(cp.descripcion,1,30),'...') descripcion, ")
 		.append("cp.fechaInicio, ")
@@ -47,7 +48,7 @@ public class DaoCampaniaPublicitariaImpl implements DaoCampaniaPublicitaria {
 			
 			while(rs.next()){
 				
-				Object[] reg = new Object[6];
+				Object[] reg = new Object[7];
 				
 				reg[0] = rs.getString(1);
 				reg[1] = rs.getString(2);
@@ -55,6 +56,7 @@ public class DaoCampaniaPublicitariaImpl implements DaoCampaniaPublicitaria {
 				reg[3] = rs.getString(4);
 				reg[4] = rs.getString(5);
 				reg[5] = rs.getString(6);
+				reg[6] = rs.getString(7);
 				
 				list.add(reg);
 			}
@@ -203,6 +205,56 @@ public class DaoCampaniaPublicitariaImpl implements DaoCampaniaPublicitaria {
 	public String getMessage() {
 		
 		return message;
+	}
+
+	@Override
+	public Object[] campaniaPublicitariaGet(Integer id) {
+		
+		Object[] reg = null;
+		
+		sql.append("SELECT ")
+		.append("cp.id idCampaniaPublicitaria, ")
+		.append("cp.nombre, ")
+		.append("cp.descripcion, ")
+		.append("cp.fechaInicio, ")
+		.append("cp.fechaFin, ")
+		.append("f.id idfabricante, ")
+		.append("c.id idcanal ")
+		.append("FROM 	mdl_campaniapublicitaria cp ")
+		.append("INNER JOIN 	mdl_fabricante f ON cp.idFabricante = f.id ")
+		.append("INNER JOIN  mdl_canal c ON  c.id = cp.idCanal ")
+		.append("WHERE cp.id = ?");
+		
+		try(Connection cn = db.getConnection();
+				PreparedStatement ps = cn.prepareStatement(sql.toString())){
+			
+			ps.setInt(1, id);
+			
+			try(ResultSet rs = ps.executeQuery()){
+				
+				if(rs.next()){
+					
+					reg = new Object[7];
+					
+					reg[0] = rs.getString(1);
+					reg[1] = rs.getString(2);
+					reg[2] = rs.getString(3);
+					reg[3] = rs.getString(4);
+					reg[4] = rs.getString(5);
+					reg[5] = rs.getString(6);
+					reg[6] = rs.getString(7);
+ 				}
+				
+			}catch(SQLException e){
+				message = e.getMessage();
+			}
+			
+			
+		}catch(SQLException e){
+			message = e.getMessage();
+		}
+		
+		return reg;
 	}
 
 }

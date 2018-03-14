@@ -16,6 +16,8 @@ public interface DaoCampaniaPublicitaria {
 	
 	public List<Object[]> campaniaPublicitariaCbo();
 	
+	public Object[] campaniaPublicitariaGet(Integer id);
+	
 	// Get message
 	public String getMessage();
 }

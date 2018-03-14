@@ -1,14 +1,17 @@
 package com.lucky.web.servlet;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.List;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.lucky.convert.DeString;
 import com.lucky.dao.DaoCampaniaPublicitaria;
 import com.lucky.dao.impl.DaoCampaniaPublicitariaImpl;
 import com.lucky.dto.CampaniaPublicitaria;
@@ -32,37 +35,29 @@ public class CampaniaPublicitariaServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request,
     		HttpServletResponse response)
     		throws ServletException, IOException {
-    	
+    	String contentType = "text/html;charset=UTF-8";
     	request.setCharacterEncoding("UTF-8");
     	
     	String accion = request.getParameter("accion");
     	accion = (accion == null) ? "" : accion;
-    	StringBuilder result;
+    	String result = null;
+    	String target = null;
     	
     	DaoCampaniaPublicitaria daoCampaniaPublicitaria = new DaoCampaniaPublicitariaImpl();
     	List<Object[]> list = null;
     	
-    	switch(accion){
-	    	case "CBO":
-	    		
-	    		list = daoCampaniaPublicitaria.campaniaPublicitariaCbo();
-	    		
-	    		if( list != null ){
-	    			result = Xml.forCbo(list);
-	    		}else{
-	    			result = Xml.forMsg(daoCampaniaPublicitaria.getMessage());
-	    		}
-	    		break;
-	    		
+    	switch(accion){    		
 	    	case "QRY":
 	    		
 	    		list = daoCampaniaPublicitaria.campaniaPublicitariaQry();
 	    		
 	    		if( list != null){
-	    			result = Xml.forQry(list);
+	    			request.setAttribute("list", list);
 	    		}else{
-	    			result = Xml.forMsg(daoCampaniaPublicitaria.getMessage());
+	    			result = daoCampaniaPublicitaria.getMessage();
 	    		}
+	    		
+	    		target = "campana.jsp";
 	    		break;
 	    		
 	    	case "INS":
@@ -71,20 +66,76 @@ public class CampaniaPublicitariaServlet extends HttpServlet {
 	    		
 	    		CampaniaPublicitariaValidator validator = new CampaniaPublicitariaValidator();
 	    		
-	    		List<String> list_msg = validator.valida(request, campaniaPublicitaria, false);
+	    		result = validator.valida(request, campaniaPublicitaria, false);
 	    		
-	    		if(list_msg.isEmpty()){
-	    			String msg = daoCampaniaPublicitaria.campaniaPublicitariaIns(campaniaPublicitaria);
-	    			result = Xml.forMsg(msg);
-	    		}else{
-	    			result = Xml.forMsg(list_msg);
+	    		if(result == null){
+	    			result = daoCampaniaPublicitaria.campaniaPublicitariaIns(campaniaPublicitaria);
 	    		}
 	    		break;
 	    		
 	    	case "UPD":
+	    		
+	    		campaniaPublicitaria = new CampaniaPublicitaria();
+	    		validator = new CampaniaPublicitariaValidator();
+	    		result = validator.valida(request, campaniaPublicitaria, true);
+	    		
+	    		if(result == null){
+	    			result = daoCampaniaPublicitaria.campaniaPublicitariaUpd(campaniaPublicitaria);
+	    		}
+	    		break;
+	    		
 	    	case "DEL":
+	    		
+	    		List<Integer> ids = DeString.ids(request.getParameter("ids"));
+	    		if(ids == null){
+	    			result = "Lista de (ID)s incorrecta";
+	    		}else{
+	    			result = daoCampaniaPublicitaria.campaniaPublicitariaDel(ids);
+	    		}
+	    		break;
+	    	
+	    	case "GET":
+	    		
+	    		Integer idCampania = DeString.aInteger(request.getParameter("idCampania"));
+	    		
+	    		if(idCampania != null){
+	    			Object[] reg = daoCampaniaPublicitaria.campaniaPublicitariaGet(idCampania);
+	    			
+	    			if(reg != null){
+	    				String[] titu = {"idCampania","nombre","descripcion","fecIni","fecFin","idFabricante","idCanal"};
+	    				Object[] data = {reg[0], reg[1], reg[2], reg[3], reg[4], reg[5], reg[6]};
+	    				result =  Xml.forUpd(titu,data).toString();
+	    			}else{
+	    				result = Xml.forMsg(daoCampaniaPublicitaria.getMessage()).toString();
+	    			}
+	    		}else{
+	    			result = Xml.forMsg("ID de Campania Publicitaria Incorrecto").toString();
+	    		}
+	    		contentType = "text/xml;charset=UTF-8";
+	    		break;
+	    		
 	    	case "":
-    		default :
+	    		result = "Solicitud requerida";
+	    		break;
+    		
+	    	default :
+	    		result = "Solicitud desconocida";
+    	}
+    	
+    	if(target == null){
+    		response.setContentType(contentType);
+    		try ( PrintWriter out= response.getWriter() ){
+        		if(result == null){
+        			result = "";
+        		}
+        		out.print(result);
+        	}
+    	}else{
+    		if(result != null){
+    			request.setAttribute("msg", result);
+    		}
+    		RequestDispatcher dispatcher = request.getRequestDispatcher(target);
+    		dispatcher.forward(request, response);
     	}
     	
     }

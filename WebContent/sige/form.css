@@ -31,3 +31,9 @@ form.parainfo textarea {
 form.parainfo td, form.parainfo th {
     vertical-align: top;
 }
+
+.center {
+    margin: auto;
+    width: 50%;
+    text-align: center;
+}
