@@ -1282,9 +1282,9 @@ function perfilUpd(){
 function canalQry(){
     $("#error_canal_qry").html("").hide();
     $.ajax({
-        url: "empresa.txt",
+        url: "Canal",
         type: "post",
-        datatype: "txt",
+        datatype: "xml",
         data: {
             accion: "QRY"
         },
@@ -1316,7 +1316,7 @@ function canalQry(){
                 // muestra diálogo con grilla
                 $("#dlg_canal_qry").dialog({
                     modal: true,
-                    width: 500,
+                    width: 800,
                     buttons: {
                         "Cerrar": function () {
                             $(this).dialog("close");

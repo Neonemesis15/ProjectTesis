@@ -8,6 +8,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import com.lucky.dao.DaoFabricante;
+import com.lucky.dto.Fabricante;
 import com.lucky.sql.ConectaDb;
 
 
@@ -52,8 +53,57 @@ public class DaoFabricanteImpl implements DaoFabricante {
 
 	@Override
 	public String getMessage() {
-		// TODO Auto-generated method stub
 		return message;
+	}
+
+	@Override
+	public String fabricanteIns(Fabricante fabricante) {
+        sql.append("INSERT INTO mdl_fabricante(")
+        .append("nombre,")
+        .append("descripcion ")
+        .append(") VALUES(?, ?)");
+
+		try (Connection cn = db.getConnection();
+		        PreparedStatement ps
+		        = cn.prepareStatement(sql.toString())) {
+		
+		    ps.setString(1, fabricante.getNombre());
+		    ps.setString(2, fabricante.getDescripcion());
+		
+		    int ctos = ps.executeUpdate();
+		    if (ctos == 0) {
+		        throw new SQLException("0 filas afectadas");
+		    }
+		
+		} catch (SQLException e) {
+		    message = e.getMessage();
+		}
+		
+		return message;
+	}
+
+	@Override
+	public String fabricanteUpd(Fabricante fabricante) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String fabricantelDel(List<Integer> ids) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<Object[]> fabricanteCbo() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Object[] fabricanteGet(Integer id) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

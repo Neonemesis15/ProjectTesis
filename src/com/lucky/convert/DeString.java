@@ -1,5 +1,9 @@
 package com.lucky.convert;
 
+import java.sql.Date;
+import java.sql.Timestamp;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -22,6 +26,8 @@ public class DeString {
         return result;
     }
 
+    
+    
     public static Double aDouble(String s) {
         Double result = null;
 
@@ -60,5 +66,39 @@ public class DeString {
 
         return list;
     }
+
+    public static Date aDate(String fecha) {
+        Date result = null;
+
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+        sdf.setLenient(false);
+
+        try {
+            java.util.Date utilDate = sdf.parse(fecha);
+            result = new java.sql.Date(utilDate.getTime());
+
+        } catch (ParseException ex) {
+        }
+
+        return result;
+    }
+
+    public static Timestamp aTimestamp(String fechahora) {
+        Timestamp result = null;
+
+        SimpleDateFormat sdf
+                = new SimpleDateFormat("dd/MM/yyyy hh:mm a");
+        sdf.setLenient(false);
+
+        try {
+            java.util.Date ufechahora = sdf.parse(fechahora);
+            result = new java.sql.Timestamp(ufechahora.getTime());
+
+        } catch (ParseException ex) {
+        }
+
+        return result;
+    }
+    
 }
 
