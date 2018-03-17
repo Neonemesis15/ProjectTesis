@@ -1,5 +1,7 @@
 package com.lucky.web.validator;
 
+
+import java.sql.Date;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -20,8 +22,8 @@ public class CampaniaPublicitariaValidator {
 		Integer id = DeString.aInteger(request.getParameter("id"));
 		String nombre = request.getParameter("nombre");
 		String descripcion = request.getParameter("descripcion");
-		String fechaInicio = request.getParameter("fechaInicio");
-		String fechaFin = request.getParameter("fechaFin");
+		Date fechaInicio = DeString.aDate(request.getParameter("fechaInicio"));
+		Date fechaFin = DeString.aDate(request.getParameter("fechaFin"));
 		Integer idFabricante = DeString.aInteger(request.getParameter("idFabricante"));
 		Integer idCanal = DeString.aInteger(request.getParameter("idCanal"));
 		

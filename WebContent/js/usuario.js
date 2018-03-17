@@ -575,9 +575,9 @@ $(function () {
 function campanaIns(){
     // lectura para el combo empresa
     $.ajax({
-        url: "combo.txt",
+        url: "Fabricante",
         type: "post",
-        datatype: "txt",
+        datatype: "xml",
         data: {
             accion: "CBO"
         },
@@ -601,9 +601,9 @@ function campanaIns(){
 
                 // lectura para el combo canal
                 $.ajax({
-                    url: "combo.txt",
+                    url: "Canal",
                     type: "post",
-                    datatype: "txt",
+                    datatype: "xml",
                     data: {
                         accion: "CBO"
                     },
@@ -636,23 +636,25 @@ function campanaIns(){
                                     },
                                     "Enviar Datos": function () {
                                         $.ajax({
-                                            url: "Empresas",
+                                            url: "CampaniaPublicitaria",
                                             type: "post",
                                             data: {
                                                 accion: "INS",
-                                                nomempresa: $("#nombre_ins").val(),
-                                                desempresa: $("#descripcion_ins").val(),
-                                                feciniempresa: $("#fechaini_ins").val(),
-                                                fecfinempresa: $("#fechafin_ins").val(),
-                                                idempresa: $("#idempresa_ins").val(),
-                                                idcanal: $("#idcanal_ins").val()
+                                                nombre: $("#nombre_ins").val(),
+                                                descripcion: $("#descripcion_ins").val(),
+                                                fechaInicio: $("#fechaini_ins").val(),
+                                                fechaFin: $("#fechafin_ins").val(),
+                                                idFabricante: $("#idempresa_ins").val(),
+                                                idCanal: $("#idcanal_ins").val()
                                             },
                                             success: function (error) {
                                                 if (error.length !== 0) {
-                                                    $("#error_campana_ins").html(error).show();
-
+                                                    //console.log('entro en un error fatality' + error);
+                                                	$("#error_campana_ins").html(error).show();
+                                                    
                                                 } else {
-                                                    //window.location = "Citas?accion=QRY";
+                                                	//console.log('logramos entrar correctamente');
+                                                    window.location = "CampaniaPublicitaria?accion=QRY";
                                                 }
                                             }
                                         });
@@ -676,9 +678,10 @@ function campanaDel(){
     if (ids.length === 0) {
         message("Advertencia", "Seleccione fila(s) a Retirar");
     } else {
-        $("#p_message").html("¿Retirar registro(s)?");
+        $("#p_message").html("Esta seguro de eliminar el/los registro(s) seleccionado(s) ?");
         $("#dlg_message").dialog({
-            modal: true,
+            title: 'Eliminar Registro(s)',
+        	modal: true,
             width: 440,
             buttons: {
                 "No": function () {
@@ -686,9 +689,9 @@ function campanaDel(){
                 },
                 "Si": function () {
                     $(this).dialog("close");
-
+                    //$('#content').html('<img id="loader-img" alt="" src="http://preloaders.net/preloaders/287/Filling%20broken%20ring.gif" width="100" height="100" align="center" />');
                     $.ajax({
-                        url: "Campana",
+                        url: "CampaniaPublicitaria",
                         type: "post",
                         data: {
                             accion: "DEL",
@@ -699,7 +702,10 @@ function campanaDel(){
                                 message("Error", error);
 
                             } else {
-                                //window.location = "Citas?accion=QRY";
+                            	/*setTimeout(function () {
+                            		$('#content').html('Excelente!!').addClass('border');
+                            	},3000);*/
+                            	window.location = "CampaniaPublicitaria?accion=QRY";
                             }
                         }
                     });
@@ -851,9 +857,9 @@ function empresaQry() {
 	$("#error_empresa_qry").html("").hide();
     // solicita data para grilla pacientes
     $.ajax({
-        url: "empresa.txt",
+        url: "Fabricante",
         type: "post",
-        datatype: "txt",
+        datatype: "xml",
         data: {
             accion: "QRY"
         },
@@ -1467,7 +1473,7 @@ function canalDel(){
                     $(this).dialog("close");
                 },
                 "Si": function () {
-                    $(this).dialog("close");
+                    /*$(this).dialog("close");*/
 
                     $.ajax({
                         url: "Canal",
@@ -1481,7 +1487,7 @@ function canalDel(){
                                 message("Error", error);
 
                             } else {
-                                //window.location = "Citas?accion=QRY";
+                                window.location = "Citas?accion=QRY";
                             }
                         }
                     });

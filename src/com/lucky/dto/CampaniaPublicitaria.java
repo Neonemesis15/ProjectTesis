@@ -1,13 +1,21 @@
 package com.lucky.dto;
 
+import java.sql.Date;
+
 public class CampaniaPublicitaria {
 	public Integer id;
 	public String nombre;
 	public String descripcion;
-	public String fechaInicio;
-	public String fechaFin;
+	public Date fechaInicio;
+	public Date fechaFin;
 	public Fabricante fabricante;
 	public Canal canal;
+	
+	public CampaniaPublicitaria(){
+		fabricante = new Fabricante();
+		canal = new Canal();
+	}
+	
 	public Integer getId() {
 		return id;
 	}
@@ -26,18 +34,7 @@ public class CampaniaPublicitaria {
 	public void setDescripcion(String descripcion) {
 		this.descripcion = descripcion;
 	}
-	public String getFechaInicio() {
-		return fechaInicio;
-	}
-	public void setFechaInicio(String fechaInicio) {
-		this.fechaInicio = fechaInicio;
-	}
-	public String getFechaFin() {
-		return fechaFin;
-	}
-	public void setFechaFin(String fechaFin) {
-		this.fechaFin = fechaFin;
-	}
+
 	public Fabricante getFabricante() {
 		return fabricante;
 	}
@@ -49,6 +46,22 @@ public class CampaniaPublicitaria {
 	}
 	public void setCanal(Canal canal) {
 		this.canal = canal;
+	}
+
+	public Date getFechaInicio() {
+		return fechaInicio;
+	}
+
+	public void setFechaInicio(Date fechaInicio) {
+		this.fechaInicio = fechaInicio;
+	}
+
+	public Date getFechaFin() {
+		return fechaFin;
+	}
+
+	public void setFechaFin(Date fechaFin) {
+		this.fechaFin = fechaFin;
 	}
 
 }

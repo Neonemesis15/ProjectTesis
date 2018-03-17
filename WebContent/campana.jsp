@@ -96,6 +96,7 @@
                     </c:forEach>    
                 </tbody>
             </table>
+            <div id="content"></div>
         </div>
         <%-- diálogos de edición--%>
         <%@include file="WEB-INF/jspf/empresa.jspf" %> 

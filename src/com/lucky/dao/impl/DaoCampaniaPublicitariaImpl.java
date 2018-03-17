@@ -85,8 +85,8 @@ public class DaoCampaniaPublicitariaImpl implements DaoCampaniaPublicitaria {
 			
 			ps.setString(1, campaniaPublicitaria.getNombre());
 			ps.setString(2, campaniaPublicitaria.getDescripcion());
-			ps.setString(3, campaniaPublicitaria.getFechaInicio());
-			ps.setString(4, campaniaPublicitaria.getFechaFin());
+			ps.setDate(3, campaniaPublicitaria.getFechaInicio());
+			ps.setDate(4, campaniaPublicitaria.getFechaFin());
 			ps.setInt(5, campaniaPublicitaria.fabricante.getId());
 			ps.setInt(6, campaniaPublicitaria.canal.getId());
 			
@@ -119,8 +119,8 @@ public class DaoCampaniaPublicitariaImpl implements DaoCampaniaPublicitaria {
 		
 			ps.setString(1, campaniaPublicitaria.getNombre());
 			ps.setString(2, campaniaPublicitaria.getDescripcion());
-			ps.setString(3, campaniaPublicitaria.getFechaInicio() );
-			ps.setString(4, campaniaPublicitaria.getFechaFin());
+			ps.setDate(3, campaniaPublicitaria.getFechaInicio() );
+			ps.setDate(4, campaniaPublicitaria.getFechaFin());
 			ps.setInt(5, campaniaPublicitaria.fabricante.getId());
 			ps.setInt(6, campaniaPublicitaria.canal.getId());
 			
@@ -137,7 +137,7 @@ public class DaoCampaniaPublicitariaImpl implements DaoCampaniaPublicitaria {
 
 	@Override
 	public String campaniaPublicitariaDel(List<Integer> ids) {
-		sql.append("DELETE mdl_campaniapublicitaria WHERE id = ?");
+		sql.append("DELETE FROM mdl_campaniapublicitaria WHERE id = ?");
 		try(Connection cn = db.getConnection();
 				PreparedStatement ps = cn.prepareStatement(sql.toString())){
 			
