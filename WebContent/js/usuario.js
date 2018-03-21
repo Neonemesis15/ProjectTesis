@@ -883,8 +883,8 @@ function empresaQry() {
                     var descripcion = $(this).find('col:eq(2)').text();
 
                     body += "<tr>"
-                            + "<td id=\"empresa_" + idempresa + "\">" + nombre + "</td>"
-                            + "<td colspan=\"2\" id=\"nacimiento_" + idempresa + "\">" + descripcion + "</td>"
+                            + "<td id=\"nombre_" + idempresa + "\">" + nombre + "</td>"
+                            + "<td colspan=\"2\" id=\"descripcion_" + idempresa + "\">" + descripcion + "</td>"
                             + "<td><input type=\"checkbox\" name=\"idempresa_del\" value=\"" + idempresa + "\"/></td>"
                             + "<td><input type=\"radio\" name=\"idempresa_upd\" value=\"" + idempresa + "\"/></td>"
                             + "</tr>";
@@ -909,6 +909,8 @@ function empresaQry() {
 }
 
 function empresaIns(){
+	$("#nomempresa_ins").val('');
+	$("#desempresa_ins").val('');
     $("#error_empresa_ins").html("").hide();
     //
 
@@ -922,13 +924,13 @@ function empresaIns(){
             },
             "Enviar Datos": function () {
                 $.ajax({
-                    url: "Empresa",
+                    url: "Fabricante",
                     type: "post",
                     datatype: "xml",
                     data: {
                         accion: "INS",
-                        idespecialidad: $("#medico_idespecialidad_ins").val(),
-                        nombre: $("#medico_ins").val()
+                        nombre: $("#nomempresa_ins").val(),
+                        descripcion: $("#desempresa_ins").val()
                     },
                     success: function (data) {
                         var ctos = $(data).find("msg").size();
@@ -971,20 +973,28 @@ function empresaDel(){
                 },
                 "Si": function () {
                     $(this).dialog("close");
-
+                   
                     $.ajax({
-                        url: "empresa",
+                        url: "Fabricante",
                         type: "post",
                         data: {
                             accion: "DEL",
                             ids: ids.toString()
                         },
-                        success: function (error) {
-                            if (error.length !== 0) {
-                                message("Error", error);
+                        success: function (data) {
+                        	var ctos = $(data).find("msg").size();
+                            if (ctos > 0) {
+                                var msg = "<ul>";
+                                $(data).find("msg").each(function () {
+                                    msg += "<li>" + $(this).text() + "</li>";
+                                });
+                                msg += "</ul>";
+
+                                $("#error_empresa_qry").html(msg).show();
 
                             } else {
-                                //window.location = "Citas?accion=QRY";
+                            	
+                            	empresaQry();
                             }
                         }
                     });
@@ -995,79 +1005,57 @@ function empresaDel(){
 }
 
 function empresaUpd(){
-    var id = $("input[name='idempresa_upd']:checked").val();
-    if (isNaN(id)) {
-        message("Advertencia", "Seleccione Fila para Actualizar Datos");
-    } else {
-        $.ajax({
-            url: "get.txt",
-            type: "post",
-            datatype: "txt",
-            data: {
-                accion: "GET",
-                idcita: id
-            },
-            success: function (data) {
-                var msg = $(data).find('msg').text();
+	var id = $("input[name='idempresa_upd']:checked").val();
+	 if (isNaN(id)) {
+	        message("Advertencia", "Seleccione Fila para Actualizar Datos");
+	    } else {
+	        $("#nomempresa_upd").val($("#nombre_" + id).text());
+	        $("#desempresa_upd").val($("#descripcion_" + id).text());
+	        $("#error_empresa_upd").html("").hide();
+	        
+	        $("#dlg_empresa_upd").dialog({
+	            modal: true,
+	            width: 480,
+	            datatype: "xml",
+	            buttons: {
+	                "Cancelar": function () {
+	                    $(this).dialog("close");
+	                },
+	                "Enviar Datos": function () {
+	                    $.ajax({
+	                        url: "Fabricante",
+	                        type: "post",
+	                        datatype: "xml",
+	                        data: {
+	                            accion: "UPD",
+	                            id: id,
+	                            nombre: $("#nomempresa_upd").val(),
+	                            descripcion: $("#desempresa_upd").val()
+	                        },
+	                        success: function (data) {
+	                            var ctos = $(data).find("msg").size();
 
-                if ($.trim(msg).length !== 0) {
-                    message("Data no Encontrada", msg);
+	                            if (ctos > 0) {
+	                                var msg = "<ul>";
+	                                $(data).find("msg").each(function () {
+	                                    msg += "<li>" + $(this).text() + "</li>";
+	                                });
+	                                msg += "</ul>";
 
-                } else {
-                    var idempresa = $(data).find('idempresa').attr('val');
-                    var nomempresa = $(data).find('nombre').attr('val');
-                    var desempresa = $(data).find('descripcion').attr('val');
+	                                $("#error_empresa_upd").html(msg).show();
 
-
-                    $("#nomempresa_upd").val(nomempresa);
-                    $("#desempresa_upd").val(desempresa);
-
-                    $("#error_empresa_upd").html("").hide();
-                    
-                    $("#dlg_empresa_upd").dialog({
-                        modal: true,
-                        width: 480,
-                        datatype: "xml",
-                        buttons: {
-                            "Cancelar": function () {
-                                $(this).dialog("close");
-                            },
-                            "Enviar Datos": function () {
-                                $.ajax({
-                                    url: "Empresa",
-                                    type: "post",
-                                    datatype: "xml",
-                                    data: {
-                                        accion: "UPD",
-                                        idmedico: id,
-                                        idespecialidad: $("#medico_idespecialidad_upd").val(),
-                                        nombre: $("#medico_upd").val()
-                                    },
-                                    success: function (data) {
-                                        var ctos = $(data).find("msg").size();
-
-                                        if (ctos > 0) {
-                                            var msg = "<ul>";
-                                            $(data).find("msg").each(function () {
-                                                msg += "<li>" + $(this).text() + "</li>";
-                                            });
-                                            msg += "</ul>";
-
-                                            $("#error_empresa_upd").html(msg).show();
-
-                                        } else {
-                                            $("#dlg_empresa_upd").dialog("close");
-                                            empresaQry();
-                                        }
-                                    }
-                                });
-                            }
-                        }
-                    });
-                }
-            }
-        });
-    }
+	                            } else {
+	                                $("#dlg_empresa_upd").dialog("close");
+	                                empresaQry();
+	                            }
+	                        }
+	                    });
+	                }
+	            }
+	        });
+	        
+	    }
+	
 }
 
 // ==============================================================
