@@ -123,6 +123,7 @@ public class DaoCampaniaPublicitariaImpl implements DaoCampaniaPublicitaria {
 			ps.setDate(4, campaniaPublicitaria.getFechaFin());
 			ps.setInt(5, campaniaPublicitaria.fabricante.getId());
 			ps.setInt(6, campaniaPublicitaria.canal.getId());
+			ps.setInt(7, campaniaPublicitaria.getId());
 			
 			int ctos = ps.executeUpdate();
 			if( ctos == 0 ){
@@ -216,8 +217,8 @@ public class DaoCampaniaPublicitariaImpl implements DaoCampaniaPublicitaria {
 		.append("cp.id idCampaniaPublicitaria, ")
 		.append("cp.nombre, ")
 		.append("cp.descripcion, ")
-		.append("cp.fechaInicio, ")
-		.append("cp.fechaFin, ")
+		.append("DATE_FORMAT(cp.fechaInicio,'%d/%m/%Y') fechaInicio,")
+		.append("DATE_FORMAT(cp.fechaFin,'%d/%m/%Y') fechaFin,")
 		.append("f.id idfabricante, ")
 		.append("c.id idcanal ")
 		.append("FROM 	mdl_campaniapublicitaria cp ")

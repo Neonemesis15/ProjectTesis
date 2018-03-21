@@ -525,7 +525,7 @@ function personaUpd(){
 
 $(function () {
     // datepicker
-    $("#fechaini_ins, #fechafin_ins").datepicker({
+    $("#fechaini_ins, #fechafin_ins, #fechaini_upd, #fechafin_upd").datepicker({
         showOn: "button",
         buttonImage: "images/calendar.gif",
         buttonImageOnly: true,
@@ -535,8 +535,8 @@ $(function () {
         yearRange: "1940:2020"
     });
 
-    $("#fechaini_ins").datepicker('setDate', new Date());
-    $("#fechafin_ins").datepicker('setDate', new Date());
+    $("#fechaini_ins, #fechaini_upd").datepicker('setDate', new Date());
+    $("#fechafin_ins, #fechafin_upd").datepicker('setDate', new Date());
     
     // timepicker
     $.timepicker.regional['es'] = {
@@ -551,7 +551,7 @@ $(function () {
     };
 
     $.timepicker.setDefaults($.timepicker.regional['es']);
-    $("#fechaini_ins, #fechafin_ins").datetimepicker({
+    $("#fechaini_ins, #fechafin_ins, #fechaini_upd, #fechafin_upd").datetimepicker({
         showOn: 'button',
         buttonImage: 'images/calendar.gif',
         buttonImageOnly: true,
@@ -722,12 +722,12 @@ function campanaUpd(){
         }else{
         // pidiendo datos de campana
         $.ajax({
-            url: "get.txt",
+            url: "CampaniaPublicitaria",
             type: "post",
-            datatype: "txt",
+            datatype: "xml",
             data: {
                 accion: "GET",
-                idcita: id
+                idCampania: id
             },
             success: function (data) {
                 var msg = $(data).find('msg').text();
@@ -736,14 +736,16 @@ function campanaUpd(){
                     message("Data no Encontrada", msg);
 
                 } else {
-                    var idcampana = $(data).find('idcampana').attr('val');
+                    var idcampana = $(data).find('idCampania').attr('val');
                     var nomcampana = $(data).find('nombre').attr('val');
                     var descampana = $(data).find('descripcion').attr('val');
-                    var fecinicampana = $(data).find('fechaini').attr('val');
-                    var fecfincampana = $(data).find('fechafin').attr('val');
-                    var idempresa = $(data).find('idempresa').attr('val');
-                    var idcanal = $(data).find('idcanal').attr('val');
-
+                    var fecinicampana = $(data).find('fecIni').attr('val');
+                    var fecfincampana = $(data).find('fecFin').attr('val');
+                    var idempresa = $(data).find('idFabricante').attr('val');
+                    var idcanal = $(data).find('idCanal').attr('val');
+                    
+                    console.log('fecha inicio:' + fecinicampana);
+                    
                     $("#idcampana_upd").val(idcampana);
                     $("#nombre_upd").val(nomcampana);
                     $("#descripcion_upd").val(descampana);
@@ -752,9 +754,9 @@ function campanaUpd(){
 
                     // lectura para el combo empresas
                     $.ajax({
-                        url: "combo.txt",
+                        url: "Fabricante",
                         type: "post",
-                        datatype: "txt",
+                        datatype: "xml",
                         data: {
                             accion: "CBO"
                         },
@@ -778,7 +780,7 @@ function campanaUpd(){
                                 // ---
                                 // Lectura para el combo de canales
                                 $.ajax({
-                                    url: "combo.txt",
+                                    url: "Canal",
                                     type: "post",
                                     datatype: "txt",
                                     data: {
@@ -814,21 +816,24 @@ function campanaUpd(){
                                                     },
                                                     "Enviar Datos": function () {
                                                         $.ajax({
-                                                            url: "Campana",
+                                                            url: "CampaniaPublicitaria",
                                                             type: "post",
                                                             data: {
                                                                 accion: "UPD",
-                                                                idcita: idcita,
-                                                                idpaciente: $("#idpaciente_upd").val(),
-                                                                idmedico: $("#idmedico_upd").val(),
-                                                                diahora: $("#diahora_upd").val()
+                                                                id: id,
+                                                                nombre: $("#nombre_upd").val(),
+                                                                descripcion: $("#descripcion_upd").val(),
+                                                                fechaInicio: $("#fechaini_upd").val(),
+                                                                fechaFin: $("#fechafin_upd").val(),
+                                                                idFabricante: $("#idempresa_upd").val(),
+                                                                idCanal: $("#idcanal_upd").val()
                                                             },
                                                             success: function (error) {
                                                                 if (error.length !== 0) {
-                                                                    $("#error_citas_upd").html(error).show();
+                                                                    $("#error_campana_upd").html(error).show();
 
                                                                 } else {
-                                                                    //window.location = "Citas?accion=QRY";
+                                                                    window.location = "CampaniaPublicitaria?accion=QRY";
                                                                 }
                                                             }
                                                         });
@@ -1309,8 +1314,8 @@ function canalQry(){
                     var descripcion = $(this).find('col:eq(2)').text();
 
                     body += "<tr>"
-                            + "<td id=\"canal_" + idcanal + "\">" + nombre + "</td>"
-                            + "<td colspan=\"2\" id=\"nacimiento_" + idcanal + "\">" + descripcion + "</td>"
+                            + "<td id=\"nombre_" + idcanal + "\">" + nombre + "</td>"
+                            + "<td colspan=\"2\" id=\"descripcion_" + idcanal + "\">" + descripcion + "</td>"
                             + "<td><input type=\"checkbox\" name=\"idcanal_del\" value=\"" + idcanal + "\"/></td>"
                             + "<td><input type=\"radio\" name=\"idcanal_upd\" value=\"" + idcanal + "\"/></td>"
                             + "</tr>";
@@ -1336,6 +1341,8 @@ function canalQry(){
 
 
 function canalIns(){
+	$("#descanal_ins").val("");
+	$("#nomcanal_ins").val("");
     $("#error_canal_ins").html("").hide();
     //
 
@@ -1354,8 +1361,8 @@ function canalIns(){
                     datatype: "xml",
                     data: {
                         accion: "INS",
-                        idespecialidad: $("#medico_idespecialidad_ins").val(),
-                        nombre: $("#medico_ins").val()
+                        descripcion: $("#descanal_ins").val(),
+                        nombre: $("#nomcanal_ins").val()
                     },
                     success: function (data) {
                         var ctos = $(data).find("msg").size();
@@ -1385,68 +1392,45 @@ function canalUpd(){
     if (isNaN(id)) {
         message("Advertencia", "Seleccione Fila para Actualizar Datos");
     } else {
-        $.ajax({
-            url: "get.txt",
-            type: "post",
-            datatype: "txt",
-            data: {
-                accion: "GET",
-                idcita: id
-            },
-            success: function (data) {
-                var msg = $(data).find('msg').text();
+        $("#nomcanal_upd").val($("#nombre_" + id).text());
+        $("#descanal_upd").val($("#descripcion_" + id).text());
+        $("#error_canal_upd").html("").hide();
+        //
 
-                if ($.trim(msg).length !== 0) {
-                    message("Data no Encontrada", msg);
-
-                } else {
-                    var idcanal = $(data).find('idcanal').attr('val');
-                    var nomcanal = $(data).find('nombre').attr('val');
-                    var descanal = $(data).find('descripcion').attr('val');
-
-
-                    $("#nomcanal_upd").val(nomcanal);
-                    $("#descanal_upd").val(descanal);
-
-                    $("#error_canal_upd").html("").hide();
-                    
-                    $("#dlg_canal_upd").dialog({
-                        modal: true,
-                        width: 480,
+        $("#dlg_canal_upd").dialog({
+            modal: true,
+            width: 480,
+            datatype: "xml",
+            buttons: {
+                "Cancelar": function () {
+                    $(this).dialog("close");
+                },
+                "Enviar Datos": function () {
+                    $.ajax({
+                        url: "Canal",
+                        type: "post",
                         datatype: "xml",
-                        buttons: {
-                            "Cancelar": function () {
-                                $(this).dialog("close");
-                            },
-                            "Enviar Datos": function () {
-                                $.ajax({
-                                    url: "Canal",
-                                    type: "post",
-                                    datatype: "xml",
-                                    data: {
-                                        accion: "UPD",
-                                        idmedico: id,
-                                        idespecialidad: $("#medico_idespecialidad_upd").val(),
-                                        nombre: $("#medico_upd").val()
-                                    },
-                                    success: function (data) {
-                                        var ctos = $(data).find("msg").size();
+                        data: {
+                            accion: "UPD",
+                            id: id,
+                            nombre: $("#nomcanal_upd").val(),
+                            descripcion: $("#descanal_upd").val()
+                        },
+                        success: function (data) {
+                            var ctos = $(data).find("msg").size();
 
-                                        if (ctos > 0) {
-                                            var msg = "<ul>";
-                                            $(data).find("msg").each(function () {
-                                                msg += "<li>" + $(this).text() + "</li>";
-                                            });
-                                            msg += "</ul>";
-
-                                            $("#error_canal_upd").html(msg).show();
-
-                                        } else {
-                                            $("#dlg_canal_upd").dialog("close");
-                                            canalQry();
-                                        }
-                                    }
+                            if (ctos > 0) {
+                                var msg = "<ul>";
+                                $(data).find("msg").each(function () {
+                                    msg += "<li>" + $(this).text() + "</li>";
                                 });
+                                msg += "</ul>";
+
+                                $("#error_canal_upd").html(msg).show();
+
+                            } else {
+                                $("#dlg_canal_upd").dialog("close");
+                                canalQry();
                             }
                         }
                     });
@@ -1464,7 +1448,7 @@ function canalDel(){
     if (ids.length === 0) {
         message("Advertencia", "Seleccione fila(s) a Retirar");
     } else {
-        $("#p_message").html("¿Retirar registro(s)?");
+        $("#p_message").html("¿ Retirar registro(s) ?");
         $("#dlg_message").dialog({
             modal: true,
             width: 440,
@@ -1473,7 +1457,7 @@ function canalDel(){
                     $(this).dialog("close");
                 },
                 "Si": function () {
-                    /*$(this).dialog("close");*/
+                    $(this).dialog("close");
 
                     $.ajax({
                         url: "Canal",
@@ -1482,12 +1466,20 @@ function canalDel(){
                             accion: "DEL",
                             ids: ids.toString()
                         },
-                        success: function (error) {
-                            if (error.length !== 0) {
-                                message("Error", error);
+                        success: function (data) {
+                            var ctos = $(data).find("msg").size();
+
+                            if (ctos > 0) {
+                                var msg = "<ul>";
+                                $(data).find("msg").each(function () {
+                                    msg += "<li>" + $(this).text() + "</li>";
+                                });
+                                msg += "</ul>";
+
+                                $("#error_canal_qry").html(msg).show();
 
                             } else {
-                                window.location = "Citas?accion=QRY";
+                            	canalQry();
                             }
                         }
                     });

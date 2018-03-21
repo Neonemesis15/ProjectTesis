@@ -31,7 +31,7 @@ public class DaoCanalImpl implements DaoCanal {
         sql.append("SELECT ")
                 .append("id,")
                 .append("nombre,")
-                .append("CONCAT(SUBSTRING(descripcion, 1, 65),'...') descripcion ")
+                .append("descripcion ")
                 .append("FROM mdl_canal ")
                 .append("ORDER BY nombre");
 
