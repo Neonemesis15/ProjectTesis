@@ -98,7 +98,7 @@ public class PdvServlet extends HttpServlet {
 	    	
 	    	case "GET":
 	    		
-	    		Integer idPdv = DeString.aInteger(request.getParameter("idPdv"));
+	    		Integer idPdv = DeString.aInteger(request.getParameter("idpdv"));
 	    		
 	    		if(idPdv != null){
 	    			Object[] reg = daoPdv.pdvGet(idPdv);

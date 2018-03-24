@@ -1,6 +1,9 @@
 package com.lucky.web.servlet;
 
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.List;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -9,6 +12,9 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.lucky.dao.DaoUbigeo;
 import com.lucky.dao.impl.DaoUbigeoImpl;
+import com.lucky.dto.Ubigeo;
+import com.lucky.web.validator.UbigeoValidator;
+import com.lucky.xml.Xml;
 
 /**
  * Servlet implementation class UbigeoServlet
@@ -26,6 +32,56 @@ public class UbigeoServlet extends HttpServlet {
         StringBuilder result;
         
         DaoUbigeo daoUbigeo = new DaoUbigeoImpl();
+        switch (accion) {
+        case "CBO":
+            List<Object[]> list = daoUbigeo.ubigeoCbo();
+
+            if (list != null) {
+                result = Xml.forCbo(list);
+
+            } else {
+                result = Xml.forMsg(daoUbigeo.getMessage());
+            }
+            break;
+            
+        case "QRY":
+            list = daoUbigeo.ubigeoQry();
+
+            if (list != null) {
+                result = Xml.forQry(list);
+
+            } else {
+                result = Xml.forMsg(daoUbigeo.getMessage());
+            }
+            break;
+            
+        case "INS":
+            Ubigeo ubigeo = new Ubigeo();
+            UbigeoValidator validator = new UbigeoValidator();
+            List<String> list_msg = validator.valida(
+                    request, ubigeo, false);
+
+            if (list_msg.isEmpty()) {
+                String msg = daoUbigeo.ubigeoIns(ubigeo);
+                result = Xml.forMsg(msg);
+
+            } else {
+                result = Xml.forMsg(list_msg);
+            }
+            break;
+            
+        case "":
+            result = Xml.forMsg("Solicitud requerida");
+            break;
+
+        default:
+            result = Xml.forMsg("Solicitud no reconocida");
+        }
+        
+        response.setContentType("text/xml;charset=UTF-8");
+        try (PrintWriter out = response.getWriter()) {
+            out.print(result);
+        }
         
     }
 	

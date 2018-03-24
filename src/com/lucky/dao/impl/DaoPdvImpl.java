@@ -77,7 +77,7 @@ public class DaoPdvImpl implements DaoPdv {
 		.append("direccion, ")
 		.append("telefono, ")
 		.append("idTipoPuntoDeVenta, ")
-		.append("idUbigeo, ")
+		.append("idUbigeo ")
 		.append(") VALUES (?, ?, ?, ?, ?)");
 
 		try(Connection cn = db.getConnection();
@@ -109,7 +109,7 @@ public class DaoPdvImpl implements DaoPdv {
 		.append("direccion = ?, ")
 		.append("telefono = ?, ")
 		.append("idTipoPuntoDeVenta = ?, ")
-		.append("idUbigeo = ?, ")
+		.append("idUbigeo = ? ")
 		.append("WHERE id = ? ");
 		
 		try(Connection cn = db.getConnection();
@@ -120,6 +120,7 @@ public class DaoPdvImpl implements DaoPdv {
 			ps.setString(3, pdv.getTelefono());
 			ps.setInt(4, pdv.tipoPdv.getId());
 			ps.setInt(5, pdv.ubigeo.getId());
+			ps.setInt(6, pdv.getId());
 			
 			int ctos = ps.executeUpdate();
 			if( ctos == 0 ){

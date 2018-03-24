@@ -2498,9 +2498,9 @@ function marcaUpd(){
 function pdvIns(){
     // lectura para el combo 'Tipo de PDV'
     $.ajax({
-        url: "combo.txt",
+        url: "TipoPdv",
         type: "post",
-        datatype: "txt",
+        datatype: "xml",
         data: {
             accion: "CBO"
         },
@@ -2522,11 +2522,11 @@ function pdvIns(){
                 $("#idtippdv_ins").html(option);
                 // ---
 
-                // lectura para el combo canal
+                // lectura para el combo ubigeo
                 $.ajax({
-                    url: "combo.txt",
+                    url: "Ubigeo",
                     type: "post",
-                    datatype: "txt",
+                    datatype: "xml",
                     data: {
                         accion: "CBO"
                     },
@@ -2545,7 +2545,7 @@ function pdvIns(){
                                         + $(this).text() + "</option>";
                             });
 
-                            $("#idubigeo").html(option);
+                            $("#idubigeo_ins").html(option);
                             // combos cargaron data
                             $("#error_pdv_ins").html("").hide();
 
@@ -2559,7 +2559,7 @@ function pdvIns(){
                                     },
                                     "Enviar Datos": function () {
                                         $.ajax({
-                                            url: "PDV",
+                                            url: "Pdv",
                                             type: "post",
                                             data: {
                                                 accion: "INS",
@@ -2567,14 +2567,14 @@ function pdvIns(){
                                                 direccion: $("#direccion_ins").val(),
                                                 telefono: $("#telefono_ins").val(),
                                                 idtipopdv: $("#idtippdv_ins").val(),
-                                                idubigeo: $("#idubigeo").val()
+                                                idubigeo: $("#idubigeo_ins").val()
                                             },
                                             success: function (error) {
                                                 if (error.length !== 0) {
                                                     $("#error_pdv_ins").html(error).show();
 
                                                 } else {
-                                                    //window.location = "Citas?accion=QRY";
+                                                    window.location = "Pdv?accion=QRY";
                                                 }
                                             }
                                         });
@@ -2610,7 +2610,7 @@ function pdvDel(){
                     $(this).dialog("close");
 
                     $.ajax({
-                        url: "pdv",
+                        url: "Pdv",
                         type: "post",
                         data: {
                             accion: "DEL",
@@ -2621,7 +2621,7 @@ function pdvDel(){
                                 message("Error", error);
 
                             } else {
-                                //window.location = "Citas?accion=QRY";
+                                window.location = "Pdv?accion=QRY";
                             }
                         }
                     });
@@ -2638,9 +2638,9 @@ function pdvUpd(){
         }else{
         // pidiendo datos de pdv
         $.ajax({
-            url: "get.txt",
+            url: "Pdv",
             type: "post",
-            datatype: "txt",
+            datatype: "xml",
             data: {
                 accion: "GET",
                 idpdv: id
@@ -2652,24 +2652,24 @@ function pdvUpd(){
                     message("Data no Encontrada", msg);
 
                 } else {
-                    var idpdv = $(data).find('id').attr('val');
-                    var razonsocial = $(data).find('razonsocial').attr('val');
+                    var idpdv = $(data).find('idPdv').attr('val');
+                    var razonsocial = $(data).find('razonSocial').attr('val');
                     var direccion = $(data).find('direccion').attr('val');
                     var telefono = $(data).find('telefono').attr('val');
-                    var idtippdv = $(data).find('idtippdv').attr('val');
-                    var idubigeo = $(data).find('idubigeo').attr('val');
+                    var idtippdv = $(data).find('idTipoPuntoDeVenta').attr('val');
+                    var idubigeo = $(data).find('idUbigeo').attr('val');
 
                     $("#razon_upd").val(razonsocial);
                     $("#direccion_upd").val(direccion);
                     $("#telefono_upd").val(telefono);
                     $("#idtippdv_upd").val(idtippdv);
-                    $("#idubigeo").val(idubigeo);
+                    $("#idubigeo_upd").val(idubigeo);
 
                     // lectura para el combo 'Tipo de PDV'
                     $.ajax({
-                        url: "combo.txt",
+                        url: "TipoPdv",
                         type: "post",
-                        datatype: "txt",
+                        datatype: "xml",
                         data: {
                             accion: "CBO"
                         },
@@ -2691,11 +2691,11 @@ function pdvUpd(){
                                 $("#idtippdv_upd").html(option);
                                 $("#idtippdv_upd").val(idtippdv);
                                 // ---
-                                // Lectura para el combo de canales
+                                // Lectura para el ubigeo
                                 $.ajax({
-                                    url: "combo.txt",
+                                    url: "Ubigeo",
                                     type: "post",
-                                    datatype: "txt",
+                                    datatype: "xml",
                                     data: {
                                         accion: "CBO"
                                     },
@@ -2714,8 +2714,8 @@ function pdvUpd(){
                                                         + $(this).text() + "</option>";
                                             });
 
-                                            $("#idubigeo").html(option);
-                                            $("#idubigeo").val(idubigeo);
+                                            $("#idubigeo_upd").html(option);
+                                            $("#idubigeo_upd").val(idubigeo);
                                             // ---
                                             // todo Ok
                                             $("#error_pdv_upd").html("").hide();
@@ -2729,23 +2729,23 @@ function pdvUpd(){
                                                     },
                                                     "Enviar Datos": function () {
                                                         $.ajax({
-                                                            url: "pdv",
+                                                            url: "Pdv",
                                                             type: "post",
                                                             data: {
                                                                 accion: "UPD",
-                                                                idpdv: idpdv,
+                                                                id: idpdv,
                                                                 razonsocial: $("#razon_upd").val(),
                                                                 direccion: $("#direccion_upd").val(),
                                                                 telefono: $("#telefono_upd").val(),
-                                                                idtippdv: $("#idtippdv_upd").val(),
-                                                                idubigeo: $("#idubigeo").val()
+                                                                idtipopdv: $("#idtippdv_upd").val(),
+                                                                idubigeo: $("#idubigeo_upd").val()
                                                             },
                                                             success: function (error) {
                                                                 if (error.length !== 0) {
                                                                     $("#error_pdv_upd").html(error).show();
 
                                                                 } else {
-                                                                    //window.location = "Citas?accion=QRY";
+                                                                    window.location = "Pdv?accion=QRY";
                                                                 }
                                                             }
                                                         });

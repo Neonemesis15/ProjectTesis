@@ -169,7 +169,7 @@ public class DaoUbigeoImpl implements DaoUbigeo {
 	public List<Object[]> ubigeoCbo() {
         List<Object[]> list = null;
         sql.append("SELECT ")
-                .append("id,")
+                .append("U.id,")
                 .append("UPPER(CONCAT(SUBSTR(D.nombre,1,3),' - ',SUBSTR(PR.nombre,1,3),' - ',SUBSTR(DI.nombre,1,8))) ubigeo ")
                 .append("FROM mdl_ubigeo U ")
                 .append("INNER JOIN mdl_pais P ON U.idPais = P.id ")

@@ -16,11 +16,11 @@ public class PdvValidator {
 		StringBuilder sb = new StringBuilder("<ul>");
 		
 		Integer id = DeString.aInteger(request.getParameter("id"));
-		String razonSocial = request.getParameter("razonSocial");
+		String razonSocial = request.getParameter("razonsocial");
 		String direccion = request.getParameter("direccion");
 		String telefono = request.getParameter("telefono");
-		Integer idTipoPuntoDeVenta = DeString.aInteger(request.getParameter("idTipoPuntoDeVenta"));
-		Integer idUbigeo = DeString.aInteger(request.getParameter("idUbigeo"));
+		Integer idTipoPuntoDeVenta = DeString.aInteger(request.getParameter("idtipopdv"));
+		Integer idUbigeo = DeString.aInteger(request.getParameter("idubigeo"));
 		
 		if(upd && (id == null)){
 			sb.append("<li>Id Punto de Venta incorrecto</li>");

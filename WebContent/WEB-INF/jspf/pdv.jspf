@@ -30,7 +30,7 @@
                 <tr>
                     <td>Ubigeo:</td>
                     <td>
-                        <select id="idubigeo" style="width: 310px"></select>
+                        <select id="idubigeo_ins" style="width: 310px"></select>
                     </td>
                 </tr>                
         	</table>
@@ -40,7 +40,7 @@
 </div>
 
 <div style="display: none">
-    <div id="dlg_pdv_upd" title="Cambiar pdv">
+    <div id="dlg_pdv_upd" title="Actualizar Punto de Venta">
     	<form class="parainfo">
     		<input type="hidden" id="idpdv_upd"/>
         	<table class="tabla">
@@ -71,7 +71,7 @@
                 <tr>
                     <td>Ubigeo:</td>
                     <td>
-                        <select id="idubigeo" style="width: 310px"></select>
+                        <select id="idubigeo_upd" style="width: 310px"></select>
                     </td>
                 </tr>                 
         	</table>
