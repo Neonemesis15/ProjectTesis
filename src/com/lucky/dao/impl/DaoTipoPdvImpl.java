@@ -2,7 +2,7 @@ package com.lucky.dao.impl;
 
 import java.util.List;
 
-import com.lucky.dao.DaoCanal;
+import com.lucky.dao.DaoTipoPdv;
 import com.lucky.dto.Canal;
 import com.lucky.sql.ConectaDb;
 
@@ -11,28 +11,32 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.LinkedList;
+import java.util.List;
 
+import java.util.List;
 
+import com.lucky.dao.DaoTipoPdv;
+import com.lucky.dto.TipoPdv;
 
-public class DaoCanalImpl implements DaoCanal {
+public class DaoTipoPdvImpl implements DaoTipoPdv {
 
     private final ConectaDb db;
     private final StringBuilder sql;
     private String message;
 	
-    public DaoCanalImpl(){
+    public DaoTipoPdvImpl(){
         this.db = new ConectaDb();
         this.sql = new StringBuilder();
     }
     
 	@Override
-	public List<Object[]> canalQry() {
+	public List<Object[]> tipoPdvQry() {
         List<Object[]> list = null;
         sql.append("SELECT ")
                 .append("id,")
                 .append("nombre,")
                 .append("descripcion ")
-                .append("FROM mdl_canal ")
+                .append("FROM mdl_tipopuntodeventa ")
                 .append("ORDER BY nombre");
 
         try (Connection cn = db.getConnection();
@@ -58,13 +62,8 @@ public class DaoCanalImpl implements DaoCanal {
 	}
 
 	@Override
-	public String getMessage() {
-		return message;
-	}
-
-	@Override
-	public String canalIns(Canal canal) {
-        sql.append("INSERT INTO mdl_canal(")
+	public String tipoPdvIns(TipoPdv tipoPdv) {
+        sql.append("INSERT INTO mdl_tipopuntodeventa(")
         .append("nombre,")
         .append("descripcion ")
         .append(") VALUES(?, ?)");
@@ -73,8 +72,8 @@ public class DaoCanalImpl implements DaoCanal {
 		        PreparedStatement ps
 		        = cn.prepareStatement(sql.toString())) {
 		
-		    ps.setString(1, canal.getNombre());
-		    ps.setString(2, canal.getDescripcion());
+		    ps.setString(1, tipoPdv.getNombre());
+		    ps.setString(2, tipoPdv.getDescripcion());
 		
 		    int ctos = ps.executeUpdate();
 		    if (ctos == 0) {
@@ -89,8 +88,8 @@ public class DaoCanalImpl implements DaoCanal {
 	}
 
 	@Override
-	public String canalUpd(Canal canal) {
-        sql.append("UPDATE mdl_canal SET ")
+	public String tipoPdvUpd(TipoPdv tipoPdv) {
+        sql.append("UPDATE mdl_tipopuntodeventa SET ")
         .append("nombre = ?,")
         .append("descripcion = ? ")
         .append("WHERE id = ?");
@@ -99,9 +98,9 @@ public class DaoCanalImpl implements DaoCanal {
 		        PreparedStatement ps
 		        = cn.prepareStatement(sql.toString())) {
 		
-		    ps.setString(1, canal.getNombre());
-		    ps.setString(2, canal.getDescripcion());
-		    ps.setInt(3, canal.getId());
+		    ps.setString(1, tipoPdv.getNombre());
+		    ps.setString(2, tipoPdv.getDescripcion());
+		    ps.setInt(3, tipoPdv.getId());
 		
 		    int ctos = ps.executeUpdate();
 		    if (ctos == 0) {
@@ -116,8 +115,8 @@ public class DaoCanalImpl implements DaoCanal {
 	}
 
 	@Override
-	public String canalDel(List<Integer> ids) {
-        sql.append("DELETE FROM mdl_canal WHERE id = ?");
+	public String tipoPdvDel(List<Integer> ids) {
+        sql.append("DELETE FROM mdl_tipopuntodeventa WHERE id = ?");
 
         try (Connection cn = db.getConnection();
                 PreparedStatement ps
@@ -153,12 +152,12 @@ public class DaoCanalImpl implements DaoCanal {
 	}
 
 	@Override
-	public List<Object[]> canalCbo() {
+	public List<Object[]> tipoPdvCbo() {
         List<Object[]> list = null;
         sql.append("SELECT ")
                 .append("id,")
                 .append("nombre ")
-                .append("FROM mdl_canal ")
+                .append("FROM mdl_tipopuntodeventa ")
                 .append("ORDER BY nombre");
 
         try (Connection cn = db.getConnection();
@@ -183,9 +182,14 @@ public class DaoCanalImpl implements DaoCanal {
 	}
 
 	@Override
-	public Object[] canalGet(Integer id) {
+	public Object[] tipoPdvGet(Integer id) {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	public String getMessage() {
+		return message;
 	}
 
 }

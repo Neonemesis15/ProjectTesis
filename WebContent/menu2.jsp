@@ -20,7 +20,7 @@
             <div>
                 <ul>
                     <li><a href="CampaniaPublicitaria?accion=QRY"><span>Campañas</span></a></li>
-                    <li><a href="pdv.jsp"><span>Puntos de Venta</span></a></li>
+                    <li><a href="Pdv?accion=QRY"><span>Puntos de Venta</span></a></li>
 					<li><a href="producto.jsp"><span>Productos</span></a></li>
 					<li><a href="material.jsp"><span>Materiales</span></a></li>
                     <li><a href="Usuario?accion=QRY"><span>Usuarios</span></a></li>

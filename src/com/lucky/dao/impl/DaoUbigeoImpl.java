@@ -2,8 +2,6 @@ package com.lucky.dao.impl;
 
 import java.util.List;
 
-import com.lucky.dao.DaoCanal;
-import com.lucky.dto.Canal;
 import com.lucky.sql.ConectaDb;
 
 import java.sql.Connection;
@@ -12,28 +10,35 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.LinkedList;
 
+import com.lucky.dao.DaoUbigeo;
+import com.lucky.dto.Ubigeo;
 
-
-public class DaoCanalImpl implements DaoCanal {
+public class DaoUbigeoImpl implements DaoUbigeo {
 
     private final ConectaDb db;
     private final StringBuilder sql;
     private String message;
 	
-    public DaoCanalImpl(){
+    public DaoUbigeoImpl(){
         this.db = new ConectaDb();
         this.sql = new StringBuilder();
     }
     
 	@Override
-	public List<Object[]> canalQry() {
+	public List<Object[]> ubigeoQry() {
         List<Object[]> list = null;
         sql.append("SELECT ")
-                .append("id,")
-                .append("nombre,")
-                .append("descripcion ")
-                .append("FROM mdl_canal ")
-                .append("ORDER BY nombre");
+                .append("U.id,")
+                .append("P.nombre pais, ")
+                .append("D.nombre departamento, ")
+                .append("PR.nombre provincia, ")
+                .append("DI.nombre distrito ")
+                .append("FROM mdl_ubigeo U ")
+                .append("INNER JOIN mdl_pais P ON U.idPais = P.id ")
+                .append("INNER JOIN mdl_departamento D ON U.idDepartamento = D.id AND P.id = D.idPais ")
+                .append("INNER JOIN mdl_provincia PR ON U.idProvincia = PR.id AND PR.idDepartamento = D.id ")
+                .append("INNER JOIN mdl_distrito DI ON U.idDistrito = DI.id AND DI.idProvincia = PR.id ")
+                .append("ORDER BY 2, 3, 4, 5 ");
 
         try (Connection cn = db.getConnection();
                 PreparedStatement ps = cn.prepareStatement(sql.toString());
@@ -41,11 +46,13 @@ public class DaoCanalImpl implements DaoCanal {
 
             list = new LinkedList<>();
             while (rs.next()) {
-                Object[] reg = new Object[3];
+                Object[] reg = new Object[5];
 
                 reg[0] = rs.getInt(1);
                 reg[1] = rs.getString(2);
                 reg[2] = rs.getString(3);
+                reg[3] = rs.getString(4);
+                reg[4] = rs.getString(5);
 
                 list.add(reg);
             }
@@ -58,24 +65,25 @@ public class DaoCanalImpl implements DaoCanal {
 	}
 
 	@Override
-	public String getMessage() {
-		return message;
-	}
-
-	@Override
-	public String canalIns(Canal canal) {
-        sql.append("INSERT INTO mdl_canal(")
-        .append("nombre,")
-        .append("descripcion ")
-        .append(") VALUES(?, ?)");
+	public String ubigeoIns(Ubigeo ubigeo) {
+        sql.append("INSERT INTO mdl_ubigeo(")
+        .append("codigo,")
+        .append("idPais, ")
+        .append("idDepartamento, ")
+        .append("idProvincia, ")
+        .append("idDistrito ")
+        .append(") VALUES(?, ?, ?, ?, ?)");
 
 		try (Connection cn = db.getConnection();
 		        PreparedStatement ps
 		        = cn.prepareStatement(sql.toString())) {
 		
-		    ps.setString(1, canal.getNombre());
-		    ps.setString(2, canal.getDescripcion());
-		
+		    ps.setString(1, ubigeo.getCodigo());
+		    ps.setInt(2, ubigeo.pais.getId());
+		    ps.setInt(3, ubigeo.departamento.getId());
+		    ps.setInt(4, ubigeo.provincia.getId());
+		    ps.setInt(2, ubigeo.distrito.getId());
+		    
 		    int ctos = ps.executeUpdate();
 		    if (ctos == 0) {
 		        throw new SQLException("0 filas afectadas");
@@ -89,19 +97,24 @@ public class DaoCanalImpl implements DaoCanal {
 	}
 
 	@Override
-	public String canalUpd(Canal canal) {
-        sql.append("UPDATE mdl_canal SET ")
-        .append("nombre = ?,")
-        .append("descripcion = ? ")
+	public String ubigeoUpd(Ubigeo ubigeo) {
+        sql.append("UPDATE mdl_ubigeo SET ")
+        .append("codigo = ?, ")
+        .append("idPais = ?, ")
+        .append("idDepartamento = ?, ")
+        .append("idProvincia = ?, ")
+        .append("idDistrito = ? ")
         .append("WHERE id = ?");
 
 		try (Connection cn = db.getConnection();
 		        PreparedStatement ps
 		        = cn.prepareStatement(sql.toString())) {
 		
-		    ps.setString(1, canal.getNombre());
-		    ps.setString(2, canal.getDescripcion());
-		    ps.setInt(3, canal.getId());
+		    ps.setString(1, ubigeo.getCodigo());
+		    ps.setInt(2, ubigeo.pais.getId());
+		    ps.setInt(3, ubigeo.departamento.getId());
+		    ps.setInt(4, ubigeo.provincia.getId());
+		    ps.setInt(5, ubigeo.distrito.getId());
 		
 		    int ctos = ps.executeUpdate();
 		    if (ctos == 0) {
@@ -116,8 +129,8 @@ public class DaoCanalImpl implements DaoCanal {
 	}
 
 	@Override
-	public String canalDel(List<Integer> ids) {
-        sql.append("DELETE FROM mdl_canal WHERE id = ?");
+	public String ubigeoDel(List<Integer> ids) {
+        sql.append("DELETE FROM mdl_ubigeo WHERE id = ?");
 
         try (Connection cn = db.getConnection();
                 PreparedStatement ps
@@ -153,13 +166,17 @@ public class DaoCanalImpl implements DaoCanal {
 	}
 
 	@Override
-	public List<Object[]> canalCbo() {
+	public List<Object[]> ubigeoCbo() {
         List<Object[]> list = null;
         sql.append("SELECT ")
                 .append("id,")
-                .append("nombre ")
-                .append("FROM mdl_canal ")
-                .append("ORDER BY nombre");
+                .append("UPPER(CONCAT(SUBSTR(D.nombre,1,3),' - ',SUBSTR(PR.nombre,1,3),' - ',SUBSTR(DI.nombre,1,8))) ubigeo ")
+                .append("FROM mdl_ubigeo U ")
+                .append("INNER JOIN mdl_pais P ON U.idPais = P.id ")
+                .append("INNER JOIN mdl_departamento D ON U.idDepartamento = D.id AND P.id = D.idPais ")
+                .append("INNER JOIN mdl_provincia PR ON U.idProvincia = PR.id AND PR.idDepartamento = D.id ")
+                .append("INNER JOIN mdl_distrito DI ON U.idDistrito = DI.id AND DI.idProvincia = PR.id ")
+                .append("ORDER BY D.nombre, PR.nombre, DI.nombre");
 
         try (Connection cn = db.getConnection();
                 PreparedStatement ps = cn.prepareStatement(sql.toString());
@@ -183,9 +200,14 @@ public class DaoCanalImpl implements DaoCanal {
 	}
 
 	@Override
-	public Object[] canalGet(Integer id) {
+	public Object[] ubigeoGet(Integer id) {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	public String getMessage() {
+		return message;
 	}
 
 }

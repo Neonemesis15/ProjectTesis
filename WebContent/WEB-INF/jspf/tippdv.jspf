@@ -1,6 +1,6 @@
 <%@ page pageEncoding="UTF-8" %>
 <div style = "display: none">
-	<div id="dlg_tippdv_qry" title="Lista de tippdvs" style="padding: 30px; padding-bottom: 10px">
+	<div id="dlg_tippdv_qry" title="Lista de Tipos de Punto de Venta" style="padding: 30px; padding-bottom: 10px">
 		<table class="parainfo" style="width: 100%">
 			<thead>
 				<tr>

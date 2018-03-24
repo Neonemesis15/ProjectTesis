@@ -1,11 +1,11 @@
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-    pageEncoding="ISO-8859-1"%>
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <title>Gestion de Puntos de Venta</title>
+    <link href="fontawesome/css/fontawesome-all.min.css" type="text/css" rel="stylesheet" />
     <link href="css/main.css" type="text/css" rel="stylesheet"/>
     <link href="js/menu/menu.css" rel="stylesheet" type="text/css"/>
     <link href="js/jquery-ui.min.css" type="text/css" rel="stylesheet"/>
@@ -33,7 +33,11 @@
             <%@ include file="menu2.jsp"%>
         </div>
         <div id="m_body">
-            <table class="parainfo" style="margin: auto;width: 800px">
+        	<div class="center">
+        	<h2> <i class="fas fa-street-view" style="font-size:1.5em; color:Tomato"></i> Maestro de Puntos de Venta </h2>
+        	</div>
+            <table class="parainfo" style="margin: auto;width: 80%">
+            <hr><br/>
                 <thead>
                     <tr>
                         <th class = "crud">
@@ -51,21 +55,21 @@
                                 <span></span>
                             </a>
                         </th>
-                        <td>Razon Social</td>
-                        <td>Direccion</td>
-                        <td>Telefono</td>
+                        <td style="width: 200px">Razon Social</td>
+                        <td style="width: 300px">Direccion</td>
+                        <td style="width: 100px">Telefono</td>
                         <th class = "crud">
                             <a class="qry" href="#" onclick="tippdvQry()" title="Lista de Tipos de PDV">
                                 <span></span>
                             </a>
                         </th>
-                        <td>Tipo de PDV</td>
+                        <td style="width: 100px">Tipo de PDV</td>
                         <th class = "crud">
                             <a class="qry" href="#" onclick="ubigeoQry()" title="Lista de Ubigeo">
                                 <span></span>
                             </a>
                         </th>
-                        <td>Ubigeo</td>
+                        <td style="width: 100px">Ubigeo</td>
                     </tr>
                 </thead>
                 <tbody>
@@ -87,7 +91,7 @@
                 </tbody>
             </table>
         </div>
-        <%-- diálogos de edición--%>
+        <%-- diÃ¡logos de ediciÃ³n--%>
         <%@include file="WEB-INF/jspf/tippdv.jspf" %> 
         <%@include file="WEB-INF/jspf/ubigeo.jspf" %> 
         <%@include file="WEB-INF/jspf/departamento.jspf" %> 

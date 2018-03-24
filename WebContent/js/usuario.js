@@ -2774,9 +2774,9 @@ function tippdvQry() {
     $("#error_tippdv_qry").html("").hide();
     // solicita data para grilla pacientes
     $.ajax({
-        url: "empresa.txt",
+        url: "TipoPdv",
         type: "post",
-        datatype: "txt",
+        datatype: "xml",
         data: {
             accion: "QRY"
         },
@@ -2808,7 +2808,7 @@ function tippdvQry() {
                 // muestra diálogo con grilla
                 $("#dlg_tippdv_qry").dialog({
                     modal: true,
-                    width: 500,
+                    width: 700,
                     buttons: {
                         "Cerrar": function () {
                             $(this).dialog("close");

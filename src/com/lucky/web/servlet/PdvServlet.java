@@ -12,22 +12,23 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.lucky.convert.DeString;
-import com.lucky.dao.DaoCampaniaPublicitaria;
-import com.lucky.dao.impl.DaoCampaniaPublicitariaImpl;
+import com.lucky.dao.DaoPdv;
+import com.lucky.dao.impl.DaoPdvImpl;
 import com.lucky.dto.CampaniaPublicitaria;
+import com.lucky.dto.Pdv;
 import com.lucky.web.validator.CampaniaPublicitariaValidator;
+import com.lucky.web.validator.PdvValidator;
 import com.lucky.xml.Xml;
 
 /**
- * Servlet implementation class CampaniaPublicitariaServlet
+ * Servlet implementation class PdvServlet
  */
-@WebServlet(name = "CampaniaPublicitaria", urlPatterns = { "/CampaniaPublicitaria" })
-public class CampaniaPublicitariaServlet extends HttpServlet {
-	
+@WebServlet(name = "Pdv", urlPatterns = { "/Pdv" })
+public class PdvServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
 
-    public CampaniaPublicitariaServlet() {
+    public PdvServlet() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -44,44 +45,44 @@ public class CampaniaPublicitariaServlet extends HttpServlet {
     	String result = null;
     	String target = null;
     	
-    	DaoCampaniaPublicitaria daoCampaniaPublicitaria = new DaoCampaniaPublicitariaImpl();
+    	DaoPdv daoPdv = new DaoPdvImpl();
     	List<Object[]> list = null;
     	
-    	switch(accion){    		
+    	switch(accion){  
 	    	case "QRY":
 	    		
-	    		list = daoCampaniaPublicitaria.campaniaPublicitariaQry();
+	    		list = daoPdv.pdvQry();
 	    		
 	    		if( list != null){
 	    			request.setAttribute("list", list);
 	    		}else{
-	    			result = daoCampaniaPublicitaria.getMessage();
+	    			result = daoPdv.getMessage();
 	    		}
 	    		
-	    		target = "campana.jsp";
+	    		target = "pdv.jsp";
 	    		break;
 	    		
 	    	case "INS":
 	    		
-	    		CampaniaPublicitaria campaniaPublicitaria = new CampaniaPublicitaria();
+	    		Pdv pdv = new Pdv();
 	    		
-	    		CampaniaPublicitariaValidator validator = new CampaniaPublicitariaValidator();
+	    		PdvValidator validator = new PdvValidator();
 	    		
-	    		result = validator.valida(request, campaniaPublicitaria, false);
+	    		result = validator.valida(request, pdv, false);
 	    		
 	    		if(result == null){
-	    			result = daoCampaniaPublicitaria.campaniaPublicitariaIns(campaniaPublicitaria);
+	    			result = daoPdv.pdvIns(pdv);
 	    		}
 	    		break;
 	    		
 	    	case "UPD":
 	    		
-	    		campaniaPublicitaria = new CampaniaPublicitaria();
-	    		validator = new CampaniaPublicitariaValidator();
-	    		result = validator.valida(request, campaniaPublicitaria, true);
+	    		pdv = new Pdv();
+	    		validator = new PdvValidator();
+	    		result = validator.valida(request, pdv, true);
 	    		
 	    		if(result == null){
-	    			result = daoCampaniaPublicitaria.campaniaPublicitariaUpd(campaniaPublicitaria);
+	    			result = daoPdv.pdvUpd(pdv);
 	    		}
 	    		break;
 	    		
@@ -91,26 +92,26 @@ public class CampaniaPublicitariaServlet extends HttpServlet {
 	    		if(ids == null){
 	    			result = "Lista de (ID)s incorrecta";
 	    		}else{
-	    			result = daoCampaniaPublicitaria.campaniaPublicitariaDel(ids);
+	    			result = daoPdv.pdvDel(ids);
 	    		}
 	    		break;
 	    	
 	    	case "GET":
 	    		
-	    		Integer idCampania = DeString.aInteger(request.getParameter("idCampania"));
+	    		Integer idPdv = DeString.aInteger(request.getParameter("idPdv"));
 	    		
-	    		if(idCampania != null){
-	    			Object[] reg = daoCampaniaPublicitaria.campaniaPublicitariaGet(idCampania);
+	    		if(idPdv != null){
+	    			Object[] reg = daoPdv.pdvGet(idPdv);
 	    			
 	    			if(reg != null){
-	    				String[] titu = {"idCampania","nombre","descripcion","fecIni","fecFin","idFabricante","idCanal"};
-	    				Object[] data = {reg[0], reg[1], reg[2], reg[3], reg[4], reg[5], reg[6]};
+	    				String[] titu = {"idPdv","razonSocial","direccion","telefono","idTipoPuntoDeVenta","idUbigeo"};
+	    				Object[] data = {reg[0], reg[1], reg[2], reg[3], reg[4], reg[5]};
 	    				result =  Xml.forUpd(titu,data).toString();
 	    			}else{
-	    				result = Xml.forMsg(daoCampaniaPublicitaria.getMessage()).toString();
+	    				result = Xml.forMsg(daoPdv.getMessage()).toString();
 	    			}
 	    		}else{
-	    			result = Xml.forMsg("ID de Campania Publicitaria Incorrecto").toString();
+	    			result = Xml.forMsg("ID de Punto de Venta Incorrecto").toString();
 	    		}
 	    		contentType = "text/xml;charset=UTF-8";
 	    		break;
@@ -118,10 +119,12 @@ public class CampaniaPublicitariaServlet extends HttpServlet {
 	    	case "":
 	    		result = "Solicitud requerida";
 	    		break;
-    		
+			
 	    	default :
 	    		result = "Solicitud desconocida";
+    	
     	}
+    	
     	
     	if(target == null){
     		response.setContentType(contentType);
@@ -141,16 +144,12 @@ public class CampaniaPublicitariaServlet extends HttpServlet {
     	
     }
 
-	protected void doGet(HttpServletRequest request, 
-			HttpServletResponse response) 
-			throws ServletException, IOException {
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		processRequest(request,response);
 	}
 
 
-	protected void doPost(HttpServletRequest request,
-			HttpServletResponse response) 
-			throws ServletException, IOException {
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		processRequest(request,response);
 	}
 

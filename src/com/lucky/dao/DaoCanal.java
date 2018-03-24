@@ -2,7 +2,6 @@ package com.lucky.dao;
 
 import java.util.List;
 
-import com.lucky.dto.CampaniaPublicitaria;
 import com.lucky.dto.Canal;
 
 
