@@ -26,7 +26,7 @@
 	        Usuario: ${usuarios.nombres} ${usuarios.apellidos}
 	    </div>
 		<div id="m_menu">
-			<%@ include file="menu2.jsp"%>
+			<%@ include file="menu4.jsp"%>
 		</div>
 		<div id="m_body">
 			<%-- cuerpo --%>

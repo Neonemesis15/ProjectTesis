@@ -570,6 +570,22 @@ $(function () {
 
     $("#fechaini_ins").datetimepicker('setDate', new Date());
     $("#fechafin_ins").datetimepicker('setDate', new Date());
+    
+    //Selected
+    $( "#selectable" ).selectable({
+	      stop: function() {
+	    	  var fruits = [];
+	        //var result = $( "#select-result" ).empty();
+	        $(".ui-selected", this ).each(function() {
+	          //var index = $( "#selectable li" ).index( this );
+	          //result.append( " #" + ( index + 1 ) );
+	          //result.append($(this).text())
+	          //result.append(this.id);
+	        	fruits.push(this.id);
+	        	document.getElementById("feedback").innerHTML = fruits;
+	        });
+	      }
+	    });
 });
 
 function campanaIns(){

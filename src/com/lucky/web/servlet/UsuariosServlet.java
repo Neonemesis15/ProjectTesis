@@ -60,7 +60,10 @@ public class UsuariosServlet extends HttpServlet {
                         
                     } else if (usuarios.getAutorizacion().equals("CLIENT")) {
                         target = "index2.jsp";
+                    } else if (usuarios.getAutorizacion().equals("SUPER")) {
+                        target = "index4.jsp";
                     }
+                    
 
                 } else {
                     request.setAttribute("usuarios", usuarios);

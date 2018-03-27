@@ -52,3 +52,28 @@ display: block;
 }
  
 .border{border: 3px solid #fff;     border-radius: 5px;}
+
+/*PSA - 2*/
+ol.parainfo .ui-selecting{
+	background: #FECA40;
+}
+
+ol.parainfo .ui-selected { 
+	background: #F39814; 
+	color: white; 
+}
+
+
+ol.parainfo { 
+	list-style-type: none; 
+	margin: 0; 
+	padding: 0; 
+	width: 60%; 
+}
+
+ol.parainfo li { 
+	margin: 3px; 
+	padding: 0.4em; 
+	//font-size: 1.4em; 
+	height: 18px; 
+}

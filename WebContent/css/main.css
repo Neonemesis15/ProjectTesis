@@ -12,10 +12,7 @@ body {
     color: #534500;
 }
 
-#m_main {
-    width: 100%;
-    margin: auto;
-}
+
 
 #m_top {
     width: 100%;
@@ -35,3 +32,14 @@ body {
     width: 100%;
 }
 
+/* layout */
+#m_main {
+    margin: auto;
+    width: 540px
+}
+
+#m_lista {
+    float: left;
+    width: 200px;
+    vertical-align: top
+}

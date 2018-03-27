@@ -24,5 +24,7 @@ $(function() {
     }).mouseout(function() {
         $(this).removeClass("ui-state-hover");
     });
+    
+    $("ol.parainfo li").addClass("ui-widget-content")
 });
 
