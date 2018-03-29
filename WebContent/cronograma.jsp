@@ -43,26 +43,26 @@
         		<thead>
                     <tr>
                         <th class = "crud">
-                            <a class="upd" href="#" onclick="campanaUpd();" title="Actualizar Registro">
+                            <a class="upd" href="#" onclick="cronogramaUpd();" title="Actualizar Registro">
                                 <span></span>
                             </a>
                         </th>
                         <th class = "crud">
-                            <a class="del" href="#" onclick="campanaDel();" title="Eliminar Registro">
+                            <a class="del" href="#" onclick="cronogramaDel();" title="Eliminar Registro">
                                 <span></span>
                             </a>
                         </th>
                         <th class = "crud">
-                            <a class="ins" href="#" onclick="campanaIns();" title="Agregar Registro">
+                            <a class="ins" href="#" onclick="cronogramaIns();" title="Agregar Registro">
                                 <span></span>
                             </a>
                         </th>
-                        <td style="width: 200px">Nombre</td>
-                        <td style="width: 200px">Descripcion</td>
-                        <td style="width: 100px">Fecha Inicio</td>
-                        <td style="width: 100px">Fecha Fin</td>
+                        <td style="width: 200px">Punto de Venta</td>
+                        <td style="width: 100px">Usuario</td>
+                        <td style="width: 100px">Visita</td>
+                        <td style="width: 200px">Campania</td>
                         <th class = "crud">
-                            <a class="qry" href="#" onclick="empresaQry()" title="Lista de Empresas">
+                            <a class="qry" href="#" onclick="crnogramaQry()" title="Lista de Empresas">
                                 <span></span>
                             </a>
                         </th>
@@ -79,10 +79,10 @@
                     <c:forEach var="reg" items="${list}">
                         <tr>
                             <th>
-                                <input type="radio" name="idcampana_upd" value="${reg[0]}"/>
+                                <input type="radio" name="idcronograma_upd" value="${reg[0]}"/>
                             </th>
                             <th>
-                                <input type="checkbox" name="idcampana_del" value="${reg[0]}"/>
+                                <input type="checkbox" name="idcronograma_del" value="${reg[0]}"/>
                             </th>
                             <td colspan="2">${reg[1]}</td>
                             <td>${reg[2]}</td>
@@ -96,15 +96,17 @@
         	</table>
         	<div id="content"></div>
         	<%-- diálogos de edición--%>
+    	    
     	    <%-- mensajes del servidor --%>
-        <c:if test="${msg != null}">
-            <div class="msg_error 
-                 ui-state-highlight ui-corner-all">${msg}</div>
-        </c:if>
-        <%-- para mensajes locales --%>
-        <div style="display: none">
-            <div id="dlg_message"><p id="p_message"></p></div>
-        </div>
+	        <c:if test="${msg != null}">
+	            <div class="msg_error 
+	                 ui-state-highlight ui-corner-all">${msg}</div>
+	        </c:if>
+	        
+	        <%-- para mensajes locales --%>
+	        <div style="display: none">
+	            <div id="dlg_message"><p id="p_message"></p></div>
+	        </div>
 		</div>
 	</div>
 </body>
