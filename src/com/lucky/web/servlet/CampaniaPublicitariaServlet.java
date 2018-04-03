@@ -18,9 +18,6 @@ import com.lucky.dto.CampaniaPublicitaria;
 import com.lucky.web.validator.CampaniaPublicitariaValidator;
 import com.lucky.xml.Xml;
 
-/**
- * Servlet implementation class CampaniaPublicitariaServlet
- */
 @WebServlet(name = "CampaniaPublicitaria", urlPatterns = { "/CampaniaPublicitaria" })
 public class CampaniaPublicitariaServlet extends HttpServlet {
 	
@@ -29,7 +26,6 @@ public class CampaniaPublicitariaServlet extends HttpServlet {
 
     public CampaniaPublicitariaServlet() {
         super();
-        // TODO Auto-generated constructor stub
     }
 
     protected void processRequest(HttpServletRequest request,
@@ -43,11 +39,24 @@ public class CampaniaPublicitariaServlet extends HttpServlet {
     	accion = (accion == null) ? "" : accion;
     	String result = null;
     	String target = null;
+    	StringBuilder resultAux = null;
     	
     	DaoCampaniaPublicitaria daoCampaniaPublicitaria = new DaoCampaniaPublicitariaImpl();
     	List<Object[]> list = null;
     	
-    	switch(accion){    		
+    	switch(accion){
+        	case "CBO":
+	            list = daoCampaniaPublicitaria.campaniaPublicitariaCbo();
+	        	
+	            if (list != null) {
+	            	resultAux = Xml.forCbo(list);
+	
+	            } else {
+	            	resultAux = Xml.forMsg(daoCampaniaPublicitaria.getMessage());
+	                response.setContentType("text/xml;charset=UTF-8");
+	            }
+	            break;
+        		
 	    	case "QRY":
 	    		
 	    		list = daoCampaniaPublicitaria.campaniaPublicitariaQry();
@@ -124,13 +133,21 @@ public class CampaniaPublicitariaServlet extends HttpServlet {
     	}
     	
     	if(target == null){
-    		response.setContentType(contentType);
-    		try ( PrintWriter out= response.getWriter() ){
-        		if(result == null){
-        			result = "";
-        		}
-        		out.print(result);
-        	}
+    		if(resultAux == null){
+	    		response.setContentType(contentType);
+	    		try ( PrintWriter out= response.getWriter() ){
+	        		if(result == null){
+	        			result = "";
+	        		}
+	        		out.print(result);
+	        	}
+    		}else{
+    			response.setContentType("text/xml;charset=UTF-8");
+    	        try (PrintWriter out = response.getWriter()) {
+    	            out.print(resultAux);
+    	        }
+    		}
+    		
     	}else{
     		if(result != null){
     			request.setAttribute("msg", result);

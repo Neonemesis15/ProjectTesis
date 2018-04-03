@@ -682,6 +682,10 @@ function campanaIns(){
                     }
                 });
             }
+        },
+        error: function (xhr, ajaxOptions, thrownError) {
+            alert(xhr.status);
+            alert(thrownError);
         }
     });
 }
@@ -5048,3 +5052,291 @@ function cuestionarioUpd(){
         });
     }
 }
+
+
+// =======================================================
+// Cronograma
+// =======================================================
+
+function cronogramaIns(){
+    // lectura para el combo empresa
+    $.ajax({
+        url: "Fabricante",
+        type: "post",
+        datatype: "xml",
+        data: {
+            accion: "CBO"
+        },
+        success: function (data) {
+            var msg = $(data).find('msg').text();
+
+            if ($.trim(msg).length !== 0) {
+                message("Data no Encontrada", msg);
+
+            } else {
+                var option = "";
+
+                $(data).find('op').each(function () {
+                    option += "<option value=\""
+                            + $(this).attr('id') + "\">"
+                            + $(this).text() + "</option>";
+                });
+
+                $("#idempresa_ins").html(option);
+                // ---
+
+                // lectura para el combo canal
+                $.ajax({
+                    url: "Canal",
+                    type: "post",
+                    datatype: "xml",
+                    data: {
+                        accion: "CBO"
+                    },
+                    success: function (data) {
+                        var msg = $(data).find('msg').text();
+
+                        if ($.trim(msg).length !== 0) {
+                            message("Data no Encontrada", msg);
+
+                        } else {
+                            var option = "";
+
+                            $(data).find('op').each(function () {
+                                option += "<option value=\""
+                                        + $(this).attr('id') + "\">"
+                                        + $(this).text() + "</option>";
+                            });
+
+                            $("#idcanal_ins").html(option);
+                            // combos cargaron data
+                            $("#error_cronograma_ins").html("").hide();
+
+
+                            $("#dlg_cronograma_ins").dialog({
+                                modal: true,
+                                width: 480,
+                                buttons: {
+                                    "Cancelar": function () {
+                                        $(this).dialog("close");
+                                    },
+                                    "Enviar Datos": function () {
+                                        $.ajax({
+                                            url: "CampaniaPublicitaria",
+                                            type: "post",
+                                            data: {
+                                                accion: "INS",
+                                                nombre: $("#nombre_ins").val(),
+                                                descripcion: $("#descripcion_ins").val(),
+                                                fechaInicio: $("#fechaini_ins").val(),
+                                                fechaFin: $("#fechafin_ins").val(),
+                                                idFabricante: $("#idempresa_ins").val(),
+                                                idCanal: $("#idcanal_ins").val()
+                                            },
+                                            success: function (error) {
+                                                if (error.length !== 0) {
+                                                    //console.log('entro en un error fatality' + error);
+                                                	$("#error_cronograma_ins").html(error).show();
+                                                    
+                                                } else {
+                                                	//console.log('logramos entrar correctamente');
+                                                    window.location = "CampaniaPublicitaria?accion=QRY";
+                                                }
+                                            }
+                                        });
+                                    }
+                                }
+                            });
+
+                        }
+                    }
+                });
+            }
+        }
+    });
+}
+
+function cronogramaDel(){
+    var ids = [];
+    $("input[name='idcronograma_del']:checked").each(function () {
+        ids.push($(this).val());
+    });
+    if (ids.length === 0) {
+        message("Advertencia", "Seleccione fila(s) a Retirar");
+    } else {
+        $("#p_message").html("Esta seguro de eliminar el/los registro(s) seleccionado(s) ?");
+        $("#dlg_message").dialog({
+            title: 'Eliminar Registro(s)',
+        	modal: true,
+            width: 440,
+            buttons: {
+                "No": function () {
+                    $(this).dialog("close");
+                },
+                "Si": function () {
+                    $(this).dialog("close");
+                    //$('#content').html('<img id="loader-img" alt="" src="http://preloaders.net/preloaders/287/Filling%20broken%20ring.gif" width="100" height="100" align="center" />');
+                    $.ajax({
+                        url: "CampaniaPublicitaria",
+                        type: "post",
+                        data: {
+                            accion: "DEL",
+                            ids: ids.toString()
+                        },
+                        success: function (error) {
+                            if (error.length !== 0) {
+                                message("Error", error);
+
+                            } else {
+                            	/*setTimeout(function () {
+                            		$('#content').html('Excelente!!').addClass('border');
+                            	},3000);*/
+                            	window.location = "CampaniaPublicitaria?accion=QRY";
+                            }
+                        }
+                    });
+                }
+            }
+        });
+    }
+}
+
+function cronogramaUpd(){
+    var id = $("input[name='idcronograma_upd']:checked").val();
+    if (isNaN(id)) {
+        message("Advertencia", "Seleccione Fila para Actualizar Datos");
+        }else{
+        // pidiendo datos de cronograma
+        $.ajax({
+            url: "CampaniaPublicitaria",
+            type: "post",
+            datatype: "xml",
+            data: {
+                accion: "GET",
+                idCampania: id
+            },
+            success: function (data) {
+                var msg = $(data).find('msg').text();
+
+                if ($.trim(msg).length !== 0) {
+                    message("Data no Encontrada", msg);
+
+                } else {
+                    var idcronograma = $(data).find('idCampania').attr('val');
+                    var nomcronograma = $(data).find('nombre').attr('val');
+                    var descronograma = $(data).find('descripcion').attr('val');
+                    var fecinicronograma = $(data).find('fecIni').attr('val');
+                    var fecfincronograma = $(data).find('fecFin').attr('val');
+                    var idempresa = $(data).find('idFabricante').attr('val');
+                    var idcanal = $(data).find('idCanal').attr('val');
+                    
+                    console.log('fecha inicio:' + fecinicronograma);
+                    
+                    $("#idcronograma_upd").val(idcronograma);
+                    $("#nombre_upd").val(nomcronograma);
+                    $("#descripcion_upd").val(descronograma);
+                    $("#fechaini_upd").val(fecinicronograma);
+                    $("#fechafin_upd").val(fecfincronograma);
+
+                    // lectura para el combo empresas
+                    $.ajax({
+                        url: "Fabricante",
+                        type: "post",
+                        datatype: "xml",
+                        data: {
+                            accion: "CBO"
+                        },
+                        success: function (data) {
+                            var msg = $(data).find('msg').text();
+
+                            if ($.trim(msg).length !== 0) {
+                                message("Data no Encontrada", msg);
+
+                            } else {
+                                var option = "";
+
+                                $(data).find('op').each(function () {
+                                    option += "<option value=\""
+                                            + $(this).attr('id') + "\">"
+                                            + $(this).text() + "</option>";
+                                });
+
+                                $("#idempresa_upd").html(option);
+                                $("#idempresa_upd").val(idempresa);
+                                // ---
+                                // Lectura para el combo de canales
+                                $.ajax({
+                                    url: "Canal",
+                                    type: "post",
+                                    datatype: "txt",
+                                    data: {
+                                        accion: "CBO"
+                                    },
+                                    success: function (data) {
+                                        var msg = $(data).find('msg').text();
+
+                                        if ($.trim(msg).length !== 0) {
+                                            message("Data no Encontrada", msg);
+
+                                        } else {
+                                            var option = "";
+
+                                            $(data).find('op').each(function () {
+                                                option += "<option value=\""
+                                                        + $(this).attr('id') + "\">"
+                                                        + $(this).text() + "</option>";
+                                            });
+
+                                            $("#idcanal_upd").html(option);
+                                            $("#idcanal_upd").val(idcanal);
+                                            // ---
+                                            // todo Ok
+                                            $("#error_cronograma_upd").html("").hide();
+
+                                            $("#dlg_cronograma_upd").dialog({
+                                                modal: true,
+                                                width: 480,
+                                                buttons: {
+                                                    "Cancelar": function () {
+                                                        $(this).dialog("close");
+                                                    },
+                                                    "Enviar Datos": function () {
+                                                        $.ajax({
+                                                            url: "CampaniaPublicitaria",
+                                                            type: "post",
+                                                            data: {
+                                                                accion: "UPD",
+                                                                id: id,
+                                                                nombre: $("#nombre_upd").val(),
+                                                                descripcion: $("#descripcion_upd").val(),
+                                                                fechaInicio: $("#fechaini_upd").val(),
+                                                                fechaFin: $("#fechafin_upd").val(),
+                                                                idFabricante: $("#idempresa_upd").val(),
+                                                                idCanal: $("#idcanal_upd").val()
+                                                            },
+                                                            success: function (error) {
+                                                                if (error.length !== 0) {
+                                                                    $("#error_cronograma_upd").html(error).show();
+
+                                                                } else {
+                                                                    window.location = "CampaniaPublicitaria?accion=QRY";
+                                                                }
+                                                            }
+                                                        });
+                                                    }
+                                                }
+                                            });
+
+                                        }
+                                    }
+                                });
+                            }
+                        }
+                    });
+                
+                }
+            }
+        });
+    }
+}
+

@@ -61,18 +61,6 @@
                         <td style="width: 100px">Usuario</td>
                         <td style="width: 100px">Visita</td>
                         <td style="width: 200px">Campania</td>
-                        <th class = "crud">
-                            <a class="qry" href="#" onclick="crnogramaQry()" title="Lista de Empresas">
-                                <span></span>
-                            </a>
-                        </th>
-                        <td style="width: 100px">Empresa</td>
-                        <th class = "crud">
-                            <a class="qry" href="#" onclick="canalQry()" title="Lista de Canales">
-                                <span></span>
-                            </a>
-                        </th>
-                        <td style="width: 100px">Canal</td>
                     </tr>
                 </thead>
                 <tbody>

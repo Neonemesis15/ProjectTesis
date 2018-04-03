@@ -16,7 +16,7 @@
         </li>
 
         <li>
-            <a href="#" class="parent"><span>Cronograma</span></a>
+            <a href="Cronograma?accion=QRY" class="parent"><span>Cronograma</span></a>
         </li>
         <li>
             <a href="#" class="parent"><span>Cuestionarios</span></a>
