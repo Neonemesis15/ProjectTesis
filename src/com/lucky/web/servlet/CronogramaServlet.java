@@ -1,8 +1,10 @@
 package com.lucky.web.servlet;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.List;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -44,7 +46,7 @@ public class CronogramaServlet extends HttpServlet {
     	switch(accion){    		
 	    	case "QRY":
 	    		
-	    		list = daoCronograma.cronogramaQry();
+	    		list = daoCronograma.cronogramaQry(1,1);
 	    		
 	    		if( list != null){
 	    			request.setAttribute("list", list);
@@ -117,17 +119,40 @@ public class CronogramaServlet extends HttpServlet {
 	    		result = "Solicitud desconocida";
     	}    	
 
+    	if(target == null){
+    		//if(resultAux == null){
+	    		response.setContentType(contentType);
+	    		try ( PrintWriter out= response.getWriter() ){
+	        		if(result == null){
+	        			result = "";
+	        		}
+	        		out.print(result);
+	        	}
+    		/*}else{
+    			response.setContentType("text/xml;charset=UTF-8");
+    	        try (PrintWriter out = response.getWriter()) {
+    	            out.print(resultAux);
+    	        }
+    		}*/
+    		
+    	}else{
+    		if(result != null){
+    			request.setAttribute("msg", result);
+    		}
+    		RequestDispatcher dispatcher = request.getRequestDispatcher(target);
+    		dispatcher.forward(request, response);
+    	}
 
     }
     
     
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		response.getWriter().append("Served at: ").append(request.getContextPath());
+		processRequest(request,response);
 	}
 
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		doGet(request, response);
+		processRequest(request,response);
 	}
 
 }

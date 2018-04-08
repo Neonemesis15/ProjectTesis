@@ -12,6 +12,7 @@ public interface DaoPeriodo {
 	public String periodoUpd(Periodo periodo);
 	public String periodoDel(List<Integer> ids);
 	public List<Object[]> periodoCbo();
+	public List<Object[]> periodoCbo(Integer idCampania);
 	public Object[] periodoGet(Integer id);
 	// Get message
 	public String getMessage();

@@ -57,10 +57,8 @@
                                 <span></span>
                             </a>
                         </th>
-                        <td style="width: 200px">Punto de Venta</td>
-                        <td style="width: 100px">Usuario</td>
-                        <td style="width: 100px">Visita</td>
-                        <td style="width: 200px">Campania</td>
+                        <td >Usuario / nombres </td>
+                        <td >Cant. PDV Asignados</td>
                     </tr>
                 </thead>
                 <tbody>
@@ -74,10 +72,6 @@
                             </th>
                             <td colspan="2">${reg[1]}</td>
                             <td>${reg[2]}</td>
-                            <td>${reg[3]}</td>
-                            <td>${reg[4]}</td>
-                            <td colspan="2">${reg[5]}</td>
-                            <td colspan="2">${reg[6]}</td>
                         </tr>
                     </c:forEach>    
                 </tbody>

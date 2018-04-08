@@ -89,4 +89,41 @@ public class DaoPeriodoImpl implements DaoPeriodo {
 		return message;
 	}
 
+
+	@Override
+	public List<Object[]> periodoCbo(Integer idCampania) {
+        
+		List<Object[]> list = null;
+        sql.append("SELECT ")
+                .append("P.id, ")
+                .append("P.nombre ")
+                .append("FROM mdl_visita V ")
+                .append("INNER JOIN mdl_periodo P ON P.id = V.idPeriodo ")
+                .append("WHERE V.idCampaniaPublicitaria = ?");
+
+        try (Connection cn = db.getConnection();
+                PreparedStatement ps = cn.prepareStatement(sql.toString())) {
+
+		    ps.setInt(1, idCampania);
+        	
+		    ResultSet rs = ps.executeQuery();
+		    
+            list = new LinkedList<>();
+            while (rs.next()) {
+                Object[] reg = new Object[2];
+
+                reg[0] = rs.getInt(1);
+                reg[1] = rs.getString(2);
+
+                list.add(reg);
+            }
+
+        } catch (SQLException e) {
+            message = e.getMessage();
+        }
+
+        return list;
+
+	}
+
 }

@@ -56,7 +56,7 @@ public class CampaniaPublicitariaServlet extends HttpServlet {
 	                response.setContentType("text/xml;charset=UTF-8");
 	            }
 	            break;
-        		
+	            
 	    	case "QRY":
 	    		
 	    		list = daoCampaniaPublicitaria.campaniaPublicitariaQry();

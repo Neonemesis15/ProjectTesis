@@ -9,6 +9,7 @@ public interface DaoCronograma {
 
 	// Listar Cronograma
 	public List<Object[]> cronogramaQry();
+	public List<Object[]> cronogramaQry(Integer idCampania, Integer idPeriodo);
 	
 	public String cronogramaIns(Cronograma cronograma);
 	

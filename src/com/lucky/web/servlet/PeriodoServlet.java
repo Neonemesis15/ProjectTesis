@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.lucky.convert.DeString;
 import com.lucky.dao.DaoCanal;
 import com.lucky.dao.DaoPeriodo;
 import com.lucky.dao.impl.DaoCanalImpl;
@@ -47,6 +48,19 @@ public class PeriodoServlet extends HttpServlet {
 	            }
 	            break;
 	            
+	        case "CBO_02":
+	        	Integer idCampania = DeString.aInteger(request.getParameter("idCampania"));
+	        	
+	        	list = daoPeriodo.periodoCbo(idCampania);
+	        	
+	            if (list != null) {
+	                result = Xml.forCbo(list);
+	
+	            } else {
+	                result = Xml.forMsg(daoPeriodo.getMessage());
+	            }
+	        	break;
+	        
 	        case "":
 	            result = Xml.forMsg("Solicitud requerida");
 	            break;
