@@ -39,6 +39,7 @@ public class CronogramaServlet extends HttpServlet {
     	accion = (accion == null) ? "" : accion;
     	String result = null;
     	String target = null;
+    	StringBuilder resultAux = null;
     	
     	DaoCronograma daoCronograma = new DaoCronogramaImpl();
     	List<Object[]> list = null;
@@ -55,6 +56,20 @@ public class CronogramaServlet extends HttpServlet {
 	    		}
 	    		
 	    		target = "cronograma.jsp";
+	    		break;
+	    	
+	    	case "QRY_02":
+	    		
+	    		Integer idCampania = DeString.aInteger(request.getParameter("idCampania"));
+	    		Integer idPeriodo = DeString.aInteger(request.getParameter("idPeriodo"));
+	    		
+	    		list = daoCronograma.cronogramaQry(idCampania,idPeriodo);
+	    		
+	    		if(list != null){
+	    			resultAux = Xml.forQry(list);
+	    		}else{
+	    			resultAux = Xml.forMsg(daoCronograma.getMessage());
+	    		}
 	    		break;
 	    		
 	    	/*case "INS":
@@ -120,7 +135,7 @@ public class CronogramaServlet extends HttpServlet {
     	}    	
 
     	if(target == null){
-    		//if(resultAux == null){
+    		if(resultAux == null){
 	    		response.setContentType(contentType);
 	    		try ( PrintWriter out= response.getWriter() ){
 	        		if(result == null){
@@ -128,12 +143,12 @@ public class CronogramaServlet extends HttpServlet {
 	        		}
 	        		out.print(result);
 	        	}
-    		/*}else{
+    		}else{
     			response.setContentType("text/xml;charset=UTF-8");
     	        try (PrintWriter out = response.getWriter()) {
     	            out.print(resultAux);
     	        }
-    		}*/
+    		}
     		
     	}else{
     		if(result != null){

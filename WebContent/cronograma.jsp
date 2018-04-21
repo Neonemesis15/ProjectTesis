@@ -50,7 +50,7 @@
 	        		</tr>
 	        		<tr>
 	        			<td style="text-align: right">Selecciona Periodo:</td>
-	        			<td><select id="idperiodo" class="parainfo" ></select></td>
+	        			<td><select id="idperiodo" class="parainfo" onchange="cronogramaQry()"></select></td>
 	        		</tr>
 	        	</table>
         	</fieldset>
@@ -58,7 +58,6 @@
 
         	<br/>
         	<table class="parainfo" style="margin: auto; width: 80%">
-        	
         		<thead>
                     <tr>
                         <th class = "crud">
@@ -80,7 +79,7 @@
                         <td >Cant. PDV Asignados</td>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody id="body_cronograma">
                     <c:forEach var="reg" items="${list}">
                         <tr>
                             <th>
@@ -100,8 +99,9 @@
     	    
     	    <%-- mensajes del servidor --%>
 	        <c:if test="${msg != null}">
-	            <div class="msg_error 
-	                 ui-state-highlight ui-corner-all">${msg}</div>
+	            <div id="error_cronograma_qry" 
+	            	 class="msg_error 
+	            	 ui-state-highlight ui-corner-all">${msg}</div>
 	        </c:if>
 	        
 	        <%-- para mensajes locales --%>
