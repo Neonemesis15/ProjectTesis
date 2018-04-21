@@ -38,7 +38,7 @@
 			<div id="m_body">
 					
 		        <fmt:setLocale value="en_US"/>
-		              <form class="parainfo" action="Usuarios" method="post"
+		        <form class="parainfo" action="Usuarios" method="post"
 		              style="margin: auto;display: table;margin-top: 50px">
 		            <input type="hidden" name="accion" value="LOGIN"/>
 		

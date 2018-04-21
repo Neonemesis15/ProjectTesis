@@ -24,6 +24,7 @@
     <script src="js/timepicker/jquery-ui-timepicker-addon.js" type="text/javascript"></script>
     <script src="js/i18n/jquery.ui.datepicker-es.js" type="text/javascript"></script>
     <script src="js/usuario.js" type="text/javascript"></script>
+    <script src="js/cronograma.js" type="text/javascript"></script>
     
 </head>
 <body>
@@ -38,8 +39,26 @@
         	<div class="center">
         		<h2> <i class="fas fa-calendar-alt" style="font-size:1.5em; color:Tomato"></i> Cronograma de Visitas </h2>
         	</div>
+        	<hr>
+        	<form class="parainfo" style="margin: auto;display: table;margin-top: 30px;margin-bottom: 10px">
+        	<fieldset class="ui-corner-all">
+        		<legend>Filtros</legend>
+	        	<table class="table">
+	        		<tr>
+	        			<td style="text-align: right">Selecciona Campania:</td>
+	        			<td><select id="idcampania" class="parainfo" onchange="periodoCbo()" ></select></td>
+	        		</tr>
+	        		<tr>
+	        			<td style="text-align: right">Selecciona Periodo:</td>
+	        			<td><select id="idperiodo" class="parainfo" ></select></td>
+	        		</tr>
+	        	</table>
+        	</fieldset>
+        	</form>
+
+        	<br/>
         	<table class="parainfo" style="margin: auto; width: 80%">
-        	<hr><br/>
+        	
         		<thead>
                     <tr>
                         <th class = "crud">
