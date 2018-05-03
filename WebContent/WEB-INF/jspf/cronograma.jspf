@@ -1,0 +1,37 @@
+<%@ page pageEncoding="UTF-8" %>
+<div style="display: none">
+	<div id="dlg_cronograma_find">
+	</div>
+</div>
+<div style="display: none">
+	<div id="dlg_cronograma_ins" title="Registar Cronograma">
+		<form class="parainfo" style="margin: auto;display: table;margin-top: 10px">
+			<fieldset class="ui-corner-all">
+				<legend>Mantenimiento</legend>
+				<table class="tabla">
+					<tr>
+						<td style="text-align: right">Campaña:</td>
+						<td>
+							<select id="idcampania_ins" style="width: 310px"></select>
+						</td>
+					</tr>
+					<tr>
+						<td style="text-align: right">Periodo:</td>
+						<td>
+							<select id="idperiodo_ins" style="width: 310px"></select>
+						</td>
+					</tr>
+					<tr>
+						<td style="text-align: right">Usuario:</td>
+						<td>
+							<input id="usuario_ins" readonly="readonly" type="text" style="width: 300px"/>
+						</td>
+						<th class="crud">
+							<a href="#" onclick="" class="find"><span></span></a>
+						</th>
+					</tr>
+				</table>
+			</fieldset>
+		</form>
+	</div>
+</div>

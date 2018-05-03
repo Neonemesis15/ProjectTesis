@@ -96,6 +96,7 @@
         	</table>
         	<div id="content"></div>
         	<%-- diálogos de edición--%>
+    	    <%@include file="WEB-INF/jspf/cronograma.jspf" %>
     	    
     	    <%-- mensajes del servidor --%>
 	        <c:if test="${msg != null}">

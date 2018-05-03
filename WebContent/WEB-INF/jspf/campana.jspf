@@ -46,7 +46,7 @@
 </div>
 
 <div style="display: none">
-    <div id="dlg_campana_upd" title="Cambiar campana Médica">
+    <div id="dlg_campana_upd" title="Cambiar campana">
     	<form class="parainfo">
     		<input type="hidden" id="idcampana_upd"/>
         	<table class="tabla">

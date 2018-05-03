@@ -83,3 +83,18 @@ function cronogramaQry(){
 			}
 	});
 }
+
+function cronogramaIns(){
+	$("#dlg_cronograma_ins").dialog({
+		modal: true,
+		width: 480,
+		buttons:{
+			"Cancelar": function(){
+				$(this).dialog("close");
+			},
+			"Enviar Datos": function(){
+				
+			}
+		}
+	});
+}
