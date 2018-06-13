@@ -7,6 +7,8 @@ import com.lucky.dto.Ubigeo;
 public interface DaoUbigeo {
 	// Listar ubigeos
 	public List<Object[]> ubigeoQry();
+	// Listar ubigeos by Campania, Periodo y Tipo de Pdv
+	public List<Object[]> ubigeoQry(Integer idCampania, Integer idPeriodo, Integer idTipPdv);
 	
 	public String ubigeoIns(Ubigeo ubigeo);
 	

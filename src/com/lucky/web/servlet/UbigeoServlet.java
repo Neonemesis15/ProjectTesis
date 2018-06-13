@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.lucky.convert.DeString;
 import com.lucky.dao.DaoUbigeo;
 import com.lucky.dao.impl.DaoUbigeoImpl;
 import com.lucky.dto.Ubigeo;
@@ -54,7 +55,19 @@ public class UbigeoServlet extends HttpServlet {
                 result = Xml.forMsg(daoUbigeo.getMessage());
             }
             break;
-            
+        
+        case "QRY_02":
+        	Integer idCampania = DeString.aInteger(request.getParameter("idCampania"));
+        	Integer idPeriodo = DeString.aInteger(request.getParameter("idPeriodo"));
+        	Integer idTipPdv = DeString.aInteger(request.getParameter("idTipPdv"));
+        	
+        	list = daoUbigeo.ubigeoQry(idCampania, idPeriodo, idTipPdv);
+        	if(list!=null){
+        		result = Xml.forQry(list);
+        	}else{
+        		result = Xml.forMsg(daoUbigeo.getMessage());
+        	}
+        	break;
         case "INS":
             Ubigeo ubigeo = new Ubigeo();
             UbigeoValidator validator = new UbigeoValidator();

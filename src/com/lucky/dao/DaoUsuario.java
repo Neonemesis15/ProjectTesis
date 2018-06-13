@@ -7,6 +7,7 @@ import com.lucky.dto.Usuario;
 public interface DaoUsuario {
 	//Obtener todos los usuarios
 	public List<Object[]> usuarioQry();
+	public List<Object[]> usuarioQry(Integer idCampania, Integer idPeriodo);
 	//Insertar usuario
 	public String usuarioIns(Usuario usuario);
 	//Eliminar usuarios

@@ -12,8 +12,10 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.lucky.convert.DeString;
 import com.lucky.dao.DaoUsuario;
 import com.lucky.dao.impl.DaoUsuarioImpl;
+import com.lucky.xml.Xml;
 
 /**
  * Servlet implementation class UsuarioServlet
@@ -32,8 +34,10 @@ public class UsuarioServlet extends HttpServlet {
 		accion = (accion == null) ? "" : accion;
 		String result = null;
 		String target = null;
+		StringBuilder resultAux = null;
 		// -- <I REQ100> -- Switch Case When ...
 		DaoUsuario daoUsuario = new DaoUsuarioImpl(); 
+		
 		switch(accion){
 		case "QRY":
 			List<Object[]> list = daoUsuario.usuarioQry();
@@ -44,6 +48,20 @@ public class UsuarioServlet extends HttpServlet {
 			}
 			target = "usuario.jsp";
 			break;
+		
+		case "QRY_02":
+			
+			Integer idCampania = DeString.aInteger(request.getParameter("idCampania"));
+			Integer idPeriodo = DeString.aInteger(request.getParameter("idPeriodo"));
+			
+			list = daoUsuario.usuarioQry(idCampania, idPeriodo);
+			
+			if(list != null){
+				resultAux = Xml.forQry(list);
+			}else{
+				resultAux = Xml.forMsg(daoUsuario.getMessage());
+			}
+			break;
         case "":
             result = "Solicitud requerida";
             break;
@@ -53,15 +71,21 @@ public class UsuarioServlet extends HttpServlet {
 		}
 		// -- <F REQ100>
         if (target == null) {
-            response.setContentType(contentType);
-            try (PrintWriter out = response.getWriter()) {
-                if (result == null) {
-                    result = "";
+        	
+        	if(resultAux == null){
+        		response.setContentType(contentType);
+                try (PrintWriter out = response.getWriter()) {
+                    if (result == null) {
+                        result = "";
+                    }
+                    out.print(result);
                 }
-
-                out.print(result);
-            }
-
+        	}else{
+        		response.setContentType("text/xml;charset=UTF-8");
+        		try(PrintWriter out = response.getWriter()){
+        			out.println(resultAux);
+        		}
+        	}
         } else {
             if (result != null) {
                 request.setAttribute("msg", result);

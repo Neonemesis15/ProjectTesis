@@ -63,7 +63,47 @@ public class DaoUbigeoImpl implements DaoUbigeo {
 
         return list;
 	}
-
+	
+	@Override
+	public List<Object[]> ubigeoQry(Integer idCampania, Integer idPeriodo, Integer idTipPdv) {
+		List<Object[]> list = null;
+		sql.append("SELECT DISTINCT u.id, CONCAT(d.nombre,' - ',q.nombre,' - ',r.nombre) ubigeo ")
+		.append("FROM mdl_puntodeventaporvisita a ")
+		.append("INNER JOIN mdl_visita v ON a.idVisita = v.id ")
+		.append("INNER JOIN mdl_puntodeventa p ON p.id = a.idPuntoDeVenta ")
+		.append("INNER JOIN mdl_ubigeo u ON u.id = p.idUbigeo ")
+		.append("INNER JOIN mdl_departamento d ON d.id = u.idDepartamento ")
+		.append("INNER JOIN mdl_provincia q ON q.id = u.idProvincia ")
+		.append("INNER JOIN mdl_distrito r ON r.id = u.idDistrito ")
+		.append("WHERE v.idCampaniaPublicitaria = ? ")
+		.append("AND v.idPeriodo = ? ")
+		.append("AND p.idTipoPuntoDeVenta = ? ")
+		.append("ORDER BY u.id ");
+		
+		try(Connection cn = db.getConnection();
+				PreparedStatement ps = cn.prepareStatement(sql.toString())){
+		
+			ps.setInt(1, idCampania);
+			ps.setInt(2, idPeriodo);
+			ps.setInt(3, idTipPdv);
+		
+			ResultSet rs = ps.executeQuery();
+			
+			list = new LinkedList<>();
+			while(rs.next()){
+				Object[] reg = new Object[3];
+				
+				reg[0] = rs.getInt(1);
+				reg[1] = rs.getString(2);
+				
+				list.add(reg);
+			}
+		}catch(SQLException e){
+			message = e.getMessage();
+		}
+		return list;
+	}
+	
 	@Override
 	public String ubigeoIns(Ubigeo ubigeo) {
         sql.append("INSERT INTO mdl_ubigeo(")
@@ -209,5 +249,7 @@ public class DaoUbigeoImpl implements DaoUbigeo {
 	public String getMessage() {
 		return message;
 	}
+
+
 
 }

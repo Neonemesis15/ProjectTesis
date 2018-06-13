@@ -61,6 +61,46 @@ public class DaoUsuarioImpl implements DaoUsuario {
 	}
 
 	@Override
+	public List<Object[]> usuarioQry(Integer idCampania, Integer idPeriodo) {
+		List<Object[]> list = null;
+		sql.append("SELECT u.id, concat(p.apellidoPaterno,' ',p.apellidoMaterno,', ',p.nombres) usuario ")
+		.append("FROM mdl_usuarioporvisitaDetalle v ")
+		.append("INNER JOIN mdl_usuario u ON v.idUsuarioAsignado = u.id ")
+		.append("INNER JOIN mdl_usuarioporvisita c ON c.id = v.idUsuarioPorVisita ")
+		.append("INNER JOIN mdl_visita vi ON vi.id = c.idVisita ")
+		.append("INNER JOIN mdl_persona p ON u.idPersona = p.id ")
+		.append("WHERE vi.idCampaniaPublicitaria = ? ")
+		.append("AND vi.idPeriodo = ? ")
+		.append("ORDER BY p.apellidoPaterno");
+		
+		try(Connection cn = db.getConnection();
+				PreparedStatement ps = cn.prepareStatement(sql.toString())){
+			
+			ps.setInt(1, idCampania);
+			ps.setInt(2, idPeriodo);
+			
+			ResultSet rs = ps.executeQuery();
+			
+			list = new LinkedList<>();
+			
+			while(rs.next()){
+				
+				Object[] reg = new Object[2];
+				
+				reg[0] = rs.getInt(1);
+				reg[1] = rs.getString(2);
+				
+				list.add(reg);
+			}
+			
+		}catch(SQLException e){
+			message = e.getMessage();
+		}
+		return list;
+	}
+
+	
+	@Override
 	public String usuarioIns(Usuario usuario) {
 		// TODO Auto-generated method stub
 		return null;
@@ -88,5 +128,6 @@ public class DaoUsuarioImpl implements DaoUsuario {
 	public String getMessage() {
 		return message;
 	}
+
 
 }
