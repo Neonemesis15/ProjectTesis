@@ -6,13 +6,15 @@
 <div style="display: none">
 	<div id="dlg_cronograma_ins" title="Registar Cronograma">
 		<form class="parainfo" style="margin: auto;display: table;margin-top: 10px">
+			<input type="hidden" name="idUsuario_ins" id="idUsuario_ins"/>
+			<input type="hidden" name="idUbigeo_ins" id="idUbigeo_ins"/>
 			<fieldset class="ui-corner-all">
 				<legend>Mantenimiento</legend>
 				<table class="tabla">
 					<tr>
 						<td style="text-align: right">Campaña:</td>
 						<td>
-							<select id="idcampania_ins" style="width: 310px"></select>
+							<select id="idcampania_ins" style="width: 310px" onchange="periodoCboIns()"></select>
 						</td>
 					</tr>
 					<tr>
@@ -27,11 +29,94 @@
 							<input id="usuario_ins" readonly="readonly" type="text" style="width: 300px"/>
 						</td>
 						<th class="crud">
-							<a href="#" onclick="" class="find"><span></span></a>
+							<a href="#" onclick="usuariosFind()" class="find"><span></span></a>
 						</th>
+					</tr>
+					<tr>
+						<td style="text-align: right">Tipo PDV:</td>
+						<td>
+							<select id="idtippdv_ins" style="width: 310px"></select>
+						</td>
+					</tr>
+					<tr>
+						<td style="text-align: right">Ubigeo:</td>
+						<td>
+							<input id="ubigeo_ins" readonly="readonly" type="text" style="width: 300px"/>
+						</td>
+						<th class="crud">
+							<a href="#" onclick="ubigeosFind()" class="find"><span></span></a>
+						</th>
+					</tr>
+				</table>
+				<table class="tabla">
+					<tr>
+						<td style="text-align: left">PDV Disponibles:</td>
+						<td></td>
+						<td style="text-align: left">PDV Asignados:</td>
+					</tr>
+					<tr>
+						<td>
+							<div id="lstpdvdisponibles_ins" style="width: 150px; height:150px; overflow: auto">
+								<ol class="parainfo" id="selpdvdisponibles_ins">
+									<li id="1" >Item 1</li>
+									<li id="2" >Item 2</li>
+									<li id="3" >Item 3</li>
+									<li id="4" >Item 4</li>
+									<li id="5" >Item 5</li>
+									<li id="1" >Item 1</li>
+									<li id="2" >Item 2</li>
+									<li id="3" >Item 3</li>
+									<li id="4" >Item 4</li>
+									<li id="5" >Item 5</li>
+								</ol>
+							</div>
+						</td>
+						<td style="text-align:center">
+								<button style="width: 50px;">> </button>
+								<button style="width: 50px;">>></button>
+								<button style="width: 50px;">< </button>
+								<button style="width: 50px;"><<</button>
+						</td>
+						<td>
+							<div id="lstpdvasignados_ins" style="width: 150px; height:150px; overflow: auto">
+								<ol class="parainfo" id="selectable">
+									<li id="1" >Item 1</li>
+									<li id="2" >Item 2</li>
+									<li id="3" >Item 3</li>
+									<li id="4" >Item 4</li>
+									<li id="5" >Item 5</li>
+									<li id="1" >Item 1</li>
+									<li id="2" >Item 2</li>
+									<li id="3" >Item 3</li>
+									<li id="4" >Item 4</li>
+									<li id="5" >Item 5</li>
+								</ol>
+							</div>
+						</td>
 					</tr>
 				</table>
 			</fieldset>
 		</form>
+		<div id="error_cronograma_ins" class="msg_error ui-state-highlight ui-corner-all"></div>
+	</div>
+</div>
+
+<div style="display: none">
+	<div id="dlg_usuarios_find" title="Seleccionar Usuario">
+		<div id="usuariosLst" style="height: 200px; overflow:auto">
+			<p style="text-align: center">
+				<img src="images/ajax.gif">
+			</p>
+		</div>
+	</div>
+</div>
+
+<div style="display:none">
+	<div id="dlg_ubigeo_find" title="Seleccione Ubigeo">
+		<div id="ubigeoLst" style="height:200px; overflow:auto">
+			<p style="text-align: center">
+				<img src="images/ajax.gif">
+			</p>
+		</div>
 	</div>
 </div>
