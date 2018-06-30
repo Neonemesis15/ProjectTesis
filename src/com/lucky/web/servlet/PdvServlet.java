@@ -44,6 +44,7 @@ public class PdvServlet extends HttpServlet {
     	accion = (accion == null) ? "" : accion;
     	String result = null;
     	String target = null;
+    	StringBuilder resultAux = null;
     	
     	DaoPdv daoPdv = new DaoPdvImpl();
     	List<Object[]> list = null;
@@ -60,6 +61,21 @@ public class PdvServlet extends HttpServlet {
 	    		}
 	    		
 	    		target = "pdv.jsp";
+	    		break;
+	    		
+	    	case "LST":
+	    		
+	    		Integer idCampania = DeString.aInteger(request.getParameter("idCampania"));
+	    		Integer idPeriodo = DeString.aInteger(request.getParameter("idPeriodo"));
+	    		Integer idUbigeo = DeString.aInteger(request.getParameter("idUbigeo"));
+	    		
+	    		list = daoPdv.pdvDisponiblesLst(idCampania, idPeriodo, idUbigeo);
+	    		
+	    		if(list != null){
+	    			resultAux = Xml.forCbo(list);
+	    		}else{
+	    			resultAux = Xml.forMsg(daoPdv.getMessage());
+	    		}
 	    		break;
 	    		
 	    	case "INS":
@@ -127,13 +143,21 @@ public class PdvServlet extends HttpServlet {
     	
     	
     	if(target == null){
-    		response.setContentType(contentType);
-    		try ( PrintWriter out= response.getWriter() ){
-        		if(result == null){
-        			result = "";
-        		}
-        		out.print(result);
-        	}
+    		if(resultAux == null){
+    			response.setContentType(contentType);
+        		try ( PrintWriter out= response.getWriter() ){
+            		if(result == null){
+            			result = "";
+            		}
+            		out.print(result);
+            	}
+    		}else{
+    			response.setContentType("text/xml;charset=UTF-8");
+    	        try (PrintWriter out = response.getWriter()) {
+    	            out.print(resultAux);
+    	        }
+    		}
+    		
     	}else{
     		if(result != null){
     			request.setAttribute("msg", result);

@@ -62,6 +62,8 @@ public class UsuariosServlet extends HttpServlet {
                         target = "index2.jsp";
                     } else if (usuarios.getAutorizacion().equals("SUPER")) {
                         target = "index4.jsp";
+                    } else if (usuarios.getAutorizacion().equals("REPORT")) {
+                        target = "index5.jsp";
                     }
                     
 

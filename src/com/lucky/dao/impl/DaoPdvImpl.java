@@ -69,7 +69,7 @@ public class DaoPdvImpl implements DaoPdv {
 		
 		return list;
 	}
-
+	
 	@Override
 	public String pdvIns(Pdv pdv) {
 		sql.append("INSERT INTO mdl_puntodeventa( ")
@@ -202,6 +202,105 @@ public class DaoPdvImpl implements DaoPdv {
 	}
 
 	@Override
+	public List<Object[]> pdvDisponiblesLst(Integer idCampania, Integer idPeriodo, Integer idUbigeo) {
+		
+		List<Object[]> list = null;
+		
+		sql.append("SELECT pdv.id, ")
+		.append("pdv.razonSocial ")
+		.append("FROM mdl_puntodeventa pdv ")
+		.append("INNER JOIN mdl_puntodeventaporvisita p ON p.idPuntoDeVenta = pdv.id ")
+		.append("INNER JOIN mdl_visita v ON p.idVisita = v.id ")
+		.append("WHERE p.id NOT IN (SELECT c.idPuntoDeVentaPorVisita ")
+		.append("FROM mdl_cronogramavisitas c ")
+		.append("INNER JOIN mdl_puntodeventaporvisita q ON c.idPuntoDeVentaPorVisita = q.id ")
+		.append("INNER JOIN mdl_visita w ON w.id = q.idVisita ")
+		.append("INNER JOIN mdl_puntodeventa r ON r.id = q.idPuntoDeVenta ")
+		.append("AND w.idCampaniaPublicitaria = ? ")
+		.append("AND w.idPeriodo = ? ")
+		.append("AND r.idUbigeo = ?) ")
+		.append("AND v.idCampaniaPublicitaria = ? ")
+		.append("AND v.idPeriodo = ? ")
+		.append("AND pdv.idUbigeo = ? ");
+		
+		try(Connection cn = db.getConnection();
+				PreparedStatement ps = cn.prepareStatement(sql.toString());){
+			
+			ps.setInt(1, idCampania);
+			ps.setInt(2, idPeriodo);
+			ps.setInt(3, idUbigeo);
+			ps.setInt(4, idCampania);
+			ps.setInt(5, idPeriodo);
+			ps.setInt(6, idUbigeo);
+			
+			ResultSet rs = ps.executeQuery();
+			list = new LinkedList<>();
+			while(rs.next()){
+				Object[] reg = new Object[3];
+				
+				reg[0] = rs.getInt(1);
+				reg[1] = rs.getString(2);
+				
+				list.add(reg);
+			}
+			
+		}catch(SQLException e){
+			message = e.getMessage();
+		}
+		
+		return list;
+		
+	}
+
+	@Override
+	public List<Object[]> pdvAsignadosLst(Integer idCampania, Integer idPeriodo, Integer idUbigeo, 
+			Integer idUsuario) {
+		
+		List<Object[]> list = null;
+		
+		sql.append("SELECT pdv.id, ")
+		.append("pdv.razonSocial ")
+		.append("FROM mdl_cronogramavisitas c ")
+		.append("INNER JOIN mdl_usuarioporvisitadetalle d ON c.idUsuarioPorVisitaDetalle = d.id ")
+		.append("INNER JOIN mdl_usuario u ON u.id = d.idUsuarioAsignado ")
+		.append("INNER JOIN mdl_puntodeventaporvisita p ON p.id = c.idPuntoDeVentaPorVisita ")
+		.append("INNER JOIN mdl_puntodeventa pdv ON pdv.id = p.idPuntoDeVenta ")
+		.append("INNER JOIN mdl_usuarioporvisita e ON e.id = d.idUsuarioPorVisita ")
+		.append("INNER JOIN mdl_visita v ON p.idVisita = v.id AND e.idVisita = v.id ")
+		.append("WHERE v.idCampaniaPublicitaria = ? ")
+		.append("AND v.idPeriodo = ? ")
+		.append("AND pdv.idUbigeo = ?")
+		.append("AND d.idUsuarioAsignado= ? ");
+		
+		try(Connection cn = db.getConnection();
+				PreparedStatement ps = cn.prepareStatement(sql.toString());){
+			
+			ps.setInt(1, idCampania);
+			ps.setInt(2, idPeriodo);
+			ps.setInt(3, idUbigeo);
+			ps.setInt(4, idUsuario);
+			
+			ResultSet rs = ps.executeQuery();
+			list = new LinkedList<>();
+			while(rs.next()){
+				Object[] reg = new Object[3];
+				
+				reg[0] = rs.getInt(1);
+				reg[1] = rs.getString(2);
+				
+				list.add(reg);
+			}
+			
+		}catch(SQLException e){
+			message = e.getMessage();
+		}
+		
+		return list;
+		
+	}
+	
+	
+	@Override
 	public Object[] pdvGet(Integer id) {
 
 		Object[] reg = null;
@@ -256,5 +355,9 @@ public class DaoPdvImpl implements DaoPdv {
 		return message;
 		
 	}
+
+
+
+
 
 }

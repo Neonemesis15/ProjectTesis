@@ -9,6 +9,12 @@ $(function() {
     $("table.parainfo .crud .del span").addClass("ui-icon ui-icon-trash");
     $("table.parainfo .crud .upd span").addClass("ui-icon ui-icon-pencil");
     $("table.parainfo .crud .qry span").addClass("ui-icon ui-icon-folder-open");
+    
+    //Fechas <, <<, >, >>
+    $("table.parainfo .crud .der span").addClass("ui-icon ui-icon-carat-1-e");
+    $("table.parainfo .crud .ader span").addClass("ui-icon ui-icon-seek-next");
+    $("table.parainfo .crud .izq span").addClass("ui-icon ui-icon-carat-1-w");
+    $("table.parainfo .crud .aizq span").addClass("ui-icon ui-icon-seek-prev");
 
     $("table.tabla .crud .find span").addClass("ui-icon ui-icon-search");
     $("table.tabla .crud .ins span").addClass("ui-icon ui-icon-plus");

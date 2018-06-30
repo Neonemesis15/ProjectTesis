@@ -1,3 +1,5 @@
+var lstPdvDisponiblesGlobal;
+
 $(function(){
 	//Cargar Campanias Publicitarias
 	$.ajax({
@@ -309,4 +311,27 @@ function ubigeoPinta(idUbigeo, nomUbigeo){
 	$("#idUbigeo_ins").val(idUbigeo);
 	$("#ubigeo_ins").val(nomUbigeo);
 	$("#dlg_ubigeo_find").dialog("close");
+}
+
+function addPdv(){
+	$("#lstpdvasignados_ins ol").append('<li class="ui-widget-content" id="11">Metro Nuevo</li>');
+	
+	var liIndex = [];
+	lstPdvDisponiblesGlobal.forEach(function(e){
+		liIndex.push(e.index);
+	});
+	
+	var $items = $("#selectable_disp li"); // document.querySelectorAll("#selectable_disp li");
+	
+	//var head = document.getElementById("selectable_disp");
+	//items[0].parentNode.removeChild(items[0],items[1],items[2],items[3]);
+	//var obj = [0,1,2,3,4];
+	//var obj2 = obj.join();
+	//console.log(obj2);
+	
+	$items.filter(function(index, el) {
+	    return $.inArray(index, liIndex) > -1;
+	}).remove();
+	
+	//$("#selectable_disp li").eq(String(obj2)).remove();
 }

@@ -571,21 +571,37 @@ $(function () {
     $("#fechaini_ins").datetimepicker('setDate', new Date());
     $("#fechafin_ins").datetimepicker('setDate', new Date());
     
-    //Selected
-    $( "#selectable" ).selectable({
+    //Selected - Puntos de Venta Disponibles
+    $( "#selectable_disp" ).selectable({
 	      stop: function() {
-	    	  var fruits = [];
+	    	  var lstPdvDisponibles = [];
 	        //var result = $( "#select-result" ).empty();
 	        $(".ui-selected", this ).each(function() {
 	          //var index = $( "#selectable li" ).index( this );
 	          //result.append( " #" + ( index + 1 ) );
 	          //result.append($(this).text())
 	          //result.append(this.id);
-	        	fruits.push(this.id);
-	        	document.getElementById("feedback").innerHTML = fruits;
+	        	var obj = {};
+	        	obj["id"] = this.id;
+	        	obj["value"] = $(this).text();
+	        	obj["index"] = $(this).index();
+	        	lstPdvDisponibles.push(obj); 
+	        	//lstPdvDisponibles.push($(this).text());
+	        	//document.getElementById("lstPdvDisponibles").innerHTML = lstPdvDisponibles;
+	        	lstPdvDisponiblesGlobal = lstPdvDisponibles;
 	        });
 	      }
 	    });
+    //Selected - Puntos de Venta Asignados
+    $("#selectable_asig").selectable({
+    	stop: function(){
+    		var lstPdvAsignados = [];
+    		$(".ui-selected", this).each(function(){
+    			lstPdvAsignados.push($(this).text());
+    			document.getElementById("lstPdvAsignados").innerHTML = lstPdvAsignados;
+    		})
+    	}
+    });
 });
 
 function campanaIns(){
