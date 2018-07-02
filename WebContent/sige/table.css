@@ -2,8 +2,14 @@ table.parainfo {
     border-collapse: collapse;
 }
 
-table.parainfo thead td, table.parainfo thead th {
-    padding: 8px;
+table.parainfo caption {
+    padding: 6px 12px;
+    text-align: left;
+}
+
+table.parainfo thead td, table.parainfo thead th,
+table.parainfo tfoot td, table.parainfo tfoot th {
+    padding: 5px 10px;
 }
 
 table.parainfo tbody td, table.parainfo tbody th {
@@ -20,6 +26,10 @@ table.parainfo a img {
 
 table.parainfo td, table.parainfo th {
     border: 1px solid #dddddd;
+}
+
+table.parainfo tfoot td, table.parainfo tfoot th {
+    border: none;
 }
 
 table.parainfo tbody tr:nth-of-type(odd) {

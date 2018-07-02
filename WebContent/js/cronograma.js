@@ -259,8 +259,33 @@ function usuariosFind(){
 function usuarioPinta(idUsuario, nomUsuario){
 	$("#idUsuario_ins").val(idUsuario);
 	$("#usuario_ins").val(nomUsuario);
-	//Cierra dialog
-	$("#dlg_usuarios_find").dialog("close");
+	
+	//Listar PDV Asignados
+	$.ajax({
+		url: "Pdv",
+		data : {
+			accion: "ASI",
+			idCampania : 1,
+			idPeriodo : 1,
+			idUsuario: $("#idUsuario_ins").val()
+		}, success: function(data){
+			var msg = $(data).find('msg').text();
+			if($.trim(msg).length !== 0){
+				message("Data no Encontrada", msg);
+			}else{
+				var li = "";
+				$(data).find('op').each(function(){
+					li += "<li class=\"ui-widget-content\" id=\""
+						  + $(this).attr('id') + "\">"
+						  + $(this).text() + "</li>";
+				});
+				$('#selectable_asig').html(li);
+				//Cierra dialog
+				$("#dlg_usuarios_find").dialog("close");
+			}
+		}
+	});
+	
 }
 
 
@@ -310,7 +335,37 @@ function ubigeosFind(){
 function ubigeoPinta(idUbigeo, nomUbigeo){
 	$("#idUbigeo_ins").val(idUbigeo);
 	$("#ubigeo_ins").val(nomUbigeo);
-	$("#dlg_ubigeo_find").dialog("close");
+	
+	// Listar PDV Disponibles
+	$.ajax({
+		url: "Pdv",
+		data : {
+			accion: "LST",
+			idCampania: 1,
+			idPeriodo: 1,
+			idUbigeo: idUbigeo
+		}, success: function(data){
+			var msg = $(data).find('msg').text();
+			if($.trim(msg).length !== 0){
+				message("Data no Encontrada", msg);
+			}else{
+				var li = "";
+				$(data).find('op').each(function(){
+					li += "<li class=\"ui-widget-content\" id=\""
+							  + $(this).attr('id') + "\">"
+							  + $(this).text() + "</li>";
+				});
+				
+				$('#selectable_disp').html(li);
+				//Cierra dialog
+				$("#dlg_ubigeo_find").dialog("close");	
+				
+			}
+		}
+	});
+	
+	
+	
 }
 
 function addPdv(){
@@ -334,4 +389,56 @@ function addPdv(){
 	}).remove();
 	
 	//$("#selectable_disp li").eq(String(obj2)).remove();
+}
+
+function pdvDisponiblesQry(){
+	$.ajax({
+		url: "Pdv",
+		data : {
+			accion: "LST",
+			idCampania: 1,
+			idPeriodo: 1,
+			idUbigeo: 12
+		}, success: function(data){
+			var msg = $(data).find('msg').text();
+			if($.trim(msg).length !== 0){
+				message("Data no Encontrada", msg);
+			}else{
+				var li = "";
+				$(data).find('op').each(function(){
+					li += "<li class=\"ui-widget-content\" id=\""
+							  + $(this).attr('id') + "\">"
+							  + $(this).text() + "</li>";
+				});
+				
+				$('#selectable_disp').html(li);
+							
+			}
+		}
+	});
+}
+
+function pdvAsignadosQry(){
+	$.ajax({
+		url: "Pdv",
+		data : {
+			accion: "ASI",
+			idCampania : 1,
+			idPeriodo : 1,
+			idUsuario: $("#idUsuario_ins").val()
+		}, success: function(data){
+			var msg = $(data).find('msg').text();
+			if($.trim(msg).length !== 0){
+				message("Data no Encontrada", msg);
+			}else{
+				var li = "";
+				$(data).find('op').each(function(){
+					li += "<li class=\"ui-widget-content\" id=\""
+						  + $(this).attr('id') + "\">"
+						  + $(this).text() + "</li>";
+				});
+				$('#selectable_asig').html(li);
+			}
+		}
+	});
 }

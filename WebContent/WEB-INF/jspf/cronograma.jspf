@@ -56,9 +56,9 @@
 				</table>
 				<table class="tabla">
 					<tr>
-						<td style="text-align: left">PDV Disponibles:</td>
+						<td style="text-align: left">PDV Disponibles: <br><i>(Por Ubigeo)</i></td>
 						<td></td>
-						<td style="text-align: left">PDV Asignados:</td>
+						<td style="text-align: left">PDV Asignados: <br><i>(Todos)</i></td>
 					</tr>
 					<tr>
 						<td>

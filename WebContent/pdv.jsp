@@ -55,21 +55,21 @@
                                 <span></span>
                             </a>
                         </th>
-                        <td style="width: 200px">Razon Social</td>
-                        <td style="width: 300px">Direccion</td>
-                        <td style="width: 100px">Telefono</td>
+                        <td>Razon Social</td>
+                        <td>Direccion</td>
+                        <td>Telefono</td>
                         <th class = "crud">
                             <a class="qry" href="#" onclick="tippdvQry()" title="Lista de Tipos de PDV">
                                 <span></span>
                             </a>
                         </th>
-                        <td style="width: 100px">Tipo de PDV</td>
+                        <td>Tipo de PDV</td>
                         <th class = "crud">
                             <a class="qry" href="#" onclick="ubigeoQry()" title="Lista de Ubigeo">
                                 <span></span>
                             </a>
                         </th>
-                        <td style="width: 100px">Ubigeo</td>
+                        <td>Ubigeo</td>
                     </tr>
                 </thead>
                 <tbody>

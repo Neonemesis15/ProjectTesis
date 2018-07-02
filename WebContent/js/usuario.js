@@ -3026,9 +3026,9 @@ function ubigeoQry() {
     $("#error_ubigeo_qry").html("").hide();
     // solicita data para grilla pacientes
     $.ajax({
-        url: "empresa.txt",
+        url: "Ubigeo",
         type: "post",
-        datatype: "txt",
+        datatype: "xml",
         data: {
             accion: "QRY"
         },

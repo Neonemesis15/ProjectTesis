@@ -1,11 +1,11 @@
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-    pageEncoding="ISO-8859-1"%>
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 	<title>Gestion de Productos</title>
+	<link href="fontawesome/css/fontawesome-all.min.css" type="text/css" rel="stylesheet" />
 	<link href="css/main.css" type="text/css" rel="stylesheet"/>
 	<link href="js/menu/menu.css" rel="stylesheet" type="text/css"/>
 	<link href="js/jquery-ui.min.css" type="text/css" rel="stylesheet"/>
@@ -13,6 +13,7 @@
     <link href="sige/form.css" type="text/css" rel="stylesheet"/>
     <link href="sige/message.css" type="text/css" rel="stylesheet"/>
     <link href="js/timepicker/jquery-ui-timepicker-addon.css" rel="stylesheet" type="text/css"/>
+	
 
    	<script src="js/jquery-2.1.4.min.js" type="text/javascript"></script>
     <script src="js/jquery-ui.min.js" type="text/javascript"></script>
@@ -34,7 +35,11 @@
             <%@ include file="menu2.jsp"%>
         </div>
         <div id="m_body">
-            <table class="parainfo" style="margin: auto;width: 800px">
+        	<div class="center">
+        	<h2> <i class="fas fa-clipboard" style="font-size:1.5em; color:Tomato"></i> Maestro de Productos </h2>
+        	</div>
+            <table class="parainfo" style="margin: auto;width: 80%">
+            <hr><br/>
                 <thead>
                     <tr>
                         <th class = "crud">
@@ -81,7 +86,7 @@
                 </tbody>
             </table>
         </div>
-        <%-- diálogos de edición--%>
+        <%-- diÃ¡logos de ediciÃ³n--%>
         <%@include file="WEB-INF/jspf/clasificacion.jspf" %> 
         <%@include file="WEB-INF/jspf/empresa.jspf" %>
         <%@include file="WEB-INF/jspf/categoria.jspf" %>

@@ -7,10 +7,12 @@ $(function () {
     $("form.parainfo textarea").addClass("ui-widget ui-widget-content ui-corner-all");
     $("form.parainfo select").addClass("ui-widget ui-widget-content ui-corner-all");
     $(".form-formal").addClass("ui-widget ui-widget-content ui-corner-all");
-
+    $(".form_parainfo").addClass("ui-widget ui-widget-content ui-corner-all");
+    
     $("form.parainfo input[type=submit]").button();
     $("form.parainfo input[type=button]").button();
     $("form.parainfo button").button();
+    $("button.form_parainfo").button();
     
     $("button.submit").button({icons: {primary: "ui-icon-locked"}});
 });

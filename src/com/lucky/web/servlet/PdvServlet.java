@@ -62,7 +62,8 @@ public class PdvServlet extends HttpServlet {
 	    		
 	    		target = "pdv.jsp";
 	    		break;
-	    		
+	    	
+	    	// Puntos de Venta Disponibles by idCampania, idPeriodo, idUbigeo
 	    	case "LST":
 	    		
 	    		Integer idCampania = DeString.aInteger(request.getParameter("idCampania"));
@@ -77,7 +78,20 @@ public class PdvServlet extends HttpServlet {
 	    			resultAux = Xml.forMsg(daoPdv.getMessage());
 	    		}
 	    		break;
+	    	
+	    	// Puntos de Venta Asignados by IdCampania, idPeriodo, idUsuario
+	    	case "ASI":
+	    		idCampania = DeString.aInteger(request.getParameter("idCampania"));
+	    		idPeriodo = DeString.aInteger(request.getParameter("idPeriodo"));
+	    		Integer idUsuario = DeString.aInteger(request.getParameter("idUsuario"));
 	    		
+	    		list = daoPdv.pdvAsignadosLst(idCampania, idPeriodo, idUsuario);
+	    		if(list != null){
+	    			resultAux = Xml.forCbo(list);
+	    		}else{
+	    			resultAux = Xml.forMsg(daoPdv.getMessage());
+	    		}
+	    		break;
 	    	case "INS":
 	    		
 	    		Pdv pdv = new Pdv();

@@ -6,6 +6,7 @@
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 	<title>Gestion de usuarios</title>
+	<link href="fontawesome/css/fontawesome-all.min.css" type="text/css" rel="stylesheet" />
 	<link href="css/main.css" type="text/css" rel="stylesheet"/>
 	<link href="js/menu/menu.css" rel="stylesheet" type="text/css"/>
 	<link href="js/jquery-ui.min.css" type="text/css" rel="stylesheet"/>
@@ -32,7 +33,11 @@
 			<%@ include file="menu2.jsp"%>
 		</div>
 		<div id="m_body">
-			<table class="parainfo" style="margin: auto;width: 800px">
+			<div class="center">
+        	<h2> <i class="fas fa-user-circle" style="font-size:1.5em; color:Tomato"></i> Maestro de Usuarios</h2>
+        	</div>
+			<table class="parainfo" style="margin: auto;width: 80%">
+			<hr><br/>
 				<thead>
 					<tr>
 						<th class = "crud">

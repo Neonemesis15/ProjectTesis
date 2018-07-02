@@ -2,6 +2,21 @@
 <div style = "display: none">
 	<div id="dlg_ubigeo_qry" title="Lista de ubigeo" style="padding: 30px; padding-bottom: 10px">
 		<table class="parainfo" style="width: 100%">
+			<caption>
+				<span style="font-weight: normal">Buscar por</span>
+				<select id="peruFindCbo" class="form_parainfo"
+                        style="padding: 2px 4px">
+                    <option value="DEPARTAMENTO">Departamento</option>
+                    <option value="PROVINCIA">Provincia</option>
+                    <option value="DISTRITO">Distrito</option>
+                </select>
+                <span style="font-weight: normal;margin-left: 16px">digite texto</span>
+                <input type="text" id="peruFindTxt" class="form_parainfo"
+                       style="width: 120px;text-transform: uppercase" 
+                       maxlength="30"/><!-- onchange="peru();" -->
+                <button type="button" onclick="peru();"
+                        class="form_parainfo">Buscar</button>
+			</caption>
 			<thead>
 				<tr>
                     <th class = "crud">

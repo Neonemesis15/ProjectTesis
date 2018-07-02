@@ -29,7 +29,7 @@ public class DaoUbigeoImpl implements DaoUbigeo {
         List<Object[]> list = null;
         sql.append("SELECT ")
                 .append("U.id,")
-                .append("P.nombre pais, ")
+                //.append("P.nombre pais, ")
                 .append("D.nombre departamento, ")
                 .append("PR.nombre provincia, ")
                 .append("DI.nombre distrito ")
@@ -38,7 +38,7 @@ public class DaoUbigeoImpl implements DaoUbigeo {
                 .append("INNER JOIN mdl_departamento D ON U.idDepartamento = D.id AND P.id = D.idPais ")
                 .append("INNER JOIN mdl_provincia PR ON U.idProvincia = PR.id AND PR.idDepartamento = D.id ")
                 .append("INNER JOIN mdl_distrito DI ON U.idDistrito = DI.id AND DI.idProvincia = PR.id ")
-                .append("ORDER BY 2, 3, 4, 5 ");
+                .append("ORDER BY 2, 3, 4 ");
 
         try (Connection cn = db.getConnection();
                 PreparedStatement ps = cn.prepareStatement(sql.toString());
@@ -52,7 +52,7 @@ public class DaoUbigeoImpl implements DaoUbigeo {
                 reg[1] = rs.getString(2);
                 reg[2] = rs.getString(3);
                 reg[3] = rs.getString(4);
-                reg[4] = rs.getString(5);
+                //reg[4] = rs.getString(5);
 
                 list.add(reg);
             }

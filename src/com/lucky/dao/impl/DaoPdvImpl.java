@@ -30,10 +30,10 @@ public class DaoPdvImpl implements DaoPdv {
 		sql.append("SELECT ")
 		.append("PDV.id, ")
 		.append("PDV.razonSocial, ")
-		.append("CONCAT(SUBSTR(PDV.direccion,1,40),'...') direccion, ")
+		.append("CONCAT(SUBSTR(PDV.direccion,1,30),'...') direccion, ")
 		.append("PDV.telefono, ")
 		.append("TPDV.nombre tipoPDV, ")
-		.append("UPPER(CONCAT(SUBSTR(D.nombre,1,3),' - ',SUBSTR(PR.nombre,1,3),' - ',SUBSTR(DI.nombre,1,3))) ubigeo ")
+		.append("UPPER(CONCAT(SUBSTR(D.nombre,1,3),' - ',SUBSTR(PR.nombre,1,3),' - ',DI.nombre)) ubigeo ")
 		.append("FROM mdl_puntodeventa PDV ")
 		.append("INNER JOIN mdl_tipopuntodeventa TPDV ON PDV.idTipoPuntoDeVenta = TPDV.id ")
 		.append("INNER JOIN mdl_ubigeo U ON U.id = PDV.idUbigeo ")
@@ -253,8 +253,7 @@ public class DaoPdvImpl implements DaoPdv {
 	}
 
 	@Override
-	public List<Object[]> pdvAsignadosLst(Integer idCampania, Integer idPeriodo, Integer idUbigeo, 
-			Integer idUsuario) {
+	public List<Object[]> pdvAsignadosLst(Integer idCampania, Integer idPeriodo, Integer idUsuario) {
 		
 		List<Object[]> list = null;
 		
@@ -269,7 +268,7 @@ public class DaoPdvImpl implements DaoPdv {
 		.append("INNER JOIN mdl_visita v ON p.idVisita = v.id AND e.idVisita = v.id ")
 		.append("WHERE v.idCampaniaPublicitaria = ? ")
 		.append("AND v.idPeriodo = ? ")
-		.append("AND pdv.idUbigeo = ?")
+		//.append("AND pdv.idUbigeo = ?")
 		.append("AND d.idUsuarioAsignado= ? ");
 		
 		try(Connection cn = db.getConnection();
@@ -277,8 +276,7 @@ public class DaoPdvImpl implements DaoPdv {
 			
 			ps.setInt(1, idCampania);
 			ps.setInt(2, idPeriodo);
-			ps.setInt(3, idUbigeo);
-			ps.setInt(4, idUsuario);
+			ps.setInt(3, idUsuario);
 			
 			ResultSet rs = ps.executeQuery();
 			list = new LinkedList<>();

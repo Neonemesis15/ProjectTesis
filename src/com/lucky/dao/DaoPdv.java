@@ -8,8 +8,7 @@ public interface DaoPdv {
 	
 	public List<Object[]> pdvQry();
 	public List<Object[]> pdvDisponiblesLst(Integer idCampania, Integer idPeriodo, Integer idUbigeo);
-	public List<Object[]> pdvAsignadosLst(Integer idCampania, Integer idPeriodo, Integer idUbigeo,
-			Integer idUsuario);
+	public List<Object[]> pdvAsignadosLst(Integer idCampania, Integer idPeriodo, Integer idUsuario);
 	
 	public String pdvIns(Pdv pdv);
 	
