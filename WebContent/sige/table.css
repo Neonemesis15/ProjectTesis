@@ -7,14 +7,17 @@ table.parainfo caption {
     text-align: left;
 }
 
-table.parainfo thead td, table.parainfo thead th,
-table.parainfo tfoot td, table.parainfo tfoot th {
-    padding: 5px 10px;
+table.parainfo thead td, table.parainfo thead th {
+    padding: 8px;
 }
 
 table.parainfo tbody td, table.parainfo tbody th {
     padding: 4px 8px;
 }
+
+table.parainfo tfoot td, table.parainfo tfoot th {
+     padding: 8px;
+ }
 
 table.parainfo th.crud, table.parainfo td.crud {
     width: 20px;
