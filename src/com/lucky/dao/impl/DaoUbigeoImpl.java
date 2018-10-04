@@ -250,6 +250,90 @@ public class DaoUbigeoImpl implements DaoUbigeo {
 		return message;
 	}
 
+	@Override
+	public List<Object[]> ubigeoQry(Integer numpag, Integer filsXpag, String where) {
+		 List<Object[]> list = null;
+	        sql.append("SELECT ")
+	                .append("U.id,")
+	                //.append("P.nombre pais, ")
+	                .append("D.nombre departamento, ")
+	                .append("PR.nombre provincia, ")
+	                .append("DI.nombre distrito ")
+	                .append("FROM mdl_ubigeo U ")
+	                .append("INNER JOIN mdl_pais P ON U.idPais = P.id ")
+	                .append("INNER JOIN mdl_departamento D ON U.idDepartamento = D.id AND P.id = D.idPais ")
+	                .append("INNER JOIN mdl_provincia PR ON U.idProvincia = PR.id AND PR.idDepartamento = D.id ")
+	                .append("INNER JOIN mdl_distrito DI ON U.idDistrito = DI.id AND DI.idProvincia = PR.id ")
+	                .append(where)
+	                .append("ORDER BY 2, 3, 4 ")
+	                .append("LIMIT ?, ?");
+
+	        try (Connection cn = db.getConnection();
+	                PreparedStatement ps = cn.prepareStatement(sql.toString())) {
+
+	        	ps.setInt(1, (numpag*filsXpag));
+	        	ps.setInt(2, filsXpag);
+	        	
+	        	try(ResultSet rs = ps.executeQuery()){
+	        		list = new LinkedList<>();
+		            while (rs.next()) {
+		                Object[] reg = new Object[5];
+
+		                reg[0] = rs.getInt(1);
+		                reg[1] = rs.getString(2);
+		                reg[2] = rs.getString(3);
+		                reg[3] = rs.getString(4);
+		                //reg[4] = rs.getString(5);
+
+		                list.add(reg);
+		            }
+	        	} catch (SQLException | NullPointerException e) {
+	                message = e.getMessage();
+	            }
+
+	        } catch (SQLException e) {
+	            message = e.getMessage();
+	        }
+
+	        return list;
+	}
+
+	@Override
+	public Integer[] ubigeoCtasPags(Integer filsXpag, String where) {
+		Integer[] result = null;
+		sql.append("SELECT ")
+		        .append("COUNT(*) ")
+		        .append("FROM mdl_ubigeo U ")
+		        .append("INNER JOIN mdl_pais P ON U.idPais = P.id ")
+		        .append("INNER JOIN mdl_departamento D ON U.idDepartamento = D.id AND P.id = D.idPais ")
+		        .append("INNER JOIN mdl_provincia PR ON U.idProvincia = PR.id AND PR.idDepartamento = D.id ")
+		        .append("INNER JOIN mdl_distrito DI ON U.idDistrito = DI.id AND DI.idProvincia = PR.id ")
+		        .append(where);
+        try (Connection cn = db.getConnection();
+                PreparedStatement ps
+                = cn.prepareStatement(sql.toString());
+                ResultSet rs = ps.executeQuery()) {
+
+            if (rs.next()) {
+                // total filas de consulta
+                Integer totalfils = rs.getInt(1);
+
+                // cantidad de paginas con filsXpag
+                Integer ctasPags = (totalfils % filsXpag) == 0
+                        ? (totalfils / filsXpag)
+                        : (totalfils / filsXpag + 1);
+
+                result = new Integer[2];
+                result[0] = ctasPags;
+                result[1] = totalfils;
+            }
+
+        } catch (SQLException e) {
+            message = e.getMessage();
+        }
+        return result;
+	}
+
 
 
 }

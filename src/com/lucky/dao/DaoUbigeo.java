@@ -5,10 +5,15 @@ import java.util.List;
 import com.lucky.dto.Ubigeo;
 
 public interface DaoUbigeo {
-	// Listar ubigeos
+	// Listar Ubigeos
 	public List<Object[]> ubigeoQry();
-	// Listar ubigeos by Campania, Periodo y Tipo de Pdv
+	// Listar Ubigeos by Campania, Periodo y Tipo de Pdv
 	public List<Object[]> ubigeoQry(Integer idCampania, Integer idPeriodo, Integer idTipPdv);
+	
+	// Listar Ubigeos by NumPaginas, FilsXPagina, Where
+	public List<Object[]> ubigeoQry(Integer numpag, Integer filsXpag, String where);
+	// 
+	public Integer[] ubigeoCtasPags(Integer filsXpag, String where);
 	
 	public String ubigeoIns(Ubigeo ubigeo);
 	

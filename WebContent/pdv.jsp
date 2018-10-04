@@ -22,7 +22,7 @@
     <script src="js/timepicker/jquery-ui-timepicker-addon.js" type="text/javascript"></script>
     <script src="js/i18n/jquery.ui.datepicker-es.js" type="text/javascript"></script>
     <script src="js/usuario.js" type="text/javascript"></script>
-    
+    <script src="js/ubigeo.js" type="text/javascript"></script>
 </head>
 <body>
     <div id="m_main">
@@ -36,60 +36,62 @@
         	<div class="center">
         	<h2> <i class="fas fa-street-view" style="font-size:1.5em; color:Tomato"></i> Maestro de Puntos de Venta </h2>
         	</div>
-            <table class="parainfo" style="margin: auto;width: 80%">
-            <hr><br/>
-                <thead>
-                    <tr>
-                        <th class = "crud">
-                            <a class="upd" href="#" onclick="pdvUpd();" title="Actualizar Registro">
-                                <span></span>
-                            </a>
-                        </th>
-                        <th class = "crud">
-                            <a class="del" href="#" onclick="pdvDel();" title="Eliminar Registro">
-                                <span></span>
-                            </a>
-                        </th>
-                        <th class = "crud">
-                            <a class="ins" href="#" onclick="pdvIns();" title="Agregar Registro">
-                                <span></span>
-                            </a>
-                        </th>
-                        <td>Razon Social</td>
-                        <td>Direccion</td>
-                        <td>Telefono</td>
-                        <th class = "crud">
-                            <a class="qry" href="#" onclick="tippdvQry()" title="Lista de Tipos de PDV">
-                                <span></span>
-                            </a>
-                        </th>
-                        <td>Tipo de PDV</td>
-                        <th class = "crud">
-                            <a class="qry" href="#" onclick="ubigeoQry()" title="Lista de Ubigeo">
-                                <span></span>
-                            </a>
-                        </th>
-                        <td>Ubigeo</td>
-                    </tr>
-                </thead>
-                <tbody>
-                    <c:forEach var="reg" items="${list}">
-                        <tr>
-                            <th>
-                                <input type="radio" name="idpdv_upd" value="${reg[0]}"/>
-                            </th>
-                            <th>
-                                <input type="checkbox" name="idpdv_del" value="${reg[0]}"/>
-                            </th>
-                            <td colspan="2">${reg[1]}</td>
-                            <td>${reg[2]}</td>
-                            <td>${reg[3]}</td>
-                            <td colspan="2">${reg[4]}</td>
-                            <td colspan="2">${reg[5]}</td>
-                        </tr>
-                    </c:forEach>   
-                </tbody>
-            </table>
+        	
+	            <table class="parainfo" style="margin: auto;width: 80%">
+	            <hr><br/>
+	                <thead>
+	                    <tr>
+	                        <th class = "crud">
+	                            <a class="upd" href="#" onclick="pdvUpd();" title="Actualizar Registro">
+	                                <span></span>
+	                            </a>
+	                        </th>
+	                        <th class = "crud">
+	                            <a class="del" href="#" onclick="pdvDel();" title="Eliminar Registro">
+	                                <span></span>
+	                            </a>
+	                        </th>
+	                        <th class = "crud">
+	                            <a class="ins" href="#" onclick="pdvIns();" title="Agregar Registro">
+	                                <span></span>
+	                            </a>
+	                        </th>
+	                        <td>Razon Social</td>
+	                        <td>Direccion</td>
+	                        <td>Telefono</td>
+	                        <th class = "crud">
+	                            <a class="qry" href="#" onclick="tippdvQry()" title="Lista de Tipos de PDV">
+	                                <span></span>
+	                            </a>
+	                        </th>
+	                        <td>Tipo de PDV</td>
+	                        <th class = "crud">
+	                            <a class="qry" href="#" onclick="ubigeoQry()" title="Lista de Ubigeo">
+	                                <span></span>
+	                            </a>
+	                        </th>
+	                        <td>Ubigeo</td>
+	                    </tr>
+	                </thead>
+	                <tbody>
+	                    <c:forEach var="reg" items="${list}">
+	                        <tr>
+	                            <th>
+	                                <input type="radio" name="idpdv_upd" value="${reg[0]}"/>
+	                            </th>
+	                            <th>
+	                                <input type="checkbox" name="idpdv_del" value="${reg[0]}"/>
+	                            </th>
+	                            <td colspan="2">${reg[1]}</td>
+	                            <td>${reg[2]}</td>
+	                            <td>${reg[3]}</td>
+	                            <td colspan="2">${reg[4]}</td>
+	                            <td colspan="2">${reg[5]}</td>
+	                        </tr>
+	                    </c:forEach>   
+	                </tbody>
+	            </table>
+            
         </div>
         <%-- diÃ¡logos de ediciÃ³n--%>
         <%@include file="WEB-INF/jspf/tippdv.jspf" %> 

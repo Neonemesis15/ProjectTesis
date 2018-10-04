@@ -9,6 +9,17 @@ import com.lucky.dto.Ubigeo;
 
 public class UbigeoValidator {
 
+	public String validaPag(HttpServletRequest request){
+		String result = "";
+		String col = request.getParameter("col");
+		String txt = request.getParameter("txt");
+		if((col != null) && (txt != null) && (txt.trim().length() > 0)){
+			txt = txt.toUpperCase();
+			result = "WHERE " + col + "LIKE \'%" + txt + "%\'";
+		}
+		return result;
+	}
+	
 	public List<String> valida(HttpServletRequest request, Ubigeo ubigeo, boolean upd) {
 		List<String> list = new LinkedList<>();
 		

@@ -1,6 +1,7 @@
 $(function() {
-    $("table.parainfo thead").addClass("ui-widget-header");
-    $("table.parainfo thead.default").addClass("ui-widget ui-state-default");
+	
+	//$("table.parainfo thead").addClass("ui-widget ui-state-default");
+	$("table.parainfo thead").addClass("ui-widget-header");
     $("table.parainfo tfoot").addClass("ui-widget ui-state-default");
     $("table.parainfo caption").addClass("ui-widget-header");
     $("table.parainfo caption").addClass("ui-corner-top");

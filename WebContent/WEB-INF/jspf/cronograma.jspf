@@ -8,27 +8,27 @@
 		<form class="parainfo" style="margin: auto;display: table;margin-top: 10px">
 			<input type="hidden" name="idUsuario_ins" id="idUsuario_ins"/>
 			<input type="hidden" name="idUbigeo_ins" id="idUbigeo_ins"/>
-	<p id="lstPdvDisponibles">
-	<span>You've selected:</span> <span id="select-result1">none</span>.
-	</p>
-	<p id="lstPdvAsignados">
-	<span>You've selected:</span> <span id="select-result2">none</span>.
-	</p>
+			<!-- <p id="lstPdvDisponibles"><span>You've selected:</span> <span id="select-result1">none</span>.</p> -->
+			<!-- <p id="lstPdvAsignados"><span>You've selected:</span> <span id="select-result2">none</span>.</p> -->
 			<fieldset class="ui-corner-all">
 				<legend>Mantenimiento</legend>
+				<!--Filtros-->
 				<table class="tabla">
+					<!--Select - Campania-->
 					<tr>
 						<td style="text-align: right">Campaña:</td>
 						<td>
 							<select id="idcampania_ins" style="width: 310px" onchange="periodoCboIns()"></select>
 						</td>
 					</tr>
+					<!--Select - Periodo-->
 					<tr>
 						<td style="text-align: right">Periodo:</td>
 						<td>
 							<select id="idperiodo_ins" style="width: 310px"></select>
 						</td>
 					</tr>
+					<!--Find - Usuario-->
 					<tr>
 						<td style="text-align: right">Usuario:</td>
 						<td>
@@ -38,12 +38,14 @@
 							<a href="#" onclick="usuariosFind()" class="find"><span></span></a>
 						</th>
 					</tr>
+					<!--Select - Tipo de Punto de Venta-->
 					<tr>
 						<td style="text-align: right">Tipo PDV:</td>
 						<td>
 							<select id="idtippdv_ins" style="width: 310px"></select>
 						</td>
 					</tr>
+					<!--Find - Ubigeo-->
 					<tr>
 						<td style="text-align: right">Ubigeo:</td>
 						<td>
@@ -54,13 +56,16 @@
 						</th>
 					</tr>
 				</table>
+				<!--WorkSpace Puntos de Venta-->
 				<table class="tabla">
+					<!--Headers-->
 					<tr>
-						<td style="text-align: left">PDV Disponibles: <br><i>(Por Ubigeo)</i></td>
-						<td></td>
+						<td style="text-align: left">PDV Disponibles: <br><i>(Por Ubigeo)</i></td><td></td>
 						<td style="text-align: left">PDV Asignados: <br><i>(Todos)</i></td>
 					</tr>
+					<!--Body-->
 					<tr>
+						<!--Puntos de Venta Disponibles-->
 						<td>
 							<div id="lstpdvdisponibles_ins" style="width: 180px; height:150px; overflow: auto">
 								<ol class="parainfo" id="selectable_disp">
@@ -76,35 +81,32 @@
 								</ol>
 							</div>
 						</td>
+						<!--Botones para Gestionar Puntos de Venta al Cronograma-->
 						<td style="text-align:center">
 							<table class="parainfo">
-							
-							<tr>
-								<th class="crud" style="padding: 10px 10px 10px 10px;">
-									<a class="der" href="#" onclick="addPdv();" title="Agregar PDV(s)"><span></span></a>
-								</th>
-	                        </tr>
-	                        
-							<tr>
-								<th class="crud" style="padding: 10px 10px 10px 10px;">
-									<a class="ader" href="#" onclick="cronogramaUpd();" title="Agregar Todos PDV(s)"><span></span></a>
-								</th>
-	                        </tr>
-	                        
-							<tr>
-								<th class="crud" style="padding: 10px 10px 10px 10px;">
-									<a class="izq" href="#" onclick="cronogramaUpd();" title="Quitar PDV(s)"><span></span></a>
-								</th>
-	                        </tr>
-	                        
-							<tr>
-								<th class="crud" style="padding: 10px 10px 10px 10px;">
-									<a class="aizq" href="#" onclick="cronogramaUpd();" title="Quitar Todos PDV(s)"><span></span></a>
-								</th>
-	                        </tr>
-	                        
+								<tr>
+									<th class="crud" style="padding: 10px 10px 10px 10px;">
+										<a class="der" href="#" onclick="addPdv();" title="Agregar PDV(s)"><span></span></a>
+									</th>
+								</tr>
+								<tr>
+									<th class="crud" style="padding: 10px 10px 10px 10px;">
+										<a class="ader" href="#" onclick="addAllPdv();" title="Agregar Todos PDV(s)"><span></span></a>
+									</th>
+								</tr>
+								<tr>
+									<th class="crud" style="padding: 10px 10px 10px 10px;">
+										<a class="izq" href="#" onclick="removePdv();" title="Quitar PDV(s)"><span></span></a>
+									</th>
+								</tr>
+								<tr>
+									<th class="crud" style="padding: 10px 10px 10px 10px;">
+										<a class="aizq" href="#" onclick="removeAllPdv();" title="Quitar Todos PDV(s)"><span></span></a>
+									</th>
+								</tr>
 							</table>
 						</td>
+						<!--Puntos de Venta Asignados-->
 						<td>
 							<div id="lstpdvasignados_ins" style="width: 180px; height:150px; overflow: auto">
 								<ol class="parainfo" id="selectable_asig">

@@ -31,8 +31,10 @@ public class UbigeoServlet extends HttpServlet {
     	String accion = request.getParameter("accion");
         accion = (accion == null) ? "" : accion;
         StringBuilder result;
-        
+        // 
+        final Integer filsXpag = 11;        
         DaoUbigeo daoUbigeo = new DaoUbigeoImpl();
+        
         switch (accion) {
         case "CBO":
             List<Object[]> list = daoUbigeo.ubigeoCbo();
@@ -67,10 +69,37 @@ public class UbigeoServlet extends HttpServlet {
         	}else{
         		result = Xml.forMsg(daoUbigeo.getMessage());
         	}
+        	
+        	break;
+        case "UBIGEO_PAGS":
+        	
+        	UbigeoValidator validator = new UbigeoValidator();
+        	String where = validator.validaPag(request);
+        	Integer[] ctasPagsFils = daoUbigeo.ubigeoCtasPags(filsXpag, where);
+        	
+        	if(ctasPagsFils != null){
+        		String[] titu = {"pags", "fils"};
+        		Object[] data = {ctasPagsFils[0],ctasPagsFils[1]};
+        		result = Xml.forDatos(titu, data);
+        	}else{
+        		result = Xml.forMsg(daoUbigeo.getMessage());
+        	}
+        	
+        	break;
+        case "UBIGEO_QRY":
+        	validator = new UbigeoValidator();
+        	where = validator.validaPag(request);
+        	Integer numpag = DeString.aInteger(request.getParameter("numpag"));
+        	list = daoUbigeo.ubigeoQry(numpag, filsXpag, where);
+        	if (list != null) {
+                result = Xml.forQry(list);
+            } else {
+                result = Xml.forMsg(daoUbigeo.getMessage());
+            }
         	break;
         case "INS":
             Ubigeo ubigeo = new Ubigeo();
-            UbigeoValidator validator = new UbigeoValidator();
+            validator = new UbigeoValidator();
             List<String> list_msg = validator.valida(
                     request, ubigeo, false);
 

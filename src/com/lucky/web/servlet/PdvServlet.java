@@ -69,8 +69,9 @@ public class PdvServlet extends HttpServlet {
 	    		Integer idCampania = DeString.aInteger(request.getParameter("idCampania"));
 	    		Integer idPeriodo = DeString.aInteger(request.getParameter("idPeriodo"));
 	    		Integer idUbigeo = DeString.aInteger(request.getParameter("idUbigeo"));
+	    		Integer idTipPdv = DeString.aInteger(request.getParameter("idTipPdv"));
 	    		
-	    		list = daoPdv.pdvDisponiblesLst(idCampania, idPeriodo, idUbigeo);
+	    		list = daoPdv.pdvDisponiblesLst(idCampania, idPeriodo, idUbigeo,idTipPdv);
 	    		
 	    		if(list != null){
 	    			resultAux = Xml.forCbo(list);

@@ -1,4 +1,5 @@
 var lstPdvDisponiblesGlobal;
+var lstPdvAsignadosGlobal;
 
 $(function(){
 	//Cargar Campanias Publicitarias
@@ -343,7 +344,8 @@ function ubigeoPinta(idUbigeo, nomUbigeo){
 			accion: "LST",
 			idCampania: 1,
 			idPeriodo: 1,
-			idUbigeo: idUbigeo
+			idUbigeo: idUbigeo,
+			idTipPdv: $("#idtippdv_ins").val()
 		}, success: function(data){
 			var msg = $(data).find('msg').text();
 			if($.trim(msg).length !== 0){
@@ -369,26 +371,135 @@ function ubigeoPinta(idUbigeo, nomUbigeo){
 }
 
 function addPdv(){
-	$("#lstpdvasignados_ins ol").append('<li class="ui-widget-content" id="11">Metro Nuevo</li>');
+	//$("#lstpdvasignados_ins ol").append('<li class="ui-widget-content" id="11">Metro Nuevo</li>');
 	
 	var liIndex = [];
 	lstPdvDisponiblesGlobal.forEach(function(e){
 		liIndex.push(e.index);
 	});
 	
-	var $items = $("#selectable_disp li"); // document.querySelectorAll("#selectable_disp li");
+	//document.querySelectorAll("#selectable_disp li");
 	
 	//var head = document.getElementById("selectable_disp");
 	//items[0].parentNode.removeChild(items[0],items[1],items[2],items[3]);
 	//var obj = [0,1,2,3,4];
 	//var obj2 = obj.join();
 	//console.log(obj2);
-	
-	$items.filter(function(index, el) {
+
+	// Remover de la lista de Pdv Disponibles (1 a 1)
+	$("#selectable_disp li").filter(function(index, el) {
 	    return $.inArray(index, liIndex) > -1;
 	}).remove();
 	
+	// Agregar a la lista de Pdv Asignados
+	lstPdvDisponiblesGlobal.forEach(function(e){
+		$("#lstpdvasignados_ins ol")
+		.append("<li class=\"ui-widget-content\" id="
+		+ e.id + ">" 
+		+ e.value + "</li>");		
+	});
+
+	lstPdvDisponiblesGlobal = [];
+
 	//$("#selectable_disp li").eq(String(obj2)).remove();
+}
+
+function addAllPdv(){
+	
+	// -- Variable Temporal para guardar el Listado de PdvDisponibles
+	lstPdvDisponibleTmp = [];
+	
+	// -- Guardar en varible, los datos + importantes 
+	$("#selectable_disp li").each(function(index){
+		var obj = {};
+		obj["id"] = this.id;
+		obj["value"] = $(this).text();
+		obj["index"] = $(this).index();
+		lstPdvDisponibleTmp.push(obj); 
+	});
+
+	// -- Guardar en un Array, los indices seleccionados
+	var liIndex = [];
+	lstPdvDisponibleTmp.forEach(function(e){
+		liIndex.push(e.index);
+	});
+
+	// -- Remover PdvAsignados (Todos);
+	$("#selectable_disp li").filter(function(index, el) {
+	    return $.inArray(index, liIndex) > -1;
+	}).remove();
+
+	// -- Agregar a la lista de Pdv Asignados
+	lstPdvDisponibleTmp.forEach(function(e){
+		$("#lstpdvasignados_ins ol")
+		.append("<li class=\"ui-widget-content\" id="
+		+ e.id + ">" 
+		+ e.value + "</li>");		
+	});
+
+	// -- Eliminar la información de la variable Temporal
+	lstPdvDisponibleTmp = [];
+}
+
+function removePdv(){
+
+	var liIndex = [];
+	lstPdvAsignadosGlobal.forEach(function(e){
+		liIndex.push(e.index);
+	});
+
+	// Remover de la lista de Pdv Asignados (1 a 1)
+	$("#selectable_asig li").filter(function(index, el) {
+	    return $.inArray(index, liIndex) > -1;
+	}).remove();
+
+	// Agregar a la lista de Pdv Disponibles
+	lstPdvAsignadosGlobal.forEach(function(e){
+		$("#lstpdvdisponibles_ins ol")
+		.append("<li class=\"ui-widget-content\" id="
+		+ e.id + ">" 
+		+ e.value + "</li>");		
+	});
+
+	lstPdvAsignadosGlobal = [];
+
+}
+
+function removeAllPdv(){
+	
+	// -- Variable Temporal para guardar el Listado de PdvAsignados
+	lstPdvAsignadoTmp = [];
+	
+	// -- Guardar en varible, los datos + importantes 
+	$("#selectable_asig li").each(function(index){
+		var obj = {};
+		obj["id"] = this.id;
+		obj["value"] = $(this).text();
+		obj["index"] = $(this).index();
+		lstPdvAsignadoTmp.push(obj); 
+	});
+
+	// -- Guardar en un Array, los indices seleccionados
+	var liIndex = [];
+	lstPdvAsignadoTmp.forEach(function(e){
+		liIndex.push(e.index);
+	});
+
+	// -- Remover PdvDisponibles (Todos);
+	$("#selectable_asig li").filter(function(index, el) {
+	    return $.inArray(index, liIndex) > -1;
+	}).remove();
+
+	// -- Agregar a la lista de Pdv Disponibles
+	lstPdvAsignadoTmp.forEach(function(e){
+		$("#lstpdvdisponibles_ins ol")
+		.append("<li class=\"ui-widget-content\" id="
+		+ e.id + ">" 
+		+ e.value + "</li>");		
+	});
+
+	// -- Eliminar la información de la variable Temporal
+	lstPdvAsignadoTmp = [];
 }
 
 function pdvDisponiblesQry(){

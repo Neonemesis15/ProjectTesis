@@ -96,6 +96,27 @@ public class Xml {
     }
     
     /**
+     * @param titu viene titulo de cada columna
+     * @param data viene data para cada columna
+     * @return un documento XML
+     */
+    public static StringBuilder forDatos(String[] titu, Object[] data) {
+
+        StringBuilder sb = new StringBuilder();
+        sb.append("<?xml version='1.0' encoding='utf-8'?>");
+        sb.append("<data>");
+        sb.append("<msg></msg>");
+
+        for (int i = 0; i < data.length; i++) {
+            sb.append("<").append(titu[i]).append(" val=\"")
+                    .append(data[i]).append("\"/>");
+        }
+        sb.append("</data>");
+
+        return sb;
+    }
+    
+    /**
     *
     * @param msg Un mensaje en formato XML
     * @return documento XML

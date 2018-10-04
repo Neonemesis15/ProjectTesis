@@ -202,26 +202,27 @@ public class DaoPdvImpl implements DaoPdv {
 	}
 
 	@Override
-	public List<Object[]> pdvDisponiblesLst(Integer idCampania, Integer idPeriodo, Integer idUbigeo) {
+	public List<Object[]> pdvDisponiblesLst(Integer idCampania, Integer idPeriodo, Integer idUbigeo, Integer idTipoPdv) {
 		
 		List<Object[]> list = null;
 		
 		sql.append("SELECT pdv.id, ")
-		.append("pdv.razonSocial ")
-		.append("FROM mdl_puntodeventa pdv ")
-		.append("INNER JOIN mdl_puntodeventaporvisita p ON p.idPuntoDeVenta = pdv.id ")
-		.append("INNER JOIN mdl_visita v ON p.idVisita = v.id ")
-		.append("WHERE p.id NOT IN (SELECT c.idPuntoDeVentaPorVisita ")
-		.append("FROM mdl_cronogramavisitas c ")
-		.append("INNER JOIN mdl_puntodeventaporvisita q ON c.idPuntoDeVentaPorVisita = q.id ")
-		.append("INNER JOIN mdl_visita w ON w.id = q.idVisita ")
-		.append("INNER JOIN mdl_puntodeventa r ON r.id = q.idPuntoDeVenta ")
-		.append("AND w.idCampaniaPublicitaria = ? ")
-		.append("AND w.idPeriodo = ? ")
-		.append("AND r.idUbigeo = ?) ")
-		.append("AND v.idCampaniaPublicitaria = ? ")
-		.append("AND v.idPeriodo = ? ")
-		.append("AND pdv.idUbigeo = ? ");
+			.append("pdv.razonSocial ")
+			.append("FROM mdl_puntodeventa pdv ")
+			.append("INNER JOIN mdl_puntodeventaporvisita p ON p.idPuntoDeVenta = pdv.id ")
+			.append("INNER JOIN mdl_visita v ON p.idVisita = v.id ")
+			.append("WHERE p.id NOT IN (SELECT c.idPuntoDeVentaPorVisita ")
+			.append("FROM mdl_cronogramavisitas c ")
+			.append("INNER JOIN mdl_puntodeventaporvisita q ON c.idPuntoDeVentaPorVisita = q.id ")
+			.append("INNER JOIN mdl_visita w ON w.id = q.idVisita ")
+			.append("INNER JOIN mdl_puntodeventa r ON r.id = q.idPuntoDeVenta ")
+			.append("AND w.idCampaniaPublicitaria = ? ")
+			.append("AND w.idPeriodo = ? ")
+			.append("AND r.idUbigeo = ?) ")
+			.append("AND v.idCampaniaPublicitaria = ? ")
+			.append("AND v.idPeriodo = ? ")
+			.append("AND pdv.idUbigeo = ? ")
+			.append("AND pdv.idTipoPuntoDeVenta = ? ");
 		
 		try(Connection cn = db.getConnection();
 				PreparedStatement ps = cn.prepareStatement(sql.toString());){
@@ -232,6 +233,7 @@ public class DaoPdvImpl implements DaoPdv {
 			ps.setInt(4, idCampania);
 			ps.setInt(5, idPeriodo);
 			ps.setInt(6, idUbigeo);
+			ps.setInt(7, idTipoPdv);
 			
 			ResultSet rs = ps.executeQuery();
 			list = new LinkedList<>();
