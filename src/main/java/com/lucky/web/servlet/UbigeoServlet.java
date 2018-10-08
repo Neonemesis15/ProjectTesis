@@ -46,6 +46,20 @@ public class UbigeoServlet extends HttpServlet {
                 result = Xml.forMsg(daoUbigeo.getMessage());
             }
             break;
+        
+        case "CBO_02":
+        	Integer idCampania = DeString.aInteger(request.getParameter("idCampania"));
+        	Integer idPeriodo = DeString.aInteger(request.getParameter("idPeriodo"));
+        	Integer idTipPdv = DeString.aInteger(request.getParameter("idTipPdv"));
+        	
+        	list = daoUbigeo.ubigeoCbo(idCampania, idPeriodo, idTipPdv);
+        	if(list!=null){
+        		result = Xml.forQry(list);
+        	}else{
+        		result = Xml.forMsg(daoUbigeo.getMessage());
+        	}
+        	
+        	break;
             
         case "QRY":
             list = daoUbigeo.ubigeoQry();
@@ -58,19 +72,7 @@ public class UbigeoServlet extends HttpServlet {
             }
             break;
         
-        case "QRY_02":
-        	Integer idCampania = DeString.aInteger(request.getParameter("idCampania"));
-        	Integer idPeriodo = DeString.aInteger(request.getParameter("idPeriodo"));
-        	Integer idTipPdv = DeString.aInteger(request.getParameter("idTipPdv"));
-        	
-        	list = daoUbigeo.ubigeoQry(idCampania, idPeriodo, idTipPdv);
-        	if(list!=null){
-        		result = Xml.forQry(list);
-        	}else{
-        		result = Xml.forMsg(daoUbigeo.getMessage());
-        	}
-        	
-        	break;
+
         case "UBIGEO_PAGS":
         	
         	UbigeoValidator validator = new UbigeoValidator();

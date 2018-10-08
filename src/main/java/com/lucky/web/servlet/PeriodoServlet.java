@@ -17,7 +17,20 @@ import main.java.com.lucky.dao.impl.DaoCanalImpl;
 import main.java.com.lucky.dao.impl.DaoPeriodoImpl;
 import main.java.com.lucky.xml.Xml;
 
-
+/**
+ * Class: PeriodoServlet.java <br/>
+ * Copyright: &copy; 2018 PSA SAC<br/>
+ * @author    
+ * <br/> Developed by:
+ * <ul>
+ * <li> Pablo Salas Alvarez (PSA)</li>
+ * </ul>
+ * <br/> Changes:
+ * <ul>
+ * <li> 2018-10-05 (PSA) Creaci&oacute;n de Clase.</li>
+ * </ul>
+ * @version 1.0
+ */
 @WebServlet(name = "Periodo", urlPatterns = { "/Periodo" })
 public class PeriodoServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
@@ -27,7 +40,19 @@ public class PeriodoServlet extends HttpServlet {
         super();
         
     }
-
+    
+    /**
+     * Metodo que devuelve información de los Periodos 
+     * @param request HttpServletRequest
+     * @param response HttpServletResponse 
+     * @exception ServletException, IOException
+     * @return No return value.
+	 * <br/> Cases:
+	 * <ul>
+	 * <li>CBO		: Listar Periodos</li>
+	 * <li>CBO_02	: Listar Periodos por Campania Publicitaria</li>
+	 * </ul>
+     */ 
     protected void processRequest(HttpServletRequest request,
             HttpServletResponse response)
             throws ServletException, IOException {

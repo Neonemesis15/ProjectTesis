@@ -20,14 +20,36 @@ import main.java.com.lucky.web.validator.TipoPdvValidator;
 import main.java.com.lucky.xml.Xml;
 
 /**
- * Servlet implementation class TipoPdvServlet
+ * Class: TipoPdvServlet.java <br/>
+ * Copyright: &copy; 2018 PSA SAC<br/>
+ * @author    
+ * <br/> Developed by:
+ * <ul>
+ * <li> Pablo Salas Alvarez (PSA)</li>
+ * </ul>
+ * <br/> Changes:
+ * <ul>
+ * <li> 2018-10-05 (PSA) Creaci&oacute;n de Clase.</li>
+ * </ul>
+ * @version 1.0
  */
 @WebServlet(name = "TipoPdv", urlPatterns = { "/TipoPdv" })
 public class TipoPdvServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+	private List<Object[]> list;
 
-
-
+    /**
+     * Metodo que devuelve información de los Tipos de PDV 
+     * @param request HttpServletRequest
+     * @param request HttpServletResponse 
+     * @exception ServletException, IOException
+     * @return No return value.
+	 * <br/> Cases:
+	 * <ul>
+	 * <li>CBO		: Listar Todos los Tipos de PDV</li>
+	 * <li>CBO_02	: Listar los Tipos de PDV por idCampania y idPeriodo</li>
+	 * </ul>
+     */ 
     protected void processRequest(HttpServletRequest request,
             HttpServletResponse response)
             throws ServletException, IOException {
@@ -40,7 +62,7 @@ public class TipoPdvServlet extends HttpServlet {
         
         switch (accion) {
 	        case "CBO":
-	            List<Object[]> list = daoTipoPdv.tipoPdvCbo();
+	        	list = daoTipoPdv.tipoPdvCbo();
 	
 	            if (list != null) {
 	                result = Xml.forCbo(list);
@@ -49,7 +71,20 @@ public class TipoPdvServlet extends HttpServlet {
 	                result = Xml.forMsg(daoTipoPdv.getMessage());
 	            }
 	            break;
-	            
+	        case "CBO_02":
+	        	
+	        	Integer idCampania = DeString.aInteger(request.getParameter("idCampania"));
+	        	Integer idPeriodo = DeString.aInteger(request.getParameter("idPeriodo"));
+	        	
+	            list = daoTipoPdv.tipoPdvCbo(idCampania,idPeriodo);
+	
+	            if (list != null) {
+	                result = Xml.forCbo(list);
+	
+	            } else {
+	                result = Xml.forMsg(daoTipoPdv.getMessage());
+	            }
+	            break;	            
 	        case "QRY":
 	            list = daoTipoPdv.tipoPdvQry();
 	

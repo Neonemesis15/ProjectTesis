@@ -11,12 +11,27 @@ import main.java.com.lucky.dao.DaoUbigeo;
 import main.java.com.lucky.dto.Ubigeo;
 import main.java.com.lucky.sql.ConectaDb;
 
+/**
+ * Class: DaoUbigeoImpl.java <br/>
+ * Copyright: &copy; 2018 PSA SAC<br/>
+ * @author    
+ * <br/> Developed by:
+ * <ul>
+ * <li> Pablo Salas Alvarez (PSA)</li>
+ * </ul>
+ * <br/> Changes:
+ * <ul>
+ * <li> 2018-10-08 (PSA) Creaci&oacute;n de Clase.</li>
+ * </ul>
+ * @version 1.0
+ */
 public class DaoUbigeoImpl implements DaoUbigeo {
 
     private final ConectaDb db;
     private final StringBuilder sql;
     private String message;
-	
+    private List<Object[]> list;
+    
     public DaoUbigeoImpl(){
         this.db = new ConectaDb();
         this.sql = new StringBuilder();
@@ -61,10 +76,19 @@ public class DaoUbigeoImpl implements DaoUbigeo {
 
         return list;
 	}
-	
+
+    /**
+     * Metodo que devuelve los Ubigeos 
+     * @param idCampania Id de la Campaña Publicitaria
+     * @param idPeriodo Id del Periodo
+     * @param idTipPdv Id del Tipo de Punto de Venta
+     * @exception No exception value.
+     * @return List<Object[]>.
+     */ 
 	@Override
-	public List<Object[]> ubigeoQry(Integer idCampania, Integer idPeriodo, Integer idTipPdv) {
-		List<Object[]> list = null;
+	public List<Object[]> ubigeoCbo(Integer idCampania, Integer idPeriodo, 
+			Integer idTipPdv) {
+		
 		sql.append("SELECT DISTINCT u.id, CONCAT(d.nombre,' - ',q.nombre,' - ',r.nombre) ubigeo ")
 		.append("FROM mdl_puntodeventaporvisita a ")
 		.append("INNER JOIN mdl_visita v ON a.idVisita = v.id ")
@@ -76,6 +100,13 @@ public class DaoUbigeoImpl implements DaoUbigeo {
 		.append("WHERE v.idCampaniaPublicitaria = ? ")
 		.append("AND v.idPeriodo = ? ")
 		.append("AND p.idTipoPuntoDeVenta = ? ")
+		.append("AND a.estado = 1 ")
+		.append("AND v.estado = 1 ")
+		.append("AND p.estado = 1 ")
+		.append("AND u.estado = 1 ")
+		.append("AND d.estado = 1 ")
+		.append("AND q.estado = 1 ")
+		.append("AND r.estado = 1 ")
 		.append("ORDER BY u.id ");
 		
 		try(Connection cn = db.getConnection();
@@ -87,14 +118,25 @@ public class DaoUbigeoImpl implements DaoUbigeo {
 		
 			ResultSet rs = ps.executeQuery();
 			
-			list = new LinkedList<>();
-			while(rs.next()){
-				Object[] reg = new Object[3];
-				
-				reg[0] = rs.getInt(1);
-				reg[1] = rs.getString(2);
-				
-				list.add(reg);
+			// Verificar si el ResultSet devuelve registros
+			int rowcount = 0;
+			if (rs.last()) {
+				  rowcount = rs.getRow();
+				  rs.beforeFirst(); // not rs.first() because the rs.next() below will move on, missing the first element
+			}
+			if(rowcount != 0){
+	            list = new LinkedList<>();
+				while(rs.next()){
+					Object[] reg = new Object[3];
+					
+					reg[0] = rs.getInt(1);
+					reg[1] = rs.getString(2);
+					
+					list.add(reg);
+				}
+			}else{
+				message = "!No se encontraron Ubigeos disponibles. "
+						+ "Por favor Verificar!";
 			}
 		}catch(SQLException e){
 			message = e.getMessage();

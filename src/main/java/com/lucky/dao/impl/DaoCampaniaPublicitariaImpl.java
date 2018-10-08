@@ -179,28 +179,38 @@ public class DaoCampaniaPublicitariaImpl implements DaoCampaniaPublicitaria {
 	@Override
 	public List<Object[]> campaniaPublicitariaCbo() {
 		
-		List<Object[]> list = null;
 		
 		sql.append("SELECT ")
 		.append("id, ")
 		.append("nombre ")
 		.append("FROM mdl_campaniapublicitaria ")
+		.append("WHERE estado = 1 ")
 		.append("ORDER BY nombre ");
 		
 		try(Connection cn = db.getConnection();
 				PreparedStatement ps = cn.prepareStatement(sql.toString());
 				ResultSet rs = ps.executeQuery()){
 			
-			list = new LinkedList<>();
-			
-			while(rs.next()){
-				
-				Object[] reg = new Object[6];
-				
-				reg[0] = rs.getInt(1);
-				reg[1] = rs.getString(2);
-				
-				list.add(reg);
+			// Verificar si el ResultSet devuelve registros
+			int rowcount = 0;
+			if (rs.last()) {
+				  rowcount = rs.getRow();
+				  rs.beforeFirst(); // not rs.first() because the rs.next() below will move on, missing the first element
+			}
+			if(rowcount != 0){
+				list = new LinkedList<>();
+				while(rs.next()){
+					
+					Object[] reg = new Object[6];
+					
+					reg[0] = rs.getInt(1);
+					reg[1] = rs.getString(2);
+					
+					list.add(reg);
+				}
+			}else{
+				message = "No se han encontrado Campañas Publicitarias activas. \r\n"
+						+ "!Por favor verificar en el maestro de Campañas Publicitarias!";
 			}
 			
 		}catch(SQLException e){

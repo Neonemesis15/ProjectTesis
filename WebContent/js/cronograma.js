@@ -1,8 +1,31 @@
-var lstPdvDisponiblesGlobal;
-var lstPdvAsignadosGlobal;
+/**
+ * Class: cronograma.js <br/>
+ * Copyright: &copy; 2018 PSA SAC<br/>
+ * @author    
+ * <br/> Developed by:
+ * <ul>
+ * <li> Pablo Salas Alvarez (PSA)</li>
+ * </ul>
+ * <br/> Changes:
+ * <ul>
+ * <li> 2018-10-05 (PSA) Creación de Clase.</li>
+ * </ul>
+ * @version 1.0
+ */
 
+// Declare lstPdvDisponiblesGlobal, guarda los Puntos de Venta Disponibles
+var lstPdvDisponiblesGlobal;	
+
+// Declare lstPdvAsignadosGlobal, guarda los Puntos de Venta Asignados 
+var lstPdvAsignadosGlobal;		
+
+/**
+ * Constructor
+ */ 
 $(function(){
-	//Cargar Campanias Publicitarias
+	/**
+	 * Metodo que devuelve las Campañas Publicitarias Activas
+	 */
 	$.ajax({
 			url :"CampaniaPublicitaria",
 			data:{
@@ -26,7 +49,9 @@ $(function(){
 			}
 	});
 
-	//Cargar Tipos de Punto de Venta
+	/**
+	 * Metodo que devuelve los Tipos de Punto de Venta
+	 */
 	$.ajax({
 		url:"TipoPdv",
 		data:{
@@ -49,6 +74,10 @@ $(function(){
 	});
 });
 
+/**
+ * Metodo que devuelve los Periodos Activos
+ * por Campaña Publicitaria
+ */ 
 function periodoCbo(){
 	$.ajax({
 			url:"Periodo",
@@ -74,6 +103,9 @@ function periodoCbo(){
 	});
 }
 
+/**
+ * Metodo que devuelve los Cronogramas Activos
+ */ 
 function cronogramaQry(){
 	$("#error_cronograma_qry").html("").hide();
 	$.ajax({
@@ -109,6 +141,10 @@ function cronogramaQry(){
 	});
 }
 
+/**
+ * Metodo que Inserta un Nuevo Cronograma
+ * por Campaña Publicitaria
+ */ 
 function cronogramaIns(){
 	// lectura del combo de campanias
 	$.ajax({
@@ -153,11 +189,6 @@ function cronogramaIns(){
 							}
 					})
 
-
-
-
-
-
 					$("#dlg_cronograma_ins").dialog({
 						modal: true,
 						width: 480,
@@ -171,24 +202,19 @@ function cronogramaIns(){
 						}
 					});
 
-
-
-
-
-
-
-
 				}
 			}
 	})
 
 
-
 }
 
-
-
+/**
+ * Metodo que devuelve los Periodos Activos
+ * para la View 'Insert Cronograma'
+ */ 
 function periodoCboIns(){
+	
 	$.ajax({
 		url:"Periodo",
 		data:{
@@ -199,7 +225,15 @@ function periodoCboIns(){
 			var msg = $(data).find("msg").text();
 			if($.trim(msg).length !== 0){
 				message("Data no Encontrada", msg);
+				$("#idperiodo_ins").prop('disabled', 'disabled');
+				$('#idperiodo_ins')
+					.find('option')
+					.remove()
+					.end()
+					.append('<option value="0">.::. Seleccione .::.</option>')
+					.val('0');
 			}else{
+				$("#idperiodo_ins").prop('disabled', false);
 				var option = "";
 				$(data).find('op').each(function(){
 					option += "<option value=\""
@@ -212,17 +246,24 @@ function periodoCboIns(){
 	});
 }
 
+/**
+ * Metodo que devuelve los Usuarios por Campania y Periodo 
+ * Y devuelve los Tipos de Punto de Venta por Campania y Periodo
+ * para la View 'Insert Cronograma'
+ */ 
 function usuariosFind(){
-	$("#dlg_usuarios_find").dialog({
-		modal:true,
-		width: 360,
-		height: 330,
-		buttons: {
-			"Cerrar":function(){
-				$(this).dialog("close");
-			}
-		}
-	});
+	
+	//$("#dlg_usuarios_find").dialog({
+	//	modal:true,
+	//	width: 360,
+	//	height: 330,
+	//	buttons: {
+	//		"Cerrar":function(){
+	//			$(this).dialog("close");
+	//		}
+	//	}
+	//});
+	
 	$.ajax({
 		url: "Usuario",
 		type: "post",
@@ -235,7 +276,22 @@ function usuariosFind(){
 			var msg = $(data).find("msg").text();
 			if($.trim(msg).length !== 0){
 				message("Data no Encontrada", msg);
+				$('input:text').val('');
 			}else{
+				
+				// Modal de Usuarios
+				$("#dlg_usuarios_find").dialog({
+					modal:true,
+					width: 360,
+					height: 330,
+					buttons: {
+						"Cerrar":function(){
+							$(this).dialog("close");
+						}
+					}
+				});
+				
+				
 				var lista = "<table class=\"parainfo\" style=\"100%\"><tbody>";
 				$(data).find('fil').each(function(){
 					var idUsuario = $(this).find('col:eq(0)').text();
@@ -257,7 +313,56 @@ function usuariosFind(){
 	});
 }
 
+/**
+ * Metodo que retorna al FrontEnd el idUsuario y nomUsuario
+ * Además Obtiene los Tipos de Puntos de Venta Disponibles (Utilitario)
+ * para la View 'Insert Cronograma'
+ */ 
 function usuarioPinta(idUsuario, nomUsuario){
+	
+	// Setear valor en el FrontEnd de idUsuario
+	$("#idUsuario_ins").val(idUsuario);
+	
+	// Setear valor en el FrontEnd de nomUsuario
+	$("#usuario_ins").val(nomUsuario);
+	
+	// Obtener información de los Tipos de Punto de Venta
+	$.ajax({
+		url:"TipoPdv",
+		data:{
+			accion:"CBO_02",
+			idCampania: $("#idcampania_ins").val(),
+			idPeriodo: $("#idperiodo_ins").val()
+		},
+		success: function(data){
+			var msg = $(data).find('msg').text();
+			if($.trim(msg).length !== 0){
+				message("Data no Encontrada", msg);
+				$("#idtippdv_ins").prop('disabled', 'disabled');
+				$('#idtippdv_ins')
+					.find('option')
+					.remove()
+					.end()
+					.append('<option value="0">.::. Seleccione .::.</option>')
+					.val('0');
+			}else{
+				$("#idtippdv_ins").prop('disabled', false);
+				var option = "";
+				$(data).find('op').each(function(){
+					option += "<option value=\""
+					+ $(this).attr('id') + "\">"
+					+ $(this).text() + "</option>";
+				});
+				$("#idtippdv_ins").html(option);
+				
+				//Cerrar Dialog
+				$("#dlg_usuarios_find").dialog("close");
+			}
+		}
+	});
+	
+	
+	/*
 	$("#idUsuario_ins").val(idUsuario);
 	$("#usuario_ins").val(nomUsuario);
 	
@@ -286,27 +391,20 @@ function usuarioPinta(idUsuario, nomUsuario){
 			}
 		}
 	});
-	
+	*/
 }
 
-
+/**
+ * Metodo que devuelve los Ubigeos
+ * para la View 'Insert Cronograma'
+ */
 function ubigeosFind(){
-	$("#dlg_ubigeo_find").dialog({
-		modal: true,
-		width: 360,
-		height: 330,
-		buttons: {
-			"Cerrar": function(){
-				$(this).dialog("close");
-			}
-		}
-	});
 
 	$.ajax({
 		url: "Ubigeo",
 		type:"post",
 		data: {
-			accion: "QRY_02",
+			accion: "CBO_02",
 			idCampania: $("#idcampania_ins").val(),
 			idPeriodo: $("#idperiodo_ins").val(),
 			idTipPdv: $("#idtippdv_ins").val()
@@ -315,7 +413,22 @@ function ubigeosFind(){
 			var msg = $(data).find("msg").text();
 			if($.trim(msg).length !== 0){
 				message("Data no Encontrada", msg);
+				$('input:text').val('');
 			}else{
+				
+				// Modal de Ubigeo
+				$("#dlg_ubigeo_find").dialog({
+					modal: true,
+					width: 360,
+					height: 330,
+					buttons: {
+						"Cerrar": function(){
+							$(this).dialog("close");
+						}
+					}
+				});
+				
+				// Lógica para el llenado del Modal de Ubigeos
 				var lista = "<table class=\"parainfo\" style=\"100%\"><tbody>";
 				$(data).find('fil').each(function(){
 					var idUbigeo = $(this).find('col:eq(0)').text();
@@ -325,6 +438,7 @@ function ubigeosFind(){
 					+ nomUbigeo
 					+ "</a>"
 					+ "</td></tr>";
+					
 					//Pinta Lista de Ubigeos By idCampania/idPeriodo/idTipPdv
 					$("#ubigeoLst").html(lista);
 				})
@@ -333,6 +447,10 @@ function ubigeosFind(){
 	});
 }
 
+/**
+ * Metodo que devuelve el Modal para los Ubigeos (Utilitario)
+ * para la View 'Insert Cronograma'
+ */
 function ubigeoPinta(idUbigeo, nomUbigeo){
 	$("#idUbigeo_ins").val(idUbigeo);
 	$("#ubigeo_ins").val(nomUbigeo);
@@ -370,6 +488,10 @@ function ubigeoPinta(idUbigeo, nomUbigeo){
 	
 }
 
+/**
+ * Metodo que Agrega un Punto de Venta Disponible
+ * para la View 'Insert Cronograma'
+ */
 function addPdv(){
 	//$("#lstpdvasignados_ins ol").append('<li class="ui-widget-content" id="11">Metro Nuevo</li>');
 	
@@ -404,6 +526,10 @@ function addPdv(){
 	//$("#selectable_disp li").eq(String(obj2)).remove();
 }
 
+/**
+ * Metodo que Agrega todos los Puntos Disponibles
+ * para la View 'Insert Cronograma'
+ */
 function addAllPdv(){
 	
 	// -- Variable Temporal para guardar el Listado de PdvDisponibles
@@ -441,6 +567,10 @@ function addAllPdv(){
 	lstPdvDisponibleTmp = [];
 }
 
+/**
+ * Metodo que Remueve un Punto de Venta Asignado
+ * para la View 'Insert Cronograma'
+ */
 function removePdv(){
 
 	var liIndex = [];
@@ -465,6 +595,10 @@ function removePdv(){
 
 }
 
+/**
+ * Metodo que Remueve todos los Puntos de Venta Asignados
+ * para la View 'Insert Cronograma'
+ */
 function removeAllPdv(){
 	
 	// -- Variable Temporal para guardar el Listado de PdvAsignados
@@ -502,6 +636,10 @@ function removeAllPdv(){
 	lstPdvAsignadoTmp = [];
 }
 
+/**
+ * Metodo que lista los Puntos de Venta Disponibles
+ * para la View 'Insert Cronograma'
+ */
 function pdvDisponiblesQry(){
 	$.ajax({
 		url: "Pdv",
@@ -529,6 +667,10 @@ function pdvDisponiblesQry(){
 	});
 }
 
+/**
+ * Metodo que lista los Puntos de Venta Asignados
+ * para la View 'Insert Cronograma'
+ */
 function pdvAsignadosQry(){
 	$.ajax({
 		url: "Pdv",
@@ -553,3 +695,41 @@ function pdvAsignadosQry(){
 		}
 	});
 }
+
+/**
+ * Metodo que lista los Tipos de Puntos de Venta por Campania y Periodo
+ * para la View 'Insert Cronograma'
+ */
+function tipoPDVCboIns(){
+	$.ajax({
+		url:"TipoPdv",
+		data:{
+			accion:"CBO_02",
+			idCampania: $("#idcampania_ins").val(),
+			idPeriodo: $("#idperiodo_ins").val()
+		},
+		success: function(data){
+			var msg = $(data).find('msg').text();
+			if($.trim(msg).length !== 0){
+				message("Data no Encontrada", msg);
+				$("#idtippdv_ins").prop('disabled', 'disabled');
+				$('#idtippdv_ins')
+					.find('option')
+					.remove()
+					.end()
+					.append('<option value="0">.::. Seleccione .::.</option>')
+					.val('0');
+			}else{
+				$("#idtippdv_ins").prop('disabled', false);
+				var option = "";
+				$(data).find('op').each(function(){
+					option += "<option value=\""
+					+ $(this).attr('id') + "\">"
+					+ $(this).text() + "</option>";
+				});
+				$("#idtippdv_ins").html(option);
+			}
+		}
+	});
+}
+

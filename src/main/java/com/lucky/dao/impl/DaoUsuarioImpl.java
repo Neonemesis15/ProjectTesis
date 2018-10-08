@@ -16,7 +16,8 @@ public class DaoUsuarioImpl implements DaoUsuario {
     private final ConectaDb db;
     private final StringBuilder sql;
     private String message;
-	
+    private List<Object[]> list;
+    
     public DaoUsuarioImpl(){
         this.db = new ConectaDb();
         this.sql = new StringBuilder();
@@ -62,7 +63,7 @@ public class DaoUsuarioImpl implements DaoUsuario {
 
 	@Override
 	public List<Object[]> usuarioQry(Integer idCampania, Integer idPeriodo) {
-		List<Object[]> list = null;
+		
 		sql.append("SELECT u.id, concat(p.apellidoPaterno,' ',p.apellidoMaterno,', ',p.nombres) usuario ")
 		.append("FROM mdl_usuarioporvisitaDetalle v ")
 		.append("INNER JOIN mdl_usuario u ON v.idUsuarioAsignado = u.id ")
@@ -71,6 +72,11 @@ public class DaoUsuarioImpl implements DaoUsuario {
 		.append("INNER JOIN mdl_persona p ON u.idPersona = p.id ")
 		.append("WHERE vi.idCampaniaPublicitaria = ? ")
 		.append("AND vi.idPeriodo = ? ")
+		.append("AND v.estado = 1 ")
+		.append("AND u.estado = 1 ")
+		.append("AND c.estado = 1 ")
+		.append("AND vi.estado = 1 ")
+		.append("AND p.estado = 1 ")
 		.append("ORDER BY p.apellidoPaterno");
 		
 		try(Connection cn = db.getConnection();
@@ -81,16 +87,27 @@ public class DaoUsuarioImpl implements DaoUsuario {
 			
 			ResultSet rs = ps.executeQuery();
 			
-			list = new LinkedList<>();
+			// Verificar si el ResultSet devuelve registros
+			int rowcount = 0;
+			if (rs.last()) {
+				  rowcount = rs.getRow();
+				  rs.beforeFirst(); // not rs.first() because the rs.next() below will move on, missing the first element
+			}
 			
-			while(rs.next()){
-				
-				Object[] reg = new Object[2];
-				
-				reg[0] = rs.getInt(1);
-				reg[1] = rs.getString(2);
-				
-				list.add(reg);
+			if(rowcount != 0){
+				list = new LinkedList<>();		
+				while(rs.next()){
+					
+					Object[] reg = new Object[2];
+					
+					reg[0] = rs.getInt(1);
+					reg[1] = rs.getString(2);
+					
+					list.add(reg);
+				}
+			}else{
+				message = "!No se han asignado Usuarios."
+						+ "Por favor Verificar!";
 			}
 			
 		}catch(SQLException e){

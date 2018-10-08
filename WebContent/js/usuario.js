@@ -4710,7 +4710,7 @@ function cuestionarioUpd(){
 // =======================================================
 // Cronograma
 // =======================================================
-
+/*
 function cronogramaIns(){
     // lectura para el combo empresa
     $.ajax({
@@ -4808,7 +4808,9 @@ function cronogramaIns(){
         }
     });
 }
+*/
 
+/*
 function cronogramaDel(){
     var ids = [];
     $("input[name='idcronograma_del']:checked").each(function () {
@@ -4841,9 +4843,9 @@ function cronogramaDel(){
                                 message("Error", error);
 
                             } else {
-                            	/*setTimeout(function () {
-                            		$('#content').html('Excelente!!').addClass('border');
-                            	},3000);*/
+                            	//setTimeout(function () {
+                            	//	$('#content').html('Excelente!!').addClass('border');
+                            	//},3000);
                             	window.location = "CampaniaPublicitaria?accion=QRY";
                             }
                         }
@@ -4853,7 +4855,9 @@ function cronogramaDel(){
         });
     }
 }
+*/
 
+/*
 function cronogramaUpd(){
     var id = $("input[name='idcronograma_upd']:checked").val();
     if (isNaN(id)) {
@@ -4992,4 +4996,4 @@ function cronogramaUpd(){
         });
     }
 }
-
+*/
